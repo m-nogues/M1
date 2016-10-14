@@ -1,0 +1,14 @@
+Exercice 3 :
+
+Nous avons commencé par utiliser le programme pour remplir des tableaux d'occurences afin de trouver le chiffré
+des caractères 'e' et 'a'. Nous avons aussi pu obtenir quelques indications sur le chiffré de 's' et 't'. 
+L'analyse d'occurences menée par le programme ne donnant pas le bon chiffré de 's', nous avons préférer finir
+le décryptage à la main en utilisant une combinaison du décrypté obtenu avec les chiffrés choisis par l'analyse
+d'occurences (c(s) = z, c(t) = b, c(e) = u, c(a) = c), et les tableaux d'occurences des caractères et des
+bigrammes obtenus par le parcours de la chaine, pour ajouter petit à petit de nouveaux caractères à l'alphabet
+clé potentiel.
+On a donc pu ajouter le 'i' (c(i) = f) en lisant le décrypté du premier mot avec les clés précédemment fixées.
+Puis, en utilisant les statistiques obtenu par les occurences, nous avons tester le 'n' chiffré en 's', ce qui nous
+a mis sur la voie du 'u' chiffré en 'o' grâce au deuxième mot du texte ("une").
+Nous avons continuer de cette manière, en utilisant les tableaux d'occurence et le déchiffré obtenu au fur et à
+mesure, pour reconstituer la totalité de l'alphabet clé ayant servi à chiffrer le texte.
