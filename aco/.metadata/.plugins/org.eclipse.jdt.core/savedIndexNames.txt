@@ -1,0 +1,2 @@
+INDEX VERSION 1.129+D:\UserData\GitHub\M1\aco\.metadata\.plugins\org.eclipse.jdt.core
+2058771665.index

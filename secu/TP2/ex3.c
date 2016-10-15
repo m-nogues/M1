@@ -27,7 +27,7 @@ int checkMin(char a) {
 
 void lecture_texte(char message[LG_MAX], char_occur tab[26]) {
 	for (int i = 0; i < strlen(message); i++) {
-		printf("%s", message[i]);
+		printf("%c", message[i]);
 		if (checkMin(message[i])) {
 			tab[pos(message[i])].occurs++;
 			if (i < strlen(message) - 1 && checkMin(message[i + 1]))
@@ -59,7 +59,7 @@ void initTab(char_occur tab[26]) {
 
 void affiche(char_occur tab[26]) {
 	for (int i = 0; i < 26; i++) {
-		printf("char '%s' :\n\toccurs = %d\n", asciiPos(i), tab[i].occurs);
+		printf("char '%c' :\n\toccurs = %d\n", asciiPos(i), tab[i].occurs);
 	}
 }
 
@@ -74,7 +74,7 @@ void main() {
 
 	affiche(tab);
 
-	printf("char 'e' = %s\n", max(tab));
+	printf("char 'e' = %c\n", max(tab));
 
 	printf("%s\n", message);
 }

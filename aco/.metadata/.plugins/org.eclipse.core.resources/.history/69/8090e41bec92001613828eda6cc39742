@@ -1,0 +1,18 @@
+/*
+ *
+ */
+package textEditor;
+
+import fr.istic.m1.aco.miniediteur.v1.event.EventDispatcher;
+import view.IHM;
+
+public class TextEditor {
+
+	public static final EventDispatcher ed = new EventDispatcher();
+
+	public static void main(String[] args) {
+		IHM ihm = new IHM();
+		ihm.launch();
+	}
+
+}
