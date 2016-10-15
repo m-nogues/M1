@@ -14,15 +14,37 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+/**
+ * The event dispatcher.
+ * 
+ * It receives events from the subjects and dispatches it to the event managers
+ * that are concerned by this event.
+ */
 public class EventDispatcher {
 
+	/**
+	 * The multithread enabled map of event type paired with their set of
+	 * enlisted managers.
+	 */
 	public ConcurrentMap<EventTypeEnum, CopyOnWriteArraySet<EventManager>> EventManagers = new ConcurrentHashMap<>();
 
+	/**
+	 * Instantiates a new event dispatcher.
+	 */
 	public EventDispatcher() {
 		for (EventTypeEnum e : EventTypeEnum.values())
 			EventManagers.put(e, new CopyOnWriteArraySet<>());
 	}
 
+	/**
+	 * Dispatches the event from the subject to all the concerned event
+	 * managers.
+	 *
+	 * @param event
+	 *            the event
+	 * @param object
+	 *            the object
+	 */
 	public void dispatch(EventTypeEnum event, Subject object) {
 		if (event == null)
 			return;
@@ -30,13 +52,29 @@ public class EventDispatcher {
 			manager.executeEvent(event, object);
 	}
 
+	/**
+	 * Enlists the event manager to the event type.
+	 *
+	 * @param event
+	 *            the event
+	 * @param manager
+	 *            the manager
+	 */
 	public void enlist(EventTypeEnum event, EventManager manager) {
 		if (event == null)
 			return;
 		EventManagers.get(event).add(manager);
 	}
 
-	public void unlist(EventTypeEnum event, EventManager manager) {
+	/**
+	 * Resigns the event manager from the event type.
+	 *
+	 * @param event
+	 *            the event
+	 * @param manager
+	 *            the manager
+	 */
+	public void resign(EventTypeEnum event, EventManager manager) {
 		if (event == null)
 			return;
 		EventManagers.get(event).remove(manager);

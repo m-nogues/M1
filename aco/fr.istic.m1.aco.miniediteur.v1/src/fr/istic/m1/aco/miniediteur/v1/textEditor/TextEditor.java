@@ -11,15 +11,27 @@
 package fr.istic.m1.aco.miniediteur.v1.textEditor;
 
 import fr.istic.m1.aco.miniediteur.v1.event.EventDispatcher;
-import fr.istic.m1.aco.miniediteur.v1.view.IHM;
+import fr.istic.m1.aco.miniediteur.v1.view.HMI;
 
+/**
+ * The text editor.
+ * 
+ * It launches the user interface and the creates the event dispatcher.
+ */
 public class TextEditor {
 
+	/** The event dispatcher. */
 	public static final EventDispatcher ed = new EventDispatcher();
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 */
 	public static void main(String[] args) {
-		IHM ihm = new IHM();
-		ihm.launch();
+		HMI hmi = new HMI();
+		hmi.launch();
 	}
 
 }

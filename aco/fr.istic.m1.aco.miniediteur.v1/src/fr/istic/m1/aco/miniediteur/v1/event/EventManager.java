@@ -10,8 +10,18 @@
  */
 package fr.istic.m1.aco.miniediteur.v1.event;
 
+/**
+ * The Interface EventManager.
+ */
 public interface EventManager {
 
+	/**
+	 * Executes the event.
+	 *
+	 * @param event
+	 *            the event
+	 * @param object
+	 *            the object
+	 */
 	public void executeEvent(EventTypeEnum event, Subject object);
-
 }

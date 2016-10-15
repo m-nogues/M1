@@ -10,6 +10,10 @@
  */
 package fr.istic.m1.aco.miniediteur.v1.event;
 
+/**
+ * The Enum EventTypeEnum.
+ */
 public enum EventTypeEnum {
+
 	SELECT, COPY, CUT, PASTE, INSERT, SAVE;
 }

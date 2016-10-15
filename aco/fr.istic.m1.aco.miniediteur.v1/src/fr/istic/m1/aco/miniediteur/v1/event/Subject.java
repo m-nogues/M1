@@ -10,6 +10,9 @@
  */
 package fr.istic.m1.aco.miniediteur.v1.event;
 
-public class Subject {
+/**
+ * The Interface Subject.
+ */
+public interface Subject {
 
 }
