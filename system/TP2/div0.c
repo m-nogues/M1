@@ -6,7 +6,6 @@
 
 void tacheron( int sig , siginfo_t *siginfo, void *context) {
   printf("Division par 0\n");
-  // le handler ne fait pas arrêter le processus. On reviendra donc à l'opération qui a déclenché le signal
   exit(EXIT_SUCCESS);
 }
 int main(void) {
@@ -20,6 +19,6 @@ int main(void) {
   attraper.sa_flags=SA_SIGINFO;
   sigaction(SIGFPE,&attraper,NULL);
   i = i / j; // ICI c'est l'opération assembleur de division qui déclenchera le signal SIGFPE
-  printf("Voici i = %d\n", i);
+  printf("Voici le résultat de la division euclidienne i = %d\n",i);
   return EXIT_SUCCESS;
 }
