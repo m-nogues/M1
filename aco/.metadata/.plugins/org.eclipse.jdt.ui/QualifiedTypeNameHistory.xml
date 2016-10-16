@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="fr.istic.m1.aco.miniediteur.v1.textEditor.TextEditor"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="fr.istic.m1.aco.miniediteur.v1.event.EventDispatcher"/>
+</qualifiedTypeNameHistroy>

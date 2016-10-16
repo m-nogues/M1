@@ -5,15 +5,20 @@
 	<item value="14" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="0" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_y"/>
 	<item value="568" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_x"/>
-	<item value="16" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
+	<item value="9" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
+	<item value="530" key="clean_up_save_particpant_modify_dialog.preferred_x"/>
+	<item value="112" key="clean_up_save_particpant_modify_dialog.preferred_y"/>
+	<item value="887" key="clean_up_save_particpant_modify_dialog.preferred_width"/>
+	<item value="614" key="clean_up_save_particpant_modify_dialog.preferred_height"/>
 	<item value="887" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_width"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space_tab_page.node"/>
 	<item value="1015" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="863" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_height"/>
+	<item value="5" key="clean_up_save_particpant_modify_dialog.last_focus"/>
 	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
 	<item value="759" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_height"/>
-	<item value="1" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
+	<item value="2" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
 	<section name="RefactoringWizard.preview">
 		<item value="600" key="width"/>
 		<item value="400" key="height"/>
@@ -37,6 +42,9 @@
 		<item value="true" key="configure_problem_severity_dialog_id"/>
 	</section>
 	<section name="quick_assist_proposal_size">
+	</section>
+	<section name="BuildPathsPropertyPage">
+		<item value="3" key="pageIndex"/>
 	</section>
 	<section name="completion_proposal_size">
 	</section>

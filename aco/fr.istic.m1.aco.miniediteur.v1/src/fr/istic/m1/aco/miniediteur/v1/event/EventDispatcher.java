@@ -5,8 +5,8 @@
  * library. If this is what you want to do, use the GNU Lesser General Public
  * License instead of this License. But first, please read
  * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
- * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
- * @author Mathieu Grandmontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes.fr
+ * @author Mathieu Grandmontagne mathieu.grandmontagne@etudiant.univ-rennes.fr
  */
 package fr.istic.m1.aco.miniediteur.v1.event;
 
@@ -16,22 +16,34 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * The event dispatcher.
- * 
+ *
  * It receives events from the subjects and dispatches it to the event managers
  * that are concerned by this event.
  */
 public class EventDispatcher {
 
+	/** The instance of EventDispatcher. */
+	private static EventDispatcher INSTANCE = new EventDispatcher();
+
+	/**
+	 * Gets the single instance of EventDispatcher.
+	 *
+	 * @return single instance of EventDispatcher
+	 */
+	public static EventDispatcher getInstance() {
+		return INSTANCE;
+	}
+
 	/**
 	 * The multithread enabled map of event type paired with their set of
 	 * enlisted managers.
 	 */
-	public ConcurrentMap<EventTypeEnum, CopyOnWriteArraySet<EventManager>> EventManagers = new ConcurrentHashMap<>();
+	private ConcurrentMap<EventTypeEnum, CopyOnWriteArraySet<EventManager>> EventManagers = new ConcurrentHashMap<>();
 
 	/**
 	 * Instantiates a new event dispatcher.
 	 */
-	public EventDispatcher() {
+	private EventDispatcher() {
 		for (EventTypeEnum e : EventTypeEnum.values())
 			EventManagers.put(e, new CopyOnWriteArraySet<>());
 	}

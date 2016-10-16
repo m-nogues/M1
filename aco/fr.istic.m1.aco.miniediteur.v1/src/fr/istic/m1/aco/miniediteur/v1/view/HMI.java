@@ -5,8 +5,8 @@
  * library. If this is what you want to do, use the GNU Lesser General Public
  * License instead of this License. But first, please read
  * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
- * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
- * @author Mathieu Grandmontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes.fr
+ * @author Mathieu Grandmontagne mathieu.grandmontagne@etudiant.univ-rennes.fr
  */
 package fr.istic.m1.aco.miniediteur.v1.view;
 
