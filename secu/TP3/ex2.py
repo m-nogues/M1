@@ -1,7 +1,5 @@
-#from sys import argv
-#from time import time
-import time
-import sys
+from sys import argv
+from time import time
 
 def prime(i, primes):
 	for prime in primes:
@@ -20,8 +18,10 @@ def historic(n):
 				return primes
 		i += 1
 
-print historic(100)
-#if __name__ == "__main__":
-	#start = time()
-	#print sorted(list(historic(int(argv[1]))))
-	#print 'Time in seconds: ' + str(time() - start)
+if __name__ == "__main__":
+	if len(argv) > 1 :
+		start = time()
+		print sorted(list(historic(int(argv[1])))) #prints the given number of prime numbers
+		print 'Time in seconds: ' + str(time() - start) #prints the execution time in seconds
+	else :
+		print 'Parameter needed : number of primes to display'
