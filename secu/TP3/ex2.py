@@ -1,5 +1,7 @@
-from sys import argv
-from time import time
+#from sys import argv
+#from time import time
+import time
+import sys
 
 def prime(i, primes):
 	for prime in primes:
@@ -18,7 +20,8 @@ def historic(n):
 				return primes
 		i += 1
 
-if __name__ == "__main__":
-	start = time()
-	print sorted(list(historic(int(argv[1]))))
-	print 'Time in seconds: ' + str(time() - start)
+print historic(100)
+#if __name__ == "__main__":
+	#start = time()
+	#print sorted(list(historic(int(argv[1]))))
+	#print 'Time in seconds: ' + str(time() - start)

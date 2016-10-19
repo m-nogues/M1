@@ -35,50 +35,68 @@ def randompri(n) :
 	return a
 	
 #print randompri(77)
-def epgcd(a, b):
-    if a == 0:
-        return (b, 0, 1)
-    else:
-        g, y, x = epgcd(b % a, a)
-        return (g, x - (b // a) * y, y)
+#def epgcd(a, b):
+    #if a == 0:
+        #return (b, 0, 1)
+    #else:
+        #g, y, x = epgcd(b % a, a)
+        #return (g, x - (b // a) * y, y)
 
-def xpgcd(b, n):
-    x0, x1, y0, y1 = 1, 0, 0, 1
-    while n != 0:
-        q, b, n = b // n, n, b % n
-        x0, x1 = x1, x0 - q * x1
-        y0, y1 = y1, y0 - q * y1
-    return  b, x0, y0
+#def xpgcd(b, n):
+    #x0, x1, y0, y1 = 1, 0, 0, 1
+    #while n != 0:
+        #q, b, n = b // n, n, b % n
+        #x0, x1 = x1, x0 - q * x1
+        #y0, y1 = y1, y0 - q * y1
+    #return  b, x0, y0
     
-def invmod(a, m):
-    g, x, y = epgcd(a, m)
-    if g == 1:
-        return x % m
+#def invmod(a, m):
+    #g, x, y = epgcd(a, m)
+    #if g == 1:
+        #return x % m
 
 
 #print invmod(5,97)	
 
+def inverse_modulaire(a, b) :
+	r = a
+	rp = b
+	u = 1
+	v = 0
+	up = 0
+	vp= 1
+	 
+	while rp != 0 :
+		q = r/rp
+		rs = r
+		us = u
+		vs = v
+		r = rp
+		u = up
+		v = vp
+		rp = rs - q*rp
+		up = us - q*u
+		vp = vs - q*vp
+	
+	return u
+print inverse_modulaire(5,77)	
 def keygenerator() :
-	p = q = 3
+	p = q = 0
 	while p==q :
 		p = randompri(64)
 		q = randompri(64)
 	n = p *q
-	phiden=  (p-1)*(q-1)
+	phiden =  (p-1)*(q-1)
 	e= phiden
-	while invmod(e,phiden)!= 1:
+	while inverse_modulaire(e,phiden) != 1:
 		e = random.randint(3, e-1)
-	d = invmod(e, phiden)
+	d = inverse_modulaire(e, phiden)
 	while d<0 :
-		d=d+phiden
+		d= d + phiden
 	return e,d,n ,p, q
 
 print keygenerator()
 	
 # afficher les 100 nombre permier 
 
-
-#def gen() :
-#	key = keygenerator()
-#	return (key[0], key[2], key[1],key[3], key[4)
 
