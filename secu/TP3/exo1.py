@@ -1,6 +1,5 @@
 from random import randint
 from random import getrandbits
-from os import pow
 
 def lpowmod(x, y, n):
     result = 1
@@ -85,17 +84,18 @@ print inverse_modulaire(5, 77)
 def keygenerator() :
 	p = q = 0
 	while p == q :
-		p = randompri(64)
-		q = randompri(64)
+		p = randompri(1024)
+		q = randompri(1024)
 	n = p *q
 	phiden =  (p - 1) * (q - 1)
 	e = phiden
-	while inverse_modulaire(e,phiden) != 1:
+	while inverse_modulaire(e,phiden) != 1 and e > 3:
 		e = randint(3, e - 1)
+        print e
 	d = inverse_modulaire(e, phiden)
 	while d < 0 :
 		d = d + phiden
-	return e, d, n, p, q
+	return (e, n), (p, q, d)
 
 print keygenerator()
 
