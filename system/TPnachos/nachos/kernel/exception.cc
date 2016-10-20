@@ -118,6 +118,73 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 
 		// You will find below all Nachos system calls ...
 
+    #ifdef ETUDIANTS_TP
+    case SC_P:
+			// The P system call. Gets a semaphore or wait if it can't
+			DEBUG('e', (char*)"P call, initiated by user program.\n");
+      int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
+      Semaphore *sema = (Semaphore *) g_object_ids->SearchObject(semaphore);
+
+      if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
+        g_machine->WriteIntRegister(2, -1);
+        g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
+      } else {
+        sema->P();
+        g_machine->WriteIntRegister(2, 0);
+        g_syscall_error->SetMsg((char*) "", NoError);
+      }
+      break;
+
+    case SC_V:
+			// The V system call. Increments a semaphore or wait if it can't
+			DEBUG('e', (char*)"V call, initiated by user program.\n");
+      int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
+      Semaphore *sema = (Semaphore *) g_object_ids->SearchObject(semaphore);
+
+      if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
+        g_machine->WriteIntRegister(2, -1);
+        g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
+      } else {
+        sema->V();
+        g_machine->WriteIntRegister(2, 0);
+        g_syscall_error->SetMsg((char*) "", NoError);
+      }
+      break;
+
+    case SC_SEM_CREATE:
+    break;
+
+    case SC_SEM_DESTROY:
+    break;
+
+    case SC_LOCK_CREATE:
+    break;
+
+    case SC_LOCK_RELEASE:
+    break;
+
+    case SC_LOCK_ACQUIRE:
+    break;
+
+    case SC_LOCK_DESTROY:
+    break;
+
+    case SC_COND_WAIT:
+    break;
+
+    case SC_COND_SIGNAL:
+    break;
+
+    case SC_COND_CREATE:
+    break;
+
+    case SC_COND_DESTROY:
+    break;
+
+    case SC_COND_BROADCAST:
+    break;
+    #endif
+
 		case SC_HALT:
 			// The halt system call. Stops Nachos.
 			DEBUG('e', (char*)"Shutdown, initiated by user program.\n");
