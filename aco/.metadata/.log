@@ -67,3 +67,13 @@ Java Model Exception: Java Model Status [singlet [in EventDispatcher [in [Workin
 	at org.eclipse.jdt.internal.ui.infoviews.AbstractInfoView$2.run(AbstractInfoView.java:728)
 !SUBENTRY 1 org.eclipse.jdt.core 4 969 2016-10-16 21:38:34.439
 !MESSAGE singlet [in EventDispatcher [in [Working copy] EventDispatcher.java [in fr.istic.m1.aco.miniediteur.v1.event [in src [in fr.istic.m1.aco.miniediteur.v1]]]]] does not exist
+!SESSION 2016-10-21 16:18:17.895 -----------------------------------------------
+eclipse.buildId=4.7.0.I20160915-0230
+java.version=1.8.0_77
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.e4.ui.workbench 2 0 2016-10-21 16:18:53.252
+!MESSAGE Removing part descriptor with the 'net.certiv.antlrdt.ui.view.tokens' id and the 'Tokens View' description. Points to the invalid 'bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView' class.
