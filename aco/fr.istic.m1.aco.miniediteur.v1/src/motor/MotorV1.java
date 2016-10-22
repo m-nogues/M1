@@ -10,6 +10,7 @@
  */
 package motor;
 
+import event.EventDispatcher;
 import event.EventManager;
 import event.EventTypeEnum;
 import event.Subject;
@@ -18,6 +19,33 @@ import event.Subject;
  * The Class MotorV1.
  */
 public class MotorV1 implements EventManager {
+
+	/** The event dispatcher. */
+	private static EventDispatcher ed = EventDispatcher.getInstance();
+
+	/**
+	 * Instantiates a new motor version 1.
+	 */
+	public MotorV1() {
+		ed.enlist(EventTypeEnum.COPY, this);
+		ed.enlist(EventTypeEnum.CUT, this);
+		ed.enlist(EventTypeEnum.INSERT, this);
+		ed.enlist(EventTypeEnum.PASTE, this);
+		ed.enlist(EventTypeEnum.SAVE, this);
+		ed.enlist(EventTypeEnum.SELECT, this);
+	}
+
+	/**
+	 * Closes the motor.
+	 */
+	public void close() {
+		ed.resign(EventTypeEnum.COPY, this);
+		ed.resign(EventTypeEnum.CUT, this);
+		ed.resign(EventTypeEnum.INSERT, this);
+		ed.resign(EventTypeEnum.PASTE, this);
+		ed.resign(EventTypeEnum.SAVE, this);
+		ed.resign(EventTypeEnum.SELECT, this);
+	}
 
 	/**
 	 * Copy command.
