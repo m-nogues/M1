@@ -31,6 +31,38 @@
 		<item value="true" key="updateTextualMatches"/>
 		<item value="1" key="updateSimilarElementsMatchStrategy"/>
 	</section>
+	<section name="javadoc">
+		<item value="private" key="access"/>
+		<item value="false" key="noindex"/>
+		<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.miniediteur.v1\javadoc.xml" key="antpath"/>
+		<item value="false" key="nodeprecatedlist"/>
+		<item value="true" key="use"/>
+		<item value="true" key="author"/>
+		<item value="false" key="nodeprecated"/>
+		<item value="false" key="nonavbar"/>
+		<item value="" key="docletpath"/>
+		<item value="C:\Program Files\Java\jdk1.8.0_111\bin\javadoc.exe" key="javadoc_command_history"/>
+		<item value="1.8" key="source"/>
+		<item value="true" key="version"/>
+		<item value="" key="docletname"/>
+		<item value="true" key="splitindex"/>
+		<item value="true" key="fromStandard"/>
+		<item value="false" key="notree"/>
+		<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.miniediteur.v1\doc" key="destdir"/>
+		<item value="false" key="openinbrowser"/>
+		<section name="projects">
+			<section name="fr.istic.m1.aco.tp1">
+				<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.tp1\javadoc.xml" key="antpath"/>
+				<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.tp1\doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="fr.istic.m1.aco.miniediteur.v1">
+				<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.miniediteur.v1\javadoc.xml" key="antpath"/>
+				<item value="D:\UserData\GitHub\M1\aco\fr.istic.m1.aco.miniediteur.v1\doc" key="destdir"/>
+				<item value="https://docs.oracle.com/javase/8/docs/api/;file:/D:/UserData/GitHub/M1/aco/fr.istic.m1.aco.miniediteur.v1/doc/;http://docs.oracle.com/javase/8/javafx/api/" key="href"/>
+			</section>
+		</section>
+	</section>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item value="2" key="layout"/>
 		<item value="true" key="group_libraries"/>
@@ -40,11 +72,24 @@
 	</section>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="configure_problem_severity_dialog_id"/>
+		<item value="true" key="javadocAntInformationDialog"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="BuildPathsPropertyPage">
 		<item value="3" key="pageIndex"/>
+	</section>
+	<section name="JavadocWizardDialog">
+		<item value="616" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="567" key="DIALOG_HEIGHT"/>
+		<item value="660" key="DIALOG_X_ORIGIN"/>
+		<item value="150" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="JavaSearchPage">
+		<item value="0" key="HISTORY_SIZE"/>
+		<item value="false" key="CASE_SENSITIVE"/>
+		<item value="15" key="INCLUDE_MASK"/>
 	</section>
 	<section name="completion_proposal_size">
 	</section>
