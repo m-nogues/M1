@@ -11,8 +11,20 @@
 package event;
 
 /**
- * The Enum EventTypeEnum.
+ * The Enumeration EventTypeEnum.
  */
 public enum EventTypeEnum {
-	SELECT, COPY, CUT, PASTE, INSERT, SAVE;
+
+	/** The select event. */
+	SELECT,
+	/** The copy event. */
+	COPY,
+	/** The cut event. */
+	CUT,
+	/** The paste event. */
+	PASTE,
+	/** The insert event. */
+	INSERT,
+	/** The save event. */
+	SAVE;
 }

@@ -18,5 +18,6 @@ public interface Subject {
 	/** The event dispatcher. */
 	EventDispatcher ed = EventDispatcher.getInstance();
 
+	/** The selection positions (selection[0] = start, selection[1] = end). */
 	int[] selection = { 0, 0 };
 }
