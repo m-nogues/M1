@@ -72,35 +72,34 @@ def pgcd(a, b):
         a, b = b, a % b
     return a
 
-def inverse_modulaire(a, phi) :
-	d = 0
-	x1 = 0
-	x2 = 1
-	y1 = 1
-	temp_phi = phi
-
-	while a > 0:
-		temp1 = temp_phi/a
-		temp2 = temp_phi - temp1 * a
-		temp_phi = a
-		a = temp2
-		
-		x = x2- temp1* x1
-		y = d - temp1 * y1
-		
-		x2 = x1
-		x1 = x
-		d = y1
-		y1 = y
-
-	if temp_phi == 1:
+def inverse_modulaire(e, phi):
+    d = 0
+    x1 = 0
+    x2 = 1
+    y1 = 1
+    temp_phi = phi
+    
+    while e > 0:
+        temp1 = temp_phi/e
+        temp2 = temp_phi - temp1 * e
+        temp_phi = e
+        e = temp2
+        
+        x = x2- temp1* x1
+        y = d - temp1 * y1
+        
+        x2 = x1
+        x1 = x
+        d = y1
+        y1 = y
+    
+    if temp_phi == 1:
 		return d + phi
-
 
 #print inverse_modulaire(,)
 
 def keygenerator(taille) :
-	p = q = 3
+	p = q = 0
 	while p == q :
 		p = randompri(taille)
 		q = randompri(taille)
@@ -112,9 +111,9 @@ def keygenerator(taille) :
 		e = randrange(1, phiden)
 	d = inverse_modulaire(e, phiden)
 	
-	while d <= 0 or d==e :
-		d = d + phiden
-	return (e, n), (d, n)
+	#~ while d <= 0 or d==e :
+		#~ d = d + phiden
+	return (e, n), (p,q,d, n)
 
 #public, private= keygenerator(512)
 
@@ -131,9 +130,9 @@ def encrypt(pk, plaintext):
 
 def decrypt(pk, ciphertext):
    #la cle privee
-	d, n = pk
+	p,q,d, n = pk
    #pour chaque caractere on aplique c^d mod n
-	plain = [lpowmod(char,d, n) for char in ciphertext]
+	plain = [(lpowmod(char,d, n) for char in ciphertext]
 #	print plain
 	return plain
 	
@@ -141,7 +140,9 @@ if __name__ == '__main__':
 	#print "RSA Encrypter/ Decrypter"
 	#print "Your public key is ", public ," and your private key is ", private
 	#message = raw_input("Enter a message to encrypt with your private key: ")
-	public, private= keygenerator(3)
+	public, private= keygenerator(512)
+	e,n = public
+	p,q,d,n = private
 	print public , private
 	encrypted_msg = encrypt(public, message)
 	print ("message chiffre")
@@ -153,7 +154,28 @@ if __name__ == '__main__':
 			print "chifrement/dechifrement focntionnel"
 	else :
 		print "erreur"
-	
+	if p*q==n :
+		print "n OK"
+	else :
+			print "n pas ok"
+	phi = (p-1)*(q-1)
+	print phi
+	if pgcd(e, phi)==1:
+		print "e OK"
+	else : 
+		print "e pas ok"
+	invmod= inverse_modulaire(e, phi)
+	if invmod<0:
+		invmod = d+ phi
+	print invmod
+	if d==invmod:
+		print "d invmod ok"
+	else : 
+		print "d invmod pas ok"
+	if d< phi:
+		print "d inf phi ok"
+	else : 
+		print "d inf phi pas ok"
 	
 	
 	#~ while encrypted_msg!=decrypt_msg :
