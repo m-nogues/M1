@@ -6,4 +6,5 @@
 <fullyQualifiedTypeName name="event.EventDispatcher"/>
 <fullyQualifiedTypeName name="motor.MotorV1"/>
 <fullyQualifiedTypeName name="event.EventTypeEnum"/>
+<fullyQualifiedTypeName name="motor.Context"/>
 </qualifiedTypeNameHistroy>

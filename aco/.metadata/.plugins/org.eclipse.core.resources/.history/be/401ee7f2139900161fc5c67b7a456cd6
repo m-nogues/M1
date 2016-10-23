@@ -22,7 +22,6 @@ public class MotorV1 implements EventManager {
 
 	/** The event dispatcher. */
 	private static EventDispatcher	ed	= EventDispatcher.getInstance();
-	/** The execution context. */
 	private static Context			con	= Context.getInstance();
 
 	/**
@@ -53,6 +52,7 @@ public class MotorV1 implements EventManager {
 	 * Copy the selected text in the Context.clipBoard.
 	 */
 	private void copy() {
+		Context con = Context.getInstance();
 		con.setClipBoard(con.getSelected().toString());
 	}
 
@@ -64,6 +64,7 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void cut(Subject object) {
+		Context con = Context.getInstance();
 		con.setClipBoard(con.getSelected().toString());
 		int start = con.getText().indexOf(con.getSelected().toString());
 		con.getText().delete(start, start + con.getSelected().length());
@@ -110,7 +111,7 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void insert(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		Context.getInstance();
 	}
 
 	/**
@@ -120,7 +121,8 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void paste(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		// TODO Auto-generated method stub
+
 	}
 
 	/**

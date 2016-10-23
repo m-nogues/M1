@@ -110,7 +110,7 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void insert(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		con.getText().insert(object.selection[0], con.getClipBoard().toString())
 	}
 
 	/**
@@ -120,7 +120,8 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void paste(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
