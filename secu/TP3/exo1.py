@@ -3,7 +3,7 @@ from random import randrange
 
 from random import getrandbits
 #renvoi (x^y)%n en utilisant l'exponentiation modulaire O(log(n))
-def lpowmod(x, y, z): 
+def lpowmod(x, y, z):
     a = 1
     while y > 0:
         if y % 2 == 1:
@@ -13,14 +13,14 @@ def lpowmod(x, y, z):
     return a
 
 
-#true si a^p =1 mod p 
+#true si a^p =1 mod p
 def fermat(a, p):
 	if p == 2:
 		return True
 	if not p & 1:
 		return False
 	return lpowmod(a, p-1, p) == 1
-    
+
 #~ print fermat(7,19)
 # renvoi true si 2^p-1 = 3^p-1 = 5^p-1 = 7^p-1 = 1 mod p
 def prim(n) :
@@ -30,21 +30,21 @@ def prim(n) :
 			if r != 1 :
 				return False
 		return True
-	
-			
-		
+
+
+
 
 #~ print prim(7)
 #revoi un nombre premier de n bit en utilisant la primalite de PGP
 def randompri(n) :
 	a = getrandbits(n)
-	while prim(a) == False or a ==1 or a== 0 : 
+	while prim(a) == False or a ==1 or a== 0 :
 		a = getrandbits(n)
 	return a
 
 
 #print randompri(77)
-# return inverse modulaire et pgcd 
+# return inverse modulaire et pgcd
 def inverse_modulaire(a, b):
 	r = a
 	rp = b
@@ -63,7 +63,7 @@ def inverse_modulaire(a, b):
 		rp = rs - q*rp
 		up = us - q*u
 		vp = vs - q*vp
-	
+
 	return u , r
 
 
@@ -77,7 +77,7 @@ def keygenerator(taille) :
 		p = randompri(taille)
 		q = randompri(taille)
 	n = p *q
-	print "phi(n) , n-phi(n)"
+	print ("phi(n) , n-phi(n)")
 	phiden =  (p - 1) * (q - 1)
 	print (phiden, n-phiden)
 	e = randrange(1, phiden) # on prend un e aleatoire compris entre 1 et phi(n)
@@ -86,8 +86,8 @@ def keygenerator(taille) :
 		e = randrange(1, phiden) # on reprend un e aleatoire
 		inv , pgcd = inverse_modulaire(e,phiden)
 	d,_ = inverse_modulaire(e, phiden) # on calcul d td d inverse de e mod phi(n)
-	while d < 0 : #si d < 0 on ajoute phi(n) 
-		d = d +phiden	
+	while d < 0 : #si d < 0 on ajoute phi(n)
+		d = d +phiden
 	if ((d >= phiden) or (d==e) ) :# di d est sup a phi(n) ou que e a pour inverse lui meme on creer une nouvelle cle
 		keygenerator(taille)
 	return (e, n,p,q,d)
@@ -98,7 +98,7 @@ def key(taille):
 	e,n,p,q,d = keygenerator(taille)
 	return (e,n), (d,n)
 
-    
+
 def encrypt(pk, plaintext):
     #la cle publique
     e, n = pk
@@ -112,7 +112,7 @@ def decrypt(pk, ciphertext):
    #pour chaque caractere on aplique c^d mod n
 	plain = [(lpowmod(char,d,n)) for char in ciphertext]
 	return plain
-	
+
 if __name__ == '__main__':
 	message = raw_input("entrer un message a chifrer : ")
 	taille = int(raw_input("entrer une taille pour p et q :"))
@@ -132,8 +132,4 @@ if __name__ == '__main__':
 	if messagetab==decrypt_msg : #si le tableau ascii du dechifrement est identique au tableau du message initial le chiffrement/dechifrement et fonctionnel
 			print ("chifrement/dechifrement focntionnel")
 	else :
-		print "erreur lors du dechifrement"
-	
-			
-		
-
+		print ("erreur lors du dechifrement")

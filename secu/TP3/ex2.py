@@ -3,7 +3,7 @@ from sys import argv
 from time import time
 
 #renvoi (x^y)%n en utilisant l'exponentiation modulaire O(log(n))
-def lpowmod(x, y, z): 
+def lpowmod(x, y, z):
     a = 1
     while y > 0:
         if y % 2 == 1:
@@ -13,14 +13,14 @@ def lpowmod(x, y, z):
     return a
 
 
-#true si a^p =1 mod p 
+#true si a^p =1 mod p
 def fermat(a, p):
 	if p == 2:
 		return True
 	if not p & 1:
 		return False
 	return lpowmod(a, p-1, p) == 1
-    
+
 #~ print fermat(7,19)
 # renvoi true si 2^p-1 = 3^p-1 = 5^p-1 = 7^p-1 = 1 mod p
 def prim(n) :
@@ -30,7 +30,7 @@ def prim(n) :
 			if r != 1 :
 				return False
 		return True
-		
+
 def prime(i, primes): #sieve of erathostenes
 	for prime in primes: #goes through all primes in the list at the moment
 		if not (i == prime or i % prime): #checks if we can cross out the number i
@@ -52,21 +52,19 @@ if __name__ == "__main__":
 	if len(argv) > 1 :
 		start = time()
 		length = int(argv[1])
-		print sorted(list(historic(length))) #prints the given number of prime numbers
-		print 'Time in seconds: ' + str(time() - start) #prints the execution time in seconds
+		primes = sorted(list(historic(length)))
+		print (primes)#prints the given number of prime numbers
+		print ('Time in seconds: ' + str(time() - start)) #prints the execution time in seconds
 		true = 0
-		false = 0
-		for i  in historic(length) :
+		for i  in primes :
 			if i in [2,3,5,7] :
 				true = true +1
 			elif prim(i)==True :
 				true= true +1
-			else :
-				false = false +1
 		if true == length:
-			print "for PGP primality test all number are prime"
+			print ("for PGP primality test all number are prime")
 		else :
-			print "for PGP primality test all number are not prime"
-					 
+			print ("for PGP primality test all number are not prime")
+
 	else :
-		print 'Parameter needed : number of primes to display'
+		print ('Parameter needed : number of primes to display')
