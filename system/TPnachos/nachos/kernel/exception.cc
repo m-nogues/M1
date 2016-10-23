@@ -152,9 +152,35 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
       break;
 
     case SC_SEM_CREATE:
+		// The SEM CREATE system call. Creates a semaphore
+		DEBUG('e', (char*)"SEM CREATE call, initiated by user program.\n");
+		int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
+		Semaphore *sema = (Semaphore *) g_object_ids->ObjId(semaphore);
+
+		if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
+			g_machine->WriteIntRegister(2, -1);
+			g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
+		} else {
+			sema->~Semaphore();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*) "", NoError);
     break;
 
     case SC_SEM_DESTROY:
+		// The SEM DESTROY system call. Creates a semaphore
+		DEBUG('e', (char*)"SEM DESTROY call, initiated by user program.\n");
+		int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
+		Semaphore *sema = (Semaphore *) g_object_ids->SearchObject(semaphore);
+
+		if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
+			g_machine->WriteIntRegister(2, -1);
+			g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
+		} else {
+			g_object_ids->RemoveObject(sema);
+			sema->~Semaphore();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*) "", NoError);
+		}
     break;
 
     case SC_LOCK_CREATE:

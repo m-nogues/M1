@@ -21,9 +21,7 @@ import event.Subject;
 public class MotorV1 implements EventManager {
 
 	/** The event dispatcher. */
-	private static EventDispatcher	ed	= EventDispatcher.getInstance();
-	/** The execution context. */
-	private static Context			con	= Context.getInstance();
+	private static EventDispatcher ed = EventDispatcher.getInstance();
 
 	/**
 	 * Instantiates a new motor version 1.
@@ -53,20 +51,22 @@ public class MotorV1 implements EventManager {
 	 * Copy the selected text in the Context.clipBoard.
 	 */
 	private void copy() {
+		Context con = Context.getInstance();
 		con.setClipBoard(con.getSelected().toString());
 	}
 
 	/**
-	 * Cuts the selected text in the Context.clipBoard, deletes the selected
-	 * text and sets the selected text to nothing.
+	 * Cuts the selected text in the Context.clipBoard, deletes the .
 	 *
 	 * @param object
 	 *            the object responsible of this event
 	 */
 	private void cut(Subject object) {
+		Context con = Context.getInstance();
 		con.setClipBoard(con.getSelected().toString());
 		int start = con.getText().indexOf(con.getSelected().toString());
 		con.getText().delete(start, start + con.getSelected().length());
+		con.setText(con.getText().replace(start, , "").toString());
 		con.setSelected("");
 	}
 
@@ -104,13 +104,14 @@ public class MotorV1 implements EventManager {
 	}
 
 	/**
-	 * Inserts the text from Context.clipBoard in the Context.text.
+	 * Inserts the text in Context.clipBoard.
 	 *
 	 * @param object
 	 *            the object responsible of this event
 	 */
 	private void insert(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -120,7 +121,8 @@ public class MotorV1 implements EventManager {
 	 *            the object responsible of this event
 	 */
 	private void paste(Subject object) {
-		con.getText().insert(Subject.selection[0], con.getClipBoard().toString());
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
