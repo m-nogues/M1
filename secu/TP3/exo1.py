@@ -5,13 +5,13 @@ from random import getrandbits
 # renvoi (x^y)%n
 def lpowmod(x, y, z):
     
-    number = 1
-    while y:
-        if y & 1:
-            number = number * x % z
-        y >>= 1
-        x = x * x % z
-    return number
+    a = 1
+    while y > 0:
+        if y % 2 == 1:
+            a = (a * x) % z
+        x = (x * x) % z
+        y //= 2
+    return a
 
 
 #true si a^p =1 mod p
@@ -52,18 +52,23 @@ def epgcd(a, b):
         g, y, x = epgcd(b % a, a)
         return (g, x - (b // a) * y, y)
 
-#def xpgcd(b, n):
-    #x0, x1, y0, y1 = 1, 0, 0, 1
-    #while n != 0:
-        #q, b, n = b // n, n, b % n
-        #x0, x1 = x1, x0 - q * x1
-        #y0, y1 = y1, y0 - q * y1
-    #return  b, x0, y0
+def extended_gcd(a, b):
+    """Returns pair (x, y) such that xa + yb = gcd(a, b)"""
+    x, lastx, y, lasty = 0, 1, 1, 0
+    while b != 0:
+        q, r = divmod(a, b)
+        a, b = b, r
+        x, lastx = lastx - q * x, x
+        y, lasty = lasty - q * y, y
+    return lastx, lasty
 
-#def invmod(a, m):
-    #g, x, y = epgcd(a, m)
-    #if g == 1:
-        #return x % m
+
+def inverse_modulaire(e, n):
+    """Find the multiplicative inverse of e mod n."""
+    x, y = extended_gcd(e, n)
+    if x < 0:
+        return n + x
+    return x
 
 
 #print invmod(5,97)
@@ -72,29 +77,29 @@ def pgcd(a, b):
         a, b = b, a % b
     return a
 
-def inverse_modulaire(e, phi):
-    d = 0
-    x1 = 0
-    x2 = 1
-    y1 = 1
-    temp_phi = phi
-    
-    while e > 0:
-        temp1 = temp_phi/e
-        temp2 = temp_phi - temp1 * e
-        temp_phi = e
-        e = temp2
-        
-        x = x2- temp1* x1
-        y = d - temp1 * y1
-        
-        x2 = x1
-        x1 = x
-        d = y1
-        y1 = y
-    
-    if temp_phi == 1:
-		return d + phi
+#~ def inverse_modulaire(e	, phi):
+	#~ d = 0
+	#~ x1 = 0
+	#~ x2 = 1
+	#~ y1 = 1
+	#~ temp_phi = phi
+
+	#~ while e > 0 :
+		#~ temp1 = temp_phi/e
+		#~ temp2 = temp_phi - temp1 * e
+		#~ temp_phi = e
+		#~ e = temp2
+		
+		#~ x = x2- temp1* x1
+		#~ y = d - temp1 * y1
+		#~ x2 = x1
+		#~ x1 = x
+		#~ d = y1
+		#~ y1 = y
+
+
+	#~ if temp_phi == 1 :
+		#~ return d + phi
 
 #print inverse_modulaire(,)
 
@@ -109,17 +114,24 @@ def keygenerator(taille) :
 	e = randrange(1, phiden)
 	while  pgcd(e,phiden) != 1:
 		e = randrange(1, phiden)
-	d = inverse_modulaire(e, phiden)
-	
-	#~ while d <= 0 or d==e :
-		#~ d = d + phiden
+	d = inverse_modulaire(e, phiden)	
+	#~ while ((d > phiden) or (d==e)) :
+		#~ d = d - phiden
 	return (e, n), (p,q,d, n)
 
 #public, private= keygenerator(512)
 
 
-message = 'abc'
+message = 123
 
+def rsa_encrypt(message, n, e):
+    return lpowmod(message, e, n)
+
+
+def rsa_decrypt(cipher, n, d):
+    return lpowmod(cipher, d, n)
+    
+    
 def encrypt(pk, plaintext):
     #la cle publique
     e, n = pk
@@ -132,7 +144,7 @@ def decrypt(pk, ciphertext):
    #la cle privee
 	p,q,d, n = pk
    #pour chaque caractere on aplique c^d mod n
-	plain = [(lpowmod(char,d, n) for char in ciphertext]
+	plain = [(lpowmod(char,d,n)) for char in ciphertext]
 #	print plain
 	return plain
 	
@@ -140,42 +152,47 @@ if __name__ == '__main__':
 	#print "RSA Encrypter/ Decrypter"
 	#print "Your public key is ", public ," and your private key is ", private
 	#message = raw_input("Enter a message to encrypt with your private key: ")
-	public, private= keygenerator(512)
+	public, private= keygenerator(10)
 	e,n = public
 	p,q,d,n = private
-	print public , private
-	encrypted_msg = encrypt(public, message)
+	print (public , private)
+	#~ messagetab = [ord(char) for char in message] 
+	print ("message initial")
+	#~ print (messagetab)
+	#~ encrypted_msg = encrypt(public, message)
+	encrypted_msg = rsa_encrypt(message, e ,n)
 	print ("message chiffre")
-	print encrypted_msg
-	print "message dechifre"
-	decrypt_msg= decrypt(private, encrypted_msg)
-	print decrypt_msg
-	if encrypted_msg==decrypt_msg :
-			print "chifrement/dechifrement focntionnel"
+	print (encrypted_msg)
+	print ("message dechifre")
+	#~ decrypt_msg= decrypt(private, encrypted_msg)
+	decrypt_msg = rsa_decrypt(encrypted_msg, d,n)
+	print (decrypt_msg)
+	if message==decrypt_msg :
+			print ("chifrement/dechifrement focntionnel")
 	else :
-		print "erreur"
+		print ("erreur")
 	if p*q==n :
-		print "n OK"
+		print ("n OK")
 	else :
-			print "n pas ok"
+			print ("n pas ok")
 	phi = (p-1)*(q-1)
-	print phi
+	print (phi)
 	if pgcd(e, phi)==1:
-		print "e OK"
+		print ("e OK")
 	else : 
-		print "e pas ok"
+		print ("e pas ok")
 	invmod= inverse_modulaire(e, phi)
 	if invmod<0:
 		invmod = d+ phi
 	print invmod
 	if d==invmod:
-		print "d invmod ok"
+		print ("d invmod ok")
 	else : 
-		print "d invmod pas ok"
+		print ("d invmod pas ok")
 	if d< phi:
-		print "d inf phi ok"
+		print ("d inf phi ok")
 	else : 
-		print "d inf phi pas ok"
+		print ("d inf phi pas ok")
 	
 	
 	#~ while encrypted_msg!=decrypt_msg :
