@@ -4,42 +4,42 @@ from random import randrange
 from random import getrandbits
 # renvoi (x^y)%n
 def lpowmod(x, y, z):
-    
+
     a = 1
     while y > 0:
-        if y % 2 == 1:
-            a = (a * x) % z
-        x = (x * x) % z
+        if y%2==1:
+            a = (a*x)%z
+        x = (x*x)%z
         y //= 2
     return a
 
 
 #true si a^p =1 mod p
 def fermat(a, p):
-	if p == 2:
+	if p==2:
 		return True
-	if not p & 1:
+	if not p&1:
 		return False
-	return lpowmod(a, p-1, p) == 1
-    
+	return lpowmod(a, p-1, p)==1
+
 #~ print fermat(7,19)
-# renvoi true si 
+# renvoi true si
 def prim(n) :
-	if n not in [0,1,2,3,5,7] :
+	if n not in [0, 1, 2, 3, 5, 7] :
 		for  i in [2, 3, 5, 7] :
 			r = fermat(n, i)
-			if r != 1 :
+			if r!=1 :
 				return False
 		return True
-	
-			
-		
+
+
+
 
 #~ print prim(7)
 #revoi un nombre premier de n bit
 def randompri(n) :
 	a = getrandbits(n)
-	while prim(a) == False or a ==1 or a== 0 or a%2==0:
+	while prim(a)==False or a==1 or a==0 or a%2==0:
 		a = getrandbits(n)
 	return a
 #~ print randompri(15)
@@ -49,8 +49,8 @@ def epgcd(a, b):
     if a == 0:
         return (b, 0, 1)
     else:
-        g, y, x = epgcd(b % a, a)
-        return (g, x - (b // a) * y, y)
+        g, y, x = epgcd(b%a, a)
+        return (g, x - (b // a)*y, y)
 
 def extended_gcd(a, b):
     """Returns pair (x, y) such that xa + yb = gcd(a, b)"""
@@ -89,7 +89,7 @@ def pgcd(a, b):
 		#~ temp2 = temp_phi - temp1 * e
 		#~ temp_phi = e
 		#~ e = temp2
-		
+
 		#~ x = x2- temp1* x1
 		#~ y = d - temp1 * y1
 		#~ x2 = x1
@@ -114,12 +114,12 @@ def keygenerator(taille) :
 	e = randrange(1, phiden)
 	while  pgcd(e,phiden) != 1:
 		e = randrange(1, phiden)
-	d = inverse_modulaire(e, phiden)	
+	d = inverse_modulaire(e, phiden)
 	#~ while ((d > phiden) or (d==e)) :
 		#~ d = d - phiden
 	return (e, n), (p,q,d, n)
 
-#public, private= keygenerator(512)
+#public, private = keygenerator(512)
 
 
 message = 123
@@ -130,8 +130,8 @@ def rsa_encrypt(message, n, e):
 
 def rsa_decrypt(cipher, n, d):
     return lpowmod(cipher, d, n)
-    
-    
+
+
 def encrypt(pk, plaintext):
     #la cle publique
     e, n = pk
@@ -142,30 +142,30 @@ def encrypt(pk, plaintext):
 
 def decrypt(pk, ciphertext):
    #la cle privee
-	p,q,d, n = pk
+	p, q, d, n = pk
    #pour chaque caractere on aplique c^d mod n
-	plain = [(lpowmod(char,d,n)) for char in ciphertext]
+	plain = [(lpowmod(char, d, n)) for char in ciphertext]
 #	print plain
 	return plain
-	
+
 if __name__ == '__main__':
 	#print "RSA Encrypter/ Decrypter"
 	#print "Your public key is ", public ," and your private key is ", private
 	#message = raw_input("Enter a message to encrypt with your private key: ")
 	public, private= keygenerator(10)
-	e,n = public
-	p,q,d,n = private
-	print (public , private)
-	#~ messagetab = [ord(char) for char in message] 
+	e, n = public
+	p, q, d, n = private
+	print (public, private)
+	#~ messagetab = [ord(char) for char in message]
 	print ("message initial")
 	#~ print (messagetab)
 	#~ encrypted_msg = encrypt(public, message)
-	encrypted_msg = rsa_encrypt(message, e ,n)
+	encrypted_msg = rsa_encrypt(message, e , n)
 	print ("message chiffre")
 	print (encrypted_msg)
 	print ("message dechifre")
 	#~ decrypt_msg= decrypt(private, encrypted_msg)
-	decrypt_msg = rsa_decrypt(encrypted_msg, d,n)
+	decrypt_msg = rsa_decrypt(encrypted_msg, d, n)
 	print (decrypt_msg)
 	if message==decrypt_msg :
 			print ("chifrement/dechifrement focntionnel")
@@ -179,30 +179,27 @@ if __name__ == '__main__':
 	print (phi)
 	if pgcd(e, phi)==1:
 		print ("e OK")
-	else : 
+	else :
 		print ("e pas ok")
 	invmod= inverse_modulaire(e, phi)
-	if invmod<0:
-		invmod = d+ phi
+	if invmod < 0:
+		invmod = d + phi
 	print invmod
 	if d==invmod:
 		print ("d invmod ok")
-	else : 
+	else :
 		print ("d invmod pas ok")
-	if d< phi:
+	if d < phi:
 		print ("d inf phi ok")
-	else : 
+	else :
 		print ("d inf phi pas ok")
-	
-	
+
+
 	#~ while encrypted_msg!=decrypt_msg :
 		#~ public, private= keygenerator(20)
 		#~ i= i+1
 		#~ print i
 		#~ encrypted_msg = encrypt(public, message)
-		#~ decrypt_msg= decrypt(private, encrypted_msg)	
+		#~ decrypt_msg= decrypt(private, encrypted_msg)
 		#~ if encrypted_msg==decrypt_msg :
 			#~ print "chifrement/dechifrement focntionnel"
-			
-		
-
