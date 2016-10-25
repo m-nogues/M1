@@ -2,17 +2,17 @@
  * Symbol for functions (declarations/calls). In addition to the name, this
  * class has a label attribute. The label associated to a function is the 3a
  * name in CALL and the address in 3a code function definition.
- * 
+ *
  * @author MLB
- * 
  */
 public class FunctionSymbol extends Operand3a {
 
+	/** The label. */
 	public final LabelSymbol label;
 
 	/**
-	 * Constructor
-	 * 
+	 * Constructor.
+	 *
 	 * @param lab
 	 *            LabelAttribute: the label associated
 	 * @param t
@@ -24,16 +24,22 @@ public class FunctionSymbol extends Operand3a {
 	}
 
 	/**
-	 * The scope of a function is always zero in VSL+
+	 * Necessary for TAC printing.
+	 *
+	 * @return the name 3 a
 	 */
-	public int getScope() {
-		return 0;
+	@Override
+	public String getName3a() {
+		return label.name;
 	}
 
 	/**
-	 * Necessary for TAC printing
+	 * The scope of a function is always zero in VSL+.
+	 *
+	 * @return the scope
 	 */
-	public String getName3a() {
-		return label.name;
+	@Override
+	public int getScope() {
+		return 0;
 	}
 }

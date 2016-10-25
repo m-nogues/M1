@@ -1,19 +1,23 @@
 /**
  * Wrapper class for a triple (type, code, place) associated to an expression in
  * the parser.
- * 
+ *
  * @author MLB
- * 
  */
 class ExpAttribute {
 
+	/** The code. */
 	public Code3a code;
+
+	/** The type. */
 	public Type type;
+
+	/** The place. */
 	public Operand3a place;
 
 	/**
-	 * Constructor of ExpAttribute
-	 * 
+	 * Constructor of ExpAttribute.
+	 *
 	 * @param ty
 	 *            Type: the type associated with the expression
 	 * @param cod

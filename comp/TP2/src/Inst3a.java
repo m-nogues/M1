@@ -1,3 +1,13 @@
+
+/*
+ * The GNU General Public License does not permit incorporating your program
+ * into proprietary programs. If your program is a subroutine library, you may
+ * consider it more useful to permit linking proprietary applications with the
+ * library. If this is what you want to do, use the GNU Lesser General Public
+ * License instead of this License. But first, please read
+ * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+ * @author Maël Nogues mael.nogues@outlook.com
+ */
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -29,9 +39,8 @@ import java.io.IOException;
  * <p>
  * When an operand is missing, it must be replaced by the null object in the
  * constructor. For example: i = Inst3a(LABEL, a, null, null)
- * 
+ *
  * @author MLB
- * 
  */
 public class Inst3a {
 
@@ -40,30 +49,73 @@ public class Inst3a {
 	 * self-explaining names.
 	 */
 	public enum TAC {
-		ADD, // a = b op c
-		SUB, MUL, DIV, NEG, // a = -b
-		COPY, // a = b
-		GOTO, // goto a
-		IFZ, // ifz a goto b
-		IFNZ, // ifnz a goto b
-		ARG, // arg a
-		CALL, // a = call b ou call b
-		RETURN, // return a
-		TABVAR, // a = b[c]
-		VARTAB, // a[b] = c
-		LABEL, // label a
-		VAR, // var a
-		BEGINFUNC, ENDFUNC
+
+		/** The add. */
+		ADD,
+		/** The sub. */
+		// a = b op c
+		SUB,
+		/** The mul. */
+		MUL,
+		/** The div. */
+		DIV,
+		/** The neg. */
+		NEG,
+		/** The copy. */
+		// a = -b
+		COPY,
+		/** The goto. */
+		// a = b
+		GOTO,
+		/** The ifz. */
+		// goto a
+		IFZ,
+		/** The ifnz. */
+		// ifz a goto b
+		IFNZ,
+		/** The arg. */
+		// ifnz a goto b
+		ARG,
+		/** The call. */
+		// arg a
+		CALL,
+		/** The return. */
+		// a = call b ou call b
+		RETURN,
+		/** The tabvar. */
+		// return a
+		TABVAR,
+		/** The vartab. */
+		// a = b[c]
+		VARTAB,
+		/** The label. */
+		// a[b] = c
+		LABEL,
+		/** The var. */
+		// label a
+		VAR,
+		/** The beginfunc. */
+		// var a
+		BEGINFUNC,
+		/** The endfunc. */
+		ENDFUNC
 	}
 
+	/** The code op. */
 	private TAC code_op;
+
+	/** The op a. */
 	private Operand3a op_a;
+
+	/** The op b. */
 	private Operand3a op_b;
+
+	/** The op c. */
 	private Operand3a op_c;
 
 	/**
-	 * Constructor
-	 * 
+	 * Constructor.
+	 *
 	 * @param op
 	 *            : TAC operator
 	 * @param a
@@ -82,17 +134,8 @@ public class Inst3a {
 	}
 
 	/**
-	 * Returns the operation code
-	 * 
-	 * @return int
-	 */
-	public TAC getOp() {
-		return code_op;
-	}
-
-	/**
-	 * Self explained
-	 * 
+	 * Self explained.
+	 *
 	 * @return Operand3a
 	 */
 	public Operand3a getA() {
@@ -100,8 +143,8 @@ public class Inst3a {
 	}
 
 	/**
-	 * Self explained
-	 * 
+	 * Self explained.
+	 *
 	 * @return Operand3a
 	 */
 	public Operand3a getB() {
@@ -109,8 +152,8 @@ public class Inst3a {
 	}
 
 	/**
-	 * Self explained
-	 * 
+	 * Self explained.
+	 *
 	 * @return Operand3a
 	 */
 	public Operand3a getC() {
@@ -118,10 +161,38 @@ public class Inst3a {
 	}
 
 	/**
+	 * Returns the operation code.
+	 *
+	 * @return int
+	 */
+	public TAC getOp() {
+		return code_op;
+	}
+
+	/**
+	 * Prints the.
+	 */
+	public void print() {
+		System.out.println(toString());
+	}
+
+	/**
+	 * Prints the in file.
+	 *
+	 * @param fo
+	 *            the fo
+	 */
+	public void print_in_file(FileWriter fo) {
+		try {
+			fo.write(toString() + "\n");
+		} catch (IOException exc) {}
+	}
+
+	/**
 	 * method for robustifying the toString method. If an operand is missing
 	 * (null) a "####" is returned in place of the name. Otherwise, the name, as
 	 * defined by the method getName3a is returned.
-	 * 
+	 *
 	 * @param x
 	 *            : the operand
 	 * @return : a printable string
@@ -141,64 +212,55 @@ public class Inst3a {
 	 * The toString method is robustified for debug purposes. If an operand is
 	 * missing (null) a "####" is returned in place of the name. Otherwise, the
 	 * name, as defined by the method <b>getName3a</b>, is returned.
+	 *
+	 * @return the string
 	 */
+	@Override
 	public String toString() {
 		switch (code_op) {
-		case ADD:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b) + " + " + the_Name(op_c));
-		case SUB:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b) + " - " + the_Name(op_c));
-		case MUL:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b) + " * " + the_Name(op_c));
-		case DIV:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b) + " / " + the_Name(op_c));
-		case NEG:
-			return (" " + the_Name(op_a) + " = " + " - " + the_Name(op_b));
-		case COPY:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b));
-		case GOTO:
-			return (" goto " + the_Name(op_a));
+			case ADD:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b) + " + " + the_Name(op_c);
+			case SUB:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b) + " - " + the_Name(op_c);
+			case MUL:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b) + " * " + the_Name(op_c);
+			case DIV:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b) + " / " + the_Name(op_c);
+			case NEG:
+				return " " + the_Name(op_a) + " = " + " - " + the_Name(op_b);
+			case COPY:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b);
+			case GOTO:
+				return " goto " + the_Name(op_a);
 
-		case IFZ:
-			return (" ifz " + the_Name(op_a) + " goto " + the_Name(op_b));
-		case IFNZ:
-			return (" ifnz " + the_Name(op_a) + " goto " + the_Name(op_b));
-		case ARG:
-			return (" arg " + the_Name(op_a));
-		case CALL:
-			if (op_a != null)
-				return (" " + the_Name(op_a) + " =  call " + the_Name(op_b));
-			else
-				return (" call " + the_Name(op_b));
-		case RETURN:
-			return (" return " + the_Name(op_a));
-		case LABEL:
-			return (" label " + the_Name(op_a));
-		case VAR:
-			return (" var " + the_Name(op_a));
-		case BEGINFUNC:
-			return (" beginfunc ");
-		case ENDFUNC:
-			return (" endfunc ");
-		case TABVAR:
-			return (" " + the_Name(op_a) + " = " + the_Name(op_b) + " [ "
-					+ the_Name(op_c) + " ]");
+			case IFZ:
+				return " ifz " + the_Name(op_a) + " goto " + the_Name(op_b);
+			case IFNZ:
+				return " ifnz " + the_Name(op_a) + " goto " + the_Name(op_b);
+			case ARG:
+				return " arg " + the_Name(op_a);
+			case CALL:
+				if (op_a != null)
+					return " " + the_Name(op_a) + " =  call " + the_Name(op_b);
+				else
+					return " call " + the_Name(op_b);
+			case RETURN:
+				return " return " + the_Name(op_a);
+			case LABEL:
+				return " label " + the_Name(op_a);
+			case VAR:
+				return " var " + the_Name(op_a);
+			case BEGINFUNC:
+				return " beginfunc ";
+			case ENDFUNC:
+				return " endfunc ";
+			case TABVAR:
+				return " " + the_Name(op_a) + " = " + the_Name(op_b) + " [ " + the_Name(op_c) + " ]";
 
-		case VARTAB:
-			return (" " + the_Name(op_a) + " [ " + the_Name(op_b) + " ] = " + the_Name(op_c));
-		default:
-			return (" unknown TAC opcode ");
-		}
-	}
-
-	public void print() {
-		System.out.println(this.toString());
-	}
-
-	public void print_in_file(FileWriter fo) {
-		try {
-			fo.write(this.toString() + "\n");
-		} catch (IOException exc) {
+			case VARTAB:
+				return " " + the_Name(op_a) + " [ " + the_Name(op_b) + " ] = " + the_Name(op_c);
+			default:
+				return " unknown TAC opcode ";
 		}
 	}
 } // en class Inst3a

@@ -1,55 +1,86 @@
-import java.util.Map;
+
+/*
+ * The GNU General Public License does not permit incorporating your program
+ * into proprietary programs. If your program is a subroutine library, you may
+ * consider it more useful to permit linking proprietary applications with the
+ * library. If this is what you want to do, use the GNU Lesser General Public
+ * License instead of this License. But first, please read
+ * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+ * @author Maël Nogues mael.nogues@outlook.com
+ */
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * In order to manage scopes, the VSL symbol table is implemented as a stack of
  * tables, each of them being a 'map' data structure (from string identifiers to
- * symbols (Operand3a)).
- * 
- * Every insertion of a pair (key, value) is done in the table which is on top
- * of the stack.
- * 
- * The lookup method proceeds first with the top of stack, and if nothing is
- * found there, it recursively descends the stack. It ends the search at the
- * first occurrence of the key or when it reaches the bottom of the stack.
- * 
+ * symbols (Operand3a)). Every insertion of a pair (key, value) is done in the
+ * table which is on top of the stack. The lookup method proceeds first with the
+ * top of stack, and if nothing is found there, it recursively descends the
+ * stack. It ends the search at the first occurrence of the key or when it
+ * reaches the bottom of the stack.
+ *
  * @author MLB
- * 
  */
 public class SymbolTable {
 
 	/**
 	 * A SingleScopeTable is one of the possibly several tables representing the
 	 * different scopes in a program: one for the function level, then one scope
-	 * per nested block in a program.
-	 * 
-	 * It is a simple wrapper on a Map, with standard lookup/insert functions.
+	 * per nested block in a program. It is a simple wrapper on a Map, with
+	 * standard lookup/insert functions.
 	 */
 	static private class SingleScopeTable {
 
+		/** The table. */
 		private Map<String, Operand3a> table;
 
+		/** The parent. */
 		private SingleScopeTable parent;
 
+		/**
+		 * Instantiates a new single scope table.
+		 *
+		 * @param p
+		 *            the p
+		 */
 		private SingleScopeTable(SingleScopeTable p) {
-			table = new HashMap<String, Operand3a>(16); // Arbitrary initial
+			table = new HashMap<>(16); // Arbitrary initial
 														// size for each table
 			parent = p;
 		}
 
+		/**
+		 * Insert.
+		 *
+		 * @param name
+		 *            the name
+		 * @param t
+		 *            the t
+		 */
+		private void insert(String name, Operand3a t) {
+			table.put(name, t);
+		}
+
+		/**
+		 * Lookup.
+		 *
+		 * @param name
+		 *            the name
+		 * @return the operand 3 a
+		 */
 		private Operand3a lookup(String name) {
 			Operand3a to = table.get(name);
-			if ((to == null) && (parent != null))
+			if (to == null && parent != null)
 				// try again
 				return parent.lookup(name);
 			else
 				return to;
 		}
 
-		private void insert(String name, Operand3a t) {
-			table.put(name, t);
-		}
-
+		/**
+		 * Prints the.
+		 */
 		private void print() {
 			for (Map.Entry<String, Operand3a> e : table.entrySet()) {
 				String name = e.getKey();
@@ -73,7 +104,6 @@ public class SymbolTable {
 
 	/**
 	 * Creates a new symbol table. The current scope is zero.
-	 * 
 	 */
 	public SymbolTable() {
 		currentTable = new SingleScopeTable(null);
@@ -91,28 +121,17 @@ public class SymbolTable {
 	}
 
 	/**
-	 * Pops the current table and decrements the current scope.
+	 * Returns the current scope.
+	 *
+	 * @return the scope
 	 */
-	public void leaveScope() {
-		currentTable = currentTable.parent;
-		scopeLevel--;
-	}
-
-	/**
-	 * Lookup for a value associated with a key. Returns null if the key is not
-	 * found.
-	 * 
-	 * @param name
-	 *            string - the key
-	 * @return Value with Operand3a type (which might be necessary to cast)
-	 */
-	public Operand3a lookup(String name) {
-		return currentTable.lookup(name);
+	public int getScope() {
+		return scopeLevel;
 	}
 
 	/**
 	 * Puts a pair (key, value) in the current table.
-	 * 
+	 *
 	 * @param name
 	 *            : name (String)
 	 * @param t
@@ -123,10 +142,23 @@ public class SymbolTable {
 	}
 
 	/**
-	 * Returns the current scope.
+	 * Pops the current table and decrements the current scope.
 	 */
-	public int getScope() {
-		return scopeLevel;
+	public void leaveScope() {
+		currentTable = currentTable.parent;
+		scopeLevel--;
+	}
+
+	/**
+	 * Lookup for a value associated with a key. Returns null if the key is not
+	 * found.
+	 *
+	 * @param name
+	 *            string - the key
+	 * @return Value with Operand3a type (which might be necessary to cast)
+	 */
+	public Operand3a lookup(String name) {
+		return currentTable.lookup(name);
 	}
 
 	/**

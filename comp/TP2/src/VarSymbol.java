@@ -3,18 +3,35 @@
  * general - type is already an attribute of Operand3a. Notice the param
  * attribute, used to mark an ident as a function argument. The interface
  * methods isParam is necessary for MIPS code generation.
- * 
+ *
  * @author MLB
- * 
  */
 public class VarSymbol extends Operand3a {
+
+	/** The name. */
 	public String name;
+
+	/** The scope. */
 	public int scope;
+
+	/** The param. */
 	public boolean param;
 
 	/**
-	 * Generic constructor
-	 * 
+	 * Constructor for temporary integer variables (scope is meaningless).
+	 *
+	 * @param n
+	 *            string: name of the id
+	 */
+	public VarSymbol(String n) {
+		super(Type.INT);
+		name = n;
+		scope = -1;
+	}
+
+	/**
+	 * Generic constructor.
+	 *
 	 * @param t
 	 *            type (INT or ARRAY)
 	 * @param n
@@ -29,42 +46,39 @@ public class VarSymbol extends Operand3a {
 	}
 
 	/**
-	 * Constructor for temporary integer variables (scope is meaningless).
-	 * 
-	 * @param n
-	 *            string: name of the id
+	 * for code 3a printing.
+	 *
+	 * @return the name 3 a
 	 */
-	public VarSymbol(String n) {
-		super(Type.INT);
-		name = n;
-		scope = -1;
-	}
-
-	/**
-	 * for code 3a printing
-	 */
+	@Override
 	public String getName3a() {
 		return name;
 	}
 
 	/**
-	 * Self explained
+	 * Self explained.
+	 *
+	 * @return the scope
 	 */
+	@Override
 	public int getScope() {
 		return scope;
 	}
 
 	/**
-	 * Put param attribute to true
+	 * MIPS code generator interface only.
+	 *
+	 * @return true, if is param
 	 */
-	public void setParam() {
-		param = true;
+	@Override
+	public boolean isParam() {
+		return param;
 	}
 
 	/**
-	 * MIPS code generator interface only
+	 * Put param attribute to true.
 	 */
-	public boolean isParam() {
-		return param;
+	public void setParam() {
+		param = true;
 	}
 }

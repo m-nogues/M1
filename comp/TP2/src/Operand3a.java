@@ -8,19 +8,120 @@
  * The offset attribute is set and used by the machine code generator. It
  * represents the address of the operand relative to the top of the function
  * frame in the execution stack. You don't need it in the frontend.
- * 
+ *
  * @author MLB
- * 
  */
 abstract public class Operand3a implements CGInterface {
 
+	/** The type. */
 	public final Type type;
 
+	/** The offset. */
 	private int offset;
 
 	/**
-	 * set the address of the operand
-	 * 
+	 * Instantiates a new operand 3 a.
+	 *
+	 * @param t
+	 *            the t
+	 */
+	public Operand3a(Type t) {
+		type = t;
+		offset = 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#getName3a()
+	 */
+	// Must be overridden by subclasses
+	@Override
+	abstract public String getName3a();
+
+	/**
+	 * returns the address of the operand.
+	 *
+	 * @return the address
+	 */
+	public int getOffset() {
+		return offset;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#getScope()
+	 */
+	@Override
+	public int getScope() {
+		return -1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#getSize()
+	 */
+	@Override
+	public int getSize() {
+		return type.getSize();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isArray()
+	 */
+	@Override
+	public boolean isArray() {
+		return type instanceof ArrayType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isConstInteger()
+	 */
+	@Override
+	public boolean isConstInteger() {
+		return type == Type.I_CONST;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isLabel()
+	 */
+	@Override
+	public boolean isLabel() {
+		return type == Type.LABEL;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isParam()
+	 */
+	@Override
+	public boolean isParam() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isPointer()
+	 */
+	@Override
+	public boolean isPointer() {
+		return type == Type.POINTER;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see CGInterface#isVarInteger()
+	 */
+	@Override
+	public boolean isVarInteger() {
+		return type == Type.INT;
+	}
+
+	/**
+	 * set the address of the operand.
+	 *
 	 * @param off
 	 *            int
 	 */
@@ -28,60 +129,16 @@ abstract public class Operand3a implements CGInterface {
 		offset = off;
 	}
 
-	/**
-	 * returns the address of the operand.
-	 * 
-	 * @return the address
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
-	public int getOffset() {
-		return offset;
-	}
-
-	public Operand3a(Type t) {
-		type = t;
-		offset = 0;
-	}
-
+	@Override
 	public String toString() {
 		if (type != null)
 			return type.toString();
 		else
 			return "";
-	}
-
-	// Must be overridden by subclasses
-	abstract public String getName3a();
-
-	public int getScope() {
-		return -1;
-	}
-
-	public int getSize() {
-		return type.getSize();
-	}
-
-	public boolean isArray() {
-		return type instanceof ArrayType;
-	}
-
-	public boolean isConstInteger() {
-		return (type == Type.I_CONST);
-	}
-
-	public boolean isLabel() {
-		return (type == Type.LABEL);
-	}
-
-	public boolean isPointer() {
-		return (type == Type.POINTER);
-	}
-
-	public boolean isVarInteger() {
-		return (type == Type.INT);
-	}
-
-	public boolean isParam() {
-		return false;
 	}
 
 }
