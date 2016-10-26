@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="VslComp"/>
+<fullyQualifiedTypeName name="ConstSymbol"/>
+<fullyQualifiedTypeName name="Type"/>
+<fullyQualifiedTypeName name="Operand3a"/>
+<fullyQualifiedTypeName name="ArrayAttributes"/>
+<fullyQualifiedTypeName name="ExpAttribute"/>
+<fullyQualifiedTypeName name="Code3a"/>
+<fullyQualifiedTypeName name="Inst3a"/>
+<fullyQualifiedTypeName name="Inst3a.TAC"/>
+</qualifiedTypeNameHistroy>

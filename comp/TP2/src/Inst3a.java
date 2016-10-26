@@ -1,13 +1,3 @@
-
-/*
- * The GNU General Public License does not permit incorporating your program
- * into proprietary programs. If your program is a subroutine library, you may
- * consider it more useful to permit linking proprietary applications with the
- * library. If this is what you want to do, use the GNU Lesser General Public
- * License instead of this License. But first, please read
- * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
- * @author Maël Nogues mael.nogues@outlook.com
- */
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -53,49 +43,49 @@ public class Inst3a {
 		/** The add. */
 		ADD,
 		/** The sub. */
-		// a = b op c
 		SUB,
 		/** The mul. */
 		MUL,
 		/** The div. */
 		DIV,
+		// a = b op c
 		/** The neg. */
 		NEG,
-		/** The copy. */
 		// a = -b
+		/** The copy. */
 		COPY,
-		/** The goto. */
 		// a = b
+		/** The goto. */
 		GOTO,
-		/** The ifz. */
 		// goto a
+		/** The ifz. */
 		IFZ,
-		/** The ifnz. */
 		// ifz a goto b
+		/** The ifnz. */
 		IFNZ,
-		/** The arg. */
 		// ifnz a goto b
+		/** The arg. */
 		ARG,
-		/** The call. */
 		// arg a
+		/** The call. */
 		CALL,
-		/** The return. */
 		// a = call b ou call b
+		/** The return. */
 		RETURN,
-		/** The tabvar. */
 		// return a
+		/** The tabvar. */
 		TABVAR,
-		/** The vartab. */
 		// a = b[c]
+		/** The vartab. */
 		VARTAB,
-		/** The label. */
 		// a[b] = c
+		/** The label. */
 		LABEL,
-		/** The var. */
 		// label a
+		/** The var. */
 		VAR,
-		/** The beginfunc. */
 		// var a
+		/** The beginfunc. */
 		BEGINFUNC,
 		/** The endfunc. */
 		ENDFUNC

@@ -42,7 +42,7 @@ public class Type {
 	}
 
 	/**
-	 * Returns true iff the given parameter is an object with the same type as
+	 * Returns true if the given parameter is an object with the same type as
 	 * this one.
 	 *
 	 * @param o

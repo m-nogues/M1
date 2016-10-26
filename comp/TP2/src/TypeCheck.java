@@ -22,4 +22,11 @@ public class TypeCheck {
 			return Type.ERROR;
 	}
 
+	public static Type checkAssign(Operand3a o, Type t) {
+		if (o.type == t)
+			return t;
+		else
+			return Type.ERROR;
+	}
+
 }
