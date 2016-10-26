@@ -1,0 +1,10 @@
+
+public class Main {
+	private String[] params = {"test.vsl", "-debug"};
+
+	public static void main(String[] args) {
+		
+		
+	}
+
+}

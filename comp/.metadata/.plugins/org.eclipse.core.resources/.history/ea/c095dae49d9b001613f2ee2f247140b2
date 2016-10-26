@@ -1,0 +1,15 @@
+
+public class ArrayAttributes {
+
+	public ExpAttribute e;
+
+	public Operand3a tab;
+
+	public Type t;
+	
+	public ArrayAttributes(Type ty, Operand3a o, ExpAttribute ea) {
+		e=ea;
+		tab = 
+	}
+
+}
