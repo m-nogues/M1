@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+'''
+exercice2 TP3 secu
+Mathieu GRANDMONTAGNE & Mael NOGUES
+
+'''
 from sys import argv
 from time import time
 

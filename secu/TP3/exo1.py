@@ -1,6 +1,11 @@
 #!/usr/bin/env python
-from random import randrange
 
+'''
+exercice1 TP3 secu
+Mathieu GRANDMONTAGNE & Mael NOGUES
+
+'''
+from random import randrange
 from random import getrandbits
 #renvoi (x^y)%n en utilisant l'exponentiation modulaire O(log(n))
 def lpowmod(x, y, z):
@@ -77,7 +82,13 @@ def keygenerator(taille) :
 		p = randompri(taille)
 		q = randompri(taille)
 	n = p *q
+<<<<<<< HEAD
+	print (p, q)
+	
+	print "phi(n) , n-phi(n)"
+=======
 	print ("phi(n) , n-phi(n)")
+>>>>>>> b3e943a5b8b822704573aeeda402a45eb19477c3
 	phiden =  (p - 1) * (q - 1)
 	print (phiden, n-phiden)
 	e = randrange(1, phiden) # on prend un e aleatoire compris entre 1 et phi(n)
@@ -86,9 +97,15 @@ def keygenerator(taille) :
 		e = randrange(1, phiden) # on reprend un e aleatoire
 		inv , pgcd = inverse_modulaire(e,phiden)
 	d,_ = inverse_modulaire(e, phiden) # on calcul d td d inverse de e mod phi(n)
+<<<<<<< HEAD
+	while d < 0 : #si d < 0 on ajoute phi(n) 
+		d = d +phiden	
+	if ((d >= phiden) or (d==e) ) :# si d est sup a phi(n) ou que e a pour inverse lui meme on creer une nouvelle cle
+=======
 	while d < 0 : #si d < 0 on ajoute phi(n)
 		d = d +phiden
 	if ((d >= phiden) or (d==e) ) :# di d est sup a phi(n) ou que e a pour inverse lui meme on creer une nouvelle cle
+>>>>>>> b3e943a5b8b822704573aeeda402a45eb19477c3
 		keygenerator(taille)
 	return (e, n,p,q,d)
 

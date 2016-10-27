@@ -1,0 +1,9 @@
+phi(n) et n-phi(n)
+n-phi(n) compte le nombre d'entier positif inférieur ou égaux à n qui ont au moins un facteur premier en commun avec n
+
+complexité d'Ératosthène.
+Ici nous sommes dans le cas général d'un traitement de nombre on a donc une complexité O(log N)
+Ensuite pour chaque nombre premier pi compris entre 2 et sqrt(N) l'agorithme crible tout les multiple de  pi avec un coût unitaire de O(1).
+On fait la somme de la somme des criblage pour chaque p premier. En s'aidant de l'estimation de la somme partielle de la série des inverses des nombres premiers O(ln ln(N)). Si on reprend le nombre de criblage auquel on applique la complexité présédende,
+on obtient O(Nln ln(N)) soit O(e^n ln(n)) ou n sésigne de nombre de chiffre de l'entier naturel N (borne de fin du crible)
+
