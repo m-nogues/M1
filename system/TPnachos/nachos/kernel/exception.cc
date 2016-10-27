@@ -119,8 +119,8 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 		// You will find below all Nachos system calls ...
 
     #ifdef ETUDIANTS_TP
-    case SC_P:
-			// The P system call. Gets a semaphore or wait if it can't
+    case SC_P:{
+						// The P system call. Gets a semaphore or wait if it can't
 			DEBUG('e', (char*)"P call, initiated by user program.\n");
       int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
       Semaphore *sema = (Semaphore *) g_object_ids->SearchObject(semaphore);
@@ -134,8 +134,8 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
         g_syscall_error->SetMsg((char*) "", NoError);
       }
       break;
-
-    case SC_V:
+}
+    case SC_V:{
 			// The V system call. Increments a semaphore or wait if it can't
 			DEBUG('e', (char*)"V call, initiated by user program.\n");
       int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
@@ -150,23 +150,27 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
         g_syscall_error->SetMsg((char*) "", NoError);
       }
       break;
-
-    case SC_SEM_CREATE:
+}
+    case SC_SEM_CREATE:{
 		// The SEM CREATE system call. Creates a semaphore
 		DEBUG('e', (char*)"SEM CREATE call, initiated by user program.\n");
-		int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
-		Semaphore *sema = (Semaphore *) g_object_ids->ObjId(semaphore);
+			int addr, count;
 
-		if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
-			g_machine->WriteIntRegister(2, -1);
-			g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
-		} else {
-			sema->~Semaphore();
-			g_machine->WriteIntRegister(2, 0);
-			g_syscall_error->SetMsg((char*) "", NoError);
-    break;
+			addr = g_machine->ReadIntRegister(4);
+			count = g_machine->ReadIntRegister(5);
 
-    case SC_SEM_DESTROY:
+			int name_size = GetLengthParam(addr);
+			char name[name_size];
+			GetStringParam(addr, name, name_size);
+
+			Semaphore *sema = new Semaphore(name, count);
+			int32_t tid = g_object_ids->AddObject(sema);
+			g_machine->WriteIntRegister(2, tid);
+			g_syscall_error->SetMsg((char*)"", NoError);
+
+		break;
+}
+    case SC_SEM_DESTROY:{
 		// The SEM DESTROY system call. Creates a semaphore
 		DEBUG('e', (char*)"SEM DESTROY call, initiated by user program.\n");
 		int32_t semaphore = (int32_t) g_machine->ReadIntRegister(4);
@@ -174,41 +178,150 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 
 		if (sema == NULL || sema->typeId != SEMAPHORE_TYPE_ID){
 			g_machine->WriteIntRegister(2, -1);
-			g_syscall_error->SetMsg((char*) "Invalid semaphore type or id", NoError);
+			g_syscall_error->SetMsg((char*) "", InvalidSemaphoreId);
 		} else {
-			g_object_ids->RemoveObject(sema);
+			g_object_ids->RemoveObject(semaphore);
 			sema->~Semaphore();
 			g_machine->WriteIntRegister(2, 0);
 			g_syscall_error->SetMsg((char*) "", NoError);
 		}
     break;
+}
+    case SC_LOCK_CREATE:{
+		DEBUG('e', (char*)"LOCK_CREATE syscall called\n");
 
-    case SC_LOCK_CREATE:
-    break;
+			int addr = g_machine->ReadIntRegister(4);
 
-    case SC_LOCK_RELEASE:
-    break;
+			int name_size = GetLengthParam(addr);
+			char name[name_size];
+			GetStringParam(addr, name, name_size);
 
-    case SC_LOCK_ACQUIRE:
+			Lock *lock = new Lock(name);
+			int32_t tid = g_object_ids->AddObject(lock);
+			g_machine->WriteIntRegister(2, tid);
+			g_syscall_error->SetMsg((char*)"", NoError);
+			break;
+}
+    case SC_LOCK_RELEASE:{
+		DEBUG('e', (char*)"LOCK_RELEASE syscall called\n");
+		int32_t lock = (int32_t) g_machine->ReadIntRegister(4);
+		Lock *lock_pointer = (Lock *)g_object_ids->SearchObject(lock);
+		if ((lock_pointer == NULL) || (lock_pointer->typeId != LOCK_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidLockId);
+		}else{
+			lock_pointer->Release();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
     break;
+}
+    case SC_LOCK_ACQUIRE:{
+		DEBUG('e', (char*)"LOCK_ACQUIRE syscall called\n");
+		int32_t lock = (int32_t) g_machine->ReadIntRegister(4);
+		Lock *lock_pointer = (Lock *)g_object_ids->SearchObject(lock);
+		if ((lock_pointer == NULL) || (lock_pointer->typeId != LOCK_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidLockId);
+		}else{
+			lock_pointer->Acquire();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+    break;
+	}
+	case SC_LOCK_DESTROY: {
+		DEBUG('e', (char*)"LOCK_DESTROY syscall called\n");
+		int32_t lock = (int32_t) g_machine->ReadIntRegister(4);
+		Lock *lock_pointer = (Lock *)g_object_ids->SearchObject(lock);
+		if ((lock_pointer == NULL) || (lock_pointer->typeId != LOCK_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidLockId);
+		}else{
+			g_object_ids->RemoveObject(lock);
+			lock_pointer->~Lock();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+    break;
+}
+    case SC_COND_WAIT:	{
+		DEBUG('e', (char*)"COND_WAIT syscall called\n");
+		int32_t cond = (int32_t) g_machine->ReadIntRegister(4);
+		Condition *cond_pointer = (Condition *)g_object_ids->SearchObject(cond);
+		if ((cond_pointer == NULL) || (cond_pointer->typeId != CONDITION_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidConditionId);
+		}else{
+			cond_pointer->Wait();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+		break;
+}
 
-    case SC_LOCK_DESTROY:
-    break;
+    case SC_COND_SIGNAL:	{
+		DEBUG('e', (char*)"COND_SIGNAL syscall called\n");
+		int32_t cond = (int32_t) g_machine->ReadIntRegister(4);
+		Condition *cond_pointer = (Condition *)g_object_ids->SearchObject(cond);
+		if ((cond_pointer == NULL) || (cond_pointer->typeId != CONDITION_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidConditionId);
+		}else{
+			cond_pointer->Signal();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+		break;
+}
 
-    case SC_COND_WAIT:
-    break;
 
-    case SC_COND_SIGNAL:
-    break;
+    case SC_COND_CREATE:{
+		DEBUG('e', (char*)"COND_CREATE syscall called\n");
 
-    case SC_COND_CREATE:
-    break;
+			int addr = g_machine->ReadIntRegister(4);
+			int name_size = GetLengthParam(addr);
+			char name[name_size];
+			GetStringParam(addr, name, name_size);
 
-    case SC_COND_DESTROY:
-    break;
+			Condition *cond = new Condition(name);
 
-    case SC_COND_BROADCAST:
+			int32_t tid = g_object_ids->AddObject(cond);
+
+			g_machine->WriteIntRegister(2, tid);
+			g_syscall_error->SetMsg((char*)"", NoError);
     break;
+}
+    case SC_COND_DESTROY: {
+		DEBUG('e', (char*)"COND_DESTROY syscall called\n");
+		int32_t cond = (int32_t) g_machine->ReadIntRegister(4);
+		Condition *cond_pointer = (Condition *)g_object_ids->SearchObject(cond);
+		if ((cond_pointer == NULL) || (cond_pointer->typeId != CONDITION_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidConditionId);
+		}else{
+			g_object_ids->RemoveObject(cond);
+			cond_pointer->~Condition();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+		break;
+}
+
+    case SC_COND_BROADCAST:	{
+		DEBUG('e', (char*)"COND_BROADCAST syscall called\n");
+		int32_t cond = (int32_t) g_machine->ReadIntRegister(4);
+		Condition *cond_pointer = (Condition *)g_object_ids->SearchObject(cond);
+		if ((cond_pointer == NULL) || (cond_pointer->typeId != CONDITION_TYPE_ID)) {
+				g_machine->WriteIntRegister(2, -1);
+				g_syscall_error->SetMsg((char*)"", InvalidConditionId);
+		}else{
+			cond_pointer->Broadcast();
+			g_machine->WriteIntRegister(2, 0);
+			g_syscall_error->SetMsg((char*)"", NoError);
+		}
+		break;
+		}
     #endif
 
 		case SC_HALT:
