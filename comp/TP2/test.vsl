@@ -1,5 +1,13 @@
-PROTO VOID lol(a)
-PROTO INT roflcopter(tab[])
+FUNC INT roflcopter(tab[])
+{
+	PRINT tab[0]
+	RETURN 1
+}
+
+FUNC VOID lol(a)
+{
+	PRINT a
+}
 
 FUNC VOID main()
 {
@@ -30,15 +38,4 @@ FUNC VOID main()
 	PRINT "lololol", x, a[1], z, "roflrofl"
 
 	READ z
-}
-
-FUNC INT roflcopter(tab[])
-{
-	PRINT tab[0]
-	RETURN 1
-}
-
-FUNC VOID lol(a)
-{
-	PRINT a
 }

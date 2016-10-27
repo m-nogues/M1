@@ -30,7 +30,7 @@ function
     ;
 
 proto
-    : PROTO_KW type IDENT LP param_list RP -> ^(PROTO_KW type IDENT ^(PARAM param_list))
+    : PROTO_KW^ type IDENT LP! param_list RP!
     ;
 
 type
