@@ -6,7 +6,7 @@ options {
   k=3;
 }
   
-WS      : (' '|'\n'|'\t') {$channel = HIDDEN;}
+WS      : (' '|'\n'|'\t'|'\r') {$channel = HIDDEN;}
     ;
 
 COMMENT : '//' (~'\n')* {$channel = HIDDEN;}

@@ -1,0 +1,44 @@
+PROTO VOID lol(a)
+PROTO INT roflcopter(tab[])
+
+FUNC VOID main()
+{
+	// Test de déclaration
+	INT x, y, z, a[2]
+
+	// Test d'assignation
+	y := 0
+
+	// Test d'assignation d'expression avec variable
+	x := 1 + y
+
+	// Test de condition
+	IF x THEN
+		x := 5
+	ELSE
+		x := 6
+	FI
+	
+	a[0] := 1
+	a[1] := roflcopter(a)
+
+	z := roflcopter(a)
+	
+	lol(x)
+	lol(1)
+
+	PRINT "lololol", x, a[1], z, "roflrofl"
+
+	READ z
+}
+
+FUNC INT roflcopter(tab[])
+{
+	PRINT tab[0]
+	RETURN 1
+}
+
+FUNC VOID lol(a)
+{
+	PRINT a
+}

@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 src/VSLLexer.g 2016-10-26 16:48:12
+// $ANTLR 3.5.2 src/VSLLexer.g 2016-10-27 17:58:58
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -63,10 +63,10 @@ public class VSLLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// src/VSLLexer.g:9:9: ( ( ' ' | '\\n' | '\\t' ) )
-			// src/VSLLexer.g:9:11: ( ' ' | '\\n' | '\\t' )
+			// src/VSLLexer.g:9:9: ( ( ' ' | '\\n' | '\\t' | '\\r' ) )
+			// src/VSLLexer.g:9:11: ( ' ' | '\\n' | '\\t' | '\\r' )
 			{
-			if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)==' ' ) {
+			if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
 				input.consume();
 			}
 			else {
@@ -900,6 +900,7 @@ public class VSLLexer extends Lexer {
 		switch ( input.LA(1) ) {
 		case '\t':
 		case '\n':
+		case '\r':
 		case ' ':
 			{
 			alt5=1;
