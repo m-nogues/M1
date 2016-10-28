@@ -25,15 +25,14 @@ function [SymbolTable ts] returns [Code3a code]
 			Operand3a op = ts.lookup($IDENT.text);
 			LabelSymbol label = new LabelSymbol($IDENT.text);	
 			
-			if (op == null)// pas de proto déclaré
+			if (op == null) // No declared prototype
 				ts.insert($IDENT.text, new FunctionSymbol(label, t));
 			else if (op instanceof FunctionSymbol) {
 				FunctionSymbol fs = (FunctionSymbol) op;
 				if (!((FunctionType)fs.type).prototype) {
 					Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
 					System.exit(1);
-				}
-				if (!fs.type.isCompatible((Type)t)) {
+				} if (!fs.type.isCompatible((Type)t)) {
 					Errors.incompatibleTypes($IDENT, fs.type, t, null);
 					System.exit(1);				
 				}
@@ -115,9 +114,7 @@ statement [SymbolTable ts] returns [Code3a code]
 				else {
 					Errors.unknownIdentifier($IDENT, $IDENT.text, null);
 					System.exit(1);
-				}
-				
-				if(!fs.type.isCompatible((Type)t)) {
+				} if (!fs.type.isCompatible((Type)t)) {
 					Errors.incompatibleTypes($IDENT, fs.type, t, null);
 					System.exit(1);				
 				}
@@ -136,13 +133,12 @@ statement_lhs [SymbolTable ts, ExpAttribute exp] returns [Code3a code]
 				if(exp.type instanceof ArrayType) {
 					Errors.incompatibleTypes($IDENT, Type.INT, exp.type, null);
 					System.exit(1);
-				}
-				if(op.type instanceof ArrayType){
+				} if(op.type instanceof ArrayType){
 					Errors.incompatibleTypes($IDENT, Type.INT, op.type, null);
 					System.exit(1);
 				}
 				
-				$code             = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), new VarSymbol($IDENT.text)));
+				$code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), new VarSymbol($IDENT.text)));
 			} else {
 				Errors.unknownIdentifier($IDENT, $IDENT.text, null);
 				System.exit(1);
@@ -256,7 +252,6 @@ decl_item [SymbolTable ts] returns [Code3a code]
 	| ^(ARDECL IDENT INTEGER)
 		{
 			VarSymbol v = (VarSymbol)ts.lookup($IDENT.text);
-			
 			if(v != null && v.getScope() == ts.getScope()) {
 				Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
 				System.exit(1);
@@ -318,7 +313,7 @@ read_item [SymbolTable ts] returns [Code3a code]
 array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 	: ^(ARELEM IDENT expression[ts])
 		{
-			if(exp != null) {// Affectation
+			if(exp != null) { // Affectation
 				VarSymbol v = new VarSymbol($IDENT.text);
 				Code3a c = Code3aGenerator.genArrayAssignment(exp, v, $expression.expAtt);
 				$expAtt = new ExpAttribute(Type.INT, c, v);
