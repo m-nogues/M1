@@ -231,9 +231,8 @@ block [SymbolTable ts] returns [Code3a code]
 		}
 	;
 
-declaration [SymbolTable ts] returns [Code3a code]
-	@init {$code = new Code3a();}
-	: ^(DECL (di=decl_item[ts] {$code.append($di.code);} )+)
+declaration [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
+	: ^(DECL (di=decl_item[ts] {$code.append($di.code);})+)
 	;
 
 decl_item [SymbolTable ts] returns [Code3a code]
@@ -265,7 +264,7 @@ decl_item [SymbolTable ts] returns [Code3a code]
 	;
 
 inst_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
-	: ^(INST (st=statement[ts] {$code.append($st.code);})*)
+	: ^(INST (st=statement[ts] {$code.append($st.code);})+)
 	;
 
 
