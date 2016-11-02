@@ -1,0 +1,132 @@
+Ex 1:
+
+Fichier Test : Test !
+
+1)
+openssl dgst -sha1 test
+  -> SHA1(test)= 2639bcb821abf2f82d26be2efbdb46f7a7358246
+
+openssl dgst -ripemd160 test
+  -> RIPEMD160(test)= bc6d6713645096a4b7bef633537523dbf5778568
+
+openssl dgst -md5 test
+  -> MD5(test)= 7d7becc41a8fcdb99ce8244a6e93096b
+
+2)
+md5sum test
+  -> 7d7becc41a8fcdb99ce8244a6e93096b
+
+3)
+openssl enc -blowfish -in test
+  enter bf-cbc encryption password:ujguqtx
+  Verifying - enter bf-cbc encryption password:ujguqtx
+  Salted__+��RIE���2�>)�
+
+openssl enc -des3 -in test
+  enter des-ede3-cbc encryption password:ujguqtx
+  Verifying - enter des-ede3-cbc encryption password:ujguqtx
+  Salted__#Ⱥ~���Z�{h[��s
+
+openssl enc -cast5-cbc -in test
+enter cast5-cbc encryption password:ujguqtx
+Verifying - enter cast5-cbc encryption password:ujguqtx
+Salted__-i�#�
+              r	���s1
+
+4)
+openssl enc -blowfish -in test -k ujguqtx
+  | openssl enc -d -blowfish -k ujguqtx
+  | openssl dgst -sha256
+
+(stdin)=      991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+SHA256(test)= 991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+
+openssl enc -des3 -in test -k ujguqtx
+  | openssl enc -d -des3 -k ujguqtx
+  | openssl dgst -sha256
+(stdin)=      991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+SHA256(test)= 991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+
+openssl enc -cast5-cbc -in test -k ujguqtx
+  | openssl enc -d -cast5-cbc -k ujguqtx
+  | openssl dgst -sha256
+(stdin)=      991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+SHA256(test)= 991278f2d61ae6a07524b23851c75aa5074309e4c5bf0b618900617c2311f75b
+
+5)
+openssl enc -aes256 -in DM_COMP_PT.jpg -k ujguqtx >> result
+
+6)
+openssl genrsa -out privateKey
+openssl rsa -pubout -in  privateKey -out publicKey
+
+8)
+openssl rsautl -encrypt -pubin -inkey public.key -in password -out RSAPassword
+
+9)
+openssl rsautl -decrypt -inkey private.key -in RSAPassword -out decryptedPassword
+
+openssl  enc -aes256 -d -in result -out decryptedFile.jpg
+enter aes-256-cbc decryption password:ujguqtx
+
+Ex2
+
+
+1)
+3 certificats
+*.google.com -> Google Internet Authority G2 -> GeoTrust Global CA
+
+2)
+GeoTrust Global CA
+
+3)
+Connexion chiffrée (clés TLS_ECDHE_ECDSA_WITH_AES_128_GCM, 128 bits, TLS 1.2)
+
+4)
+SHA-256 avec chiffrement RSA
+
+5)
+AES 128 GCM
+
+6)
+
+7)
+caf.fr
+
+3 certificats
+caf.fr -> Symantec Class 3 Extended Validation SHA256 SSL CA -> Verisign universal
+root certification authority
+The connection to this site uses a strong protocol (TLS 1.2), an obsolete key
+exchange (RSA), and an obsolete cipher (3DES_EDE_CBC with HMAC-SHA1).
+4)
+  SHA-256 avec chiffrement RSA
+5)
+  3DES_EDE_CBC with HMAC-SHA1
+
+8)
+outlook.com
+3 certificats
+  gateway.login.live.com -> Symantec class 3 EV SSL CA-G3 -> VeriSign
+3)
+  Connexion chiffrée (clés TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, 256 bits, TLS 1.2)
+4)
+  SHA-256 avec chiffrement RSA
+5)
+  AES 256
+The connection to this site uses a strong protocol (TLS 1.2), a strong key
+exchange (ECDHE_RSA), and an obsolete cipher (AES_256_CBC with HMAC-SHA1).
+
+9)
+
+openssl speed aes
+
+
+
+
+
+
+
+EX3
+q1) pourquoi faut-il chiffrer la paire de clé?
+14) chiffrer/signer fichier donner la clé qui permet de vérofier la signature
+et celle qui permet de déchiffrer. Essayer de signer un mail
