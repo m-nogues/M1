@@ -164,9 +164,15 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 			GetStringParam(addr, name, name_size);
 
 			Semaphore *sema = new Semaphore(name, count);
-			int32_t tid = g_object_ids->AddObject(sema);
-			g_machine->WriteIntRegister(2, tid);
-			g_syscall_error->SetMsg((char*)"", NoError);
+			int32_t semid = g_object_ids->AddObject(sema);
+			if (semid==NULL){
+				g_syscall_error->SetMsg((char*)"", InvalidSemaphoreId);
+			} else{
+
+				g_machine->WriteIntRegister(2, tid);
+				g_syscall_error->SetMsg((char*)"", NoError);
+			}
+
 
 		break;
 }
@@ -197,9 +203,14 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 			GetStringParam(addr, name, name_size);
 
 			Lock *lock = new Lock(name);
-			int32_t tid = g_object_ids->AddObject(lock);
-			g_machine->WriteIntRegister(2, tid);
-			g_syscall_error->SetMsg((char*)"", NoError);
+			int32_t lockid = g_object_ids->AddObject(lock);
+			if (lockid==NULL){
+				g_syscall_error->SetMsg((char*)"", InvalidLockId);
+			} else{
+
+				g_machine->WriteIntRegister(2, lockid);
+				g_syscall_error->SetMsg((char*)"", NoError);
+			}
 			break;
 }
     case SC_LOCK_RELEASE:{
@@ -286,10 +297,14 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
 
 			Condition *cond = new Condition(name);
 
-			int32_t tid = g_object_ids->AddObject(cond);
+			int32_t conid = g_object_ids->AddObject(cond);
+			if (condid==NULL){
+				g_syscall_error->SetMsg((char*)"", InvalidConditionId;
+			} else{
 
-			g_machine->WriteIntRegister(2, tid);
-			g_syscall_error->SetMsg((char*)"", NoError);
+				g_machine->WriteIntRegister(2, conid);
+				g_syscall_error->SetMsg((char*)"", NoError);
+			}
     break;
 }
     case SC_COND_DESTROY: {
