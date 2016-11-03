@@ -12,7 +12,7 @@ void routine() {
 
 int main() {
 
-  if( lock = LockCreate("lock") < 0 ) {
+  if( (lock = LockCreate("lock")) < 0 ) {
     PError("Erreur creation lock");
     Exit(-1);
   }

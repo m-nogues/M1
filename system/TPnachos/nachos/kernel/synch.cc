@@ -37,6 +37,7 @@
 //----------------------------------------------------------------------
 Semaphore::Semaphore(char* debugName, int initialValue)
 {
+DEBUG('e', (char*)"SEM CREATE call, initiated by user program.\n");
 	name = new char[strlen(debugName)+1];
 	strcpy(name,debugName);
 	value = initialValue;
@@ -52,6 +53,7 @@ Semaphore::Semaphore(char* debugName, int initialValue)
 //----------------------------------------------------------------------
 Semaphore::~Semaphore()
 {
+DEBUG('e', (char*)"SEM DESTROY call, initiated by user program.\n");
 	typeId = INVALID_TYPE_ID;
 	if (!queue->IsEmpty()) {
 		DEBUG('s', (char *)"Destructor of semaphore \"%s\", queue is not empty!!\n",name);
@@ -82,6 +84,7 @@ Semaphore::P() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+DEBUG('e', (char*)"P call, initiated by user program.\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	value--;
 	if (value < 0) {
@@ -107,9 +110,10 @@ Semaphore::V() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+DEBUG('e', (char*)"V call, initiated by user program.\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	value++;
-	if (value < 0 && !queue->IsEmpty())
+	if (!queue->IsEmpty())
 		g_scheduler->ReadyToRun((Thread*) queue->Remove());
 	g_machine->interrupt->SetStatus(status);
 #endif
@@ -123,6 +127,7 @@ Semaphore::V() {
  */
 //----------------------------------------------------------------------
 Lock::Lock(char* debugName) {
+	DEBUG('e', (char*)"LOCK_CREATE syscall called\n");
 	name = new char[strlen(debugName)+1];
 	strcpy(name,debugName);
 	sleepqueue = new Listint;
@@ -139,6 +144,7 @@ Lock::Lock(char* debugName) {
  */
 //----------------------------------------------------------------------
 Lock::~Lock() {
+	DEBUG('e', (char*)"LOCK_DESTROY syscall called\n");
 	typeId = INVALID_TYPE_ID;
 	ASSERT(sleepqueue->IsEmpty());
 	delete [] name;
@@ -162,6 +168,7 @@ void Lock::Acquire() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+	DEBUG('e', (char*)"LOCK_ACQUIRE syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	if (free) {
 		free = !free;
@@ -189,14 +196,15 @@ void Lock::Release() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+	DEBUG('e', (char*)"LOCK_RELEASE syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
-	if (Lock::isHeldByCurrentThread()) {
+	if (this->isHeldByCurrentThread()) {
 		owner = NULL;
 		if (sleepqueue->IsEmpty()) {
-		    this->~Lock();
+			free = !free;
 		} else {
 			owner = (Thread*) sleepqueue->Remove();
-			g_scheduler->ReadyToRun((Thread*) owner);
+			g_scheduler->ReadyToRun(owner);
 		}
 	}
 	g_machine->interrupt->SetStatus(status);
@@ -218,6 +226,7 @@ bool Lock::isHeldByCurrentThread() {return (g_current_thread == owner);}
  */
 //----------------------------------------------------------------------
 Condition::Condition(char* debugName) {
+	DEBUG('e', (char*)"COND_CREATE syscall called\n");
 	name = new char[strlen(debugName)+1];
 	strcpy(name,debugName);
 	waitqueue = new Listint;
@@ -231,6 +240,7 @@ Condition::Condition(char* debugName) {
  */
 //----------------------------------------------------------------------
 Condition::~Condition() {
+	DEBUG('e', (char*)"COND_DESTROY syscall called\n");
 	typeId = INVALID_TYPE_ID;
 	ASSERT(waitqueue->IsEmpty());
 	delete [] name;
@@ -249,6 +259,7 @@ void Condition::Wait() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+	DEBUG('e', (char*)"COND_WAIT syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	waitqueue->Append(g_current_thread);
 	g_current_thread->Sleep();
@@ -269,10 +280,11 @@ void Condition::Signal() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+	DEBUG('e', (char*)"COND_SIGNAL syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
-	if (waitqueue->IsEmpty())
+	if (waitqueue->IsEmpty()) {
 		this->~Condition();
-	else g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
+	} else g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
 	g_machine->interrupt->SetStatus(status);
 #endif
 }
@@ -289,10 +301,11 @@ void Condition::Broadcast() {
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
+	DEBUG('e', (char*)"COND_BROADCAST syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	while (!waitqueue->IsEmpty())
 		g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
-  this->~Condition();
+	this->~Condition();
 	g_machine->interrupt->SetStatus(status);
 #endif
 }
