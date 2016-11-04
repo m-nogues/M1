@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move 3 elements to &apos;TP2/src/(default package)&apos;&#x0A;- Original project: &apos;TP2&apos;&#x0A;- Destination element: &apos;TP2/src/(default package)&apos;&#x0A;- Original elements:&#x0A;     src.VSLTreeParser.java&#x0A;     src.VSLLexer.java&#x0A;     src.VSLParser.java&#x0A;- Update references to refactored element" description="Move compilation units" destination="/src&lt;" element1="/src&lt;src{VSLTreeParser.java" element2="/src&lt;src{VSLLexer.java" element3="/src&lt;src{VSLParser.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1478273858220" units="3" version="1.0"/>
+</session>

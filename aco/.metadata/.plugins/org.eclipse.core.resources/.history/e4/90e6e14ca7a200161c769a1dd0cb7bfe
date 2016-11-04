@@ -1,0 +1,12 @@
+package engine;
+
+import java.util.Observable;
+
+public class SBuffer extends Observable {
+
+	public int length() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

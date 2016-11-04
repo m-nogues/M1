@@ -5,7 +5,7 @@
  * library. If this is what you want to do, use the GNU Lesser General Public
  * License instead of this License. But first, please read
  * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
- * @author Maël Nogues mael.nogues@outlook.com
+ * @author MaÃ«l Nogues mael.nogues@outlook.com
  */
 package test;
 
@@ -55,11 +55,8 @@ public class EngineImplTest {
 	 */
 	@Test
 	public void testValidSelectionCut() throws Exception {
-		final String toInsert = "Test data sample";
-		final String expectedClipboard = "data";
-		final String expectedContent = "Test  sample";
-		final int newSelectionStart = 5;
-		final int newSelectionEnd = 9;
+		final String toInsert = "Test data sample", expectedClipboard = "data", expectedContent = "Test  sample";
+		final int newSelectionStart = 5, newSelectionEnd = 9;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
 		engine.cut();
@@ -88,11 +85,8 @@ public class EngineImplTest {
 	 */
 	@Test
 	public void testValidSelectionCopy() throws Exception {
-		final String toInsert = "Test data sample";
-		final String expectedClipboard = "data";
-		final String expectedContent = toInsert;
-		final int newSelectionStart = 5;
-		final int newSelectionEnd = 9;
+		final String toInsert = "Test data sample", expectedClipboard = "data", expectedContent = toInsert;
+		final int newSelectionStart = 5, newSelectionEnd = 9;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
 		engine.copy();
@@ -121,10 +115,8 @@ public class EngineImplTest {
 	 */
 	@Test
 	public void testEmptyPasteWithValidSelection() throws Exception {
-		final String toInsert = "Test data sample";
-		final String expectedContent = "Test  sample";
-		final int newSelectionStart = 5;
-		final int newSelectionEnd = 9;
+		final String toInsert = "Test data sample", expectedContent = "Test  sample";
+		final int newSelectionStart = 5, newSelectionEnd = 9;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
 		engine.paste();
@@ -139,12 +131,8 @@ public class EngineImplTest {
 	 */
 	@Test
 	public void testCopyPasteWithValidSelections() throws Exception {
-		final String toInsert = "Test data sample";
-		final String expectedContent = "data data sample";
-		final int newSelectionStart = 5;
-		final int newSelectionEnd = 9;
-		final int newSelectionStart2 = 0;
-		final int newSelectionEnd2 = 4;
+		final String toInsert = "Test data sample", expectedContent = "data data sample";
+		final int newSelectionStart = 5, newSelectionEnd = 9, newSelectionStart2 = 0, newSelectionEnd2 = 4;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
 		engine.copy();
@@ -174,11 +162,9 @@ public class EngineImplTest {
 	 */
 	@Test
 	public void testInsertTextWithValidSelection() throws Exception {
-		final String toInsert = "Test data sample";
-		final String toInsert2 = "my new data";
-		final String expectedContent = "Test my new data sample";
-		final int newSelectionStart = 5;
-		final int newSelectionEnd = 9;
+		final String toInsert = "Test data sample", toInsert2 = "my new data",
+				expectedContent = "Test my new data sample";
+		final int newSelectionStart = 5, newSelectionEnd = 9;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
 		engine.insertText(toInsert2);
@@ -205,10 +191,11 @@ public class EngineImplTest {
 	@Test
 	public void testValidChangeSelection() throws Exception {
 		final String toInsert = "Test data sample";
-		final int[] newSelection = new int[] { 3, 5 };
+		final int newSelectionStart = 3, newSelectionEnd = 5;
 		engine.insertText(toInsert);
-		engine.changeSelection(newSelection[0], newSelection[1]);
-		assertEquals(newSelection, engine.getSelection());
+		engine.changeSelection(newSelectionStart, newSelectionEnd);
+		assertEquals(newSelectionStart, engine.getSelectionStart());
+		assertEquals(newSelectionEnd, engine.getSelectionEnd());
 	}
 
 	/**
@@ -220,11 +207,13 @@ public class EngineImplTest {
 	@Test
 	public void testInvalidChangeSelectionNegativeStartOutOfBondsEnd() throws Exception {
 		final String toInsert = "Test data sample";
-		final int newSelectionStart = -8, newSelectionEnd = 25;
-		final int[] expectedSelection = new int[] { 0, toInsert.length() };
+		final int newSelectionStart = -8, newSelectionEnd = 25, expectedSelectionStart = 0,
+				expectedSelectionEnd = toInsert.length();
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
-		assertEquals(expectedSelection, engine.getSelection());
+
+		assertEquals(expectedSelectionStart, engine.getSelectionStart());
+		assertEquals(expectedSelectionEnd, engine.getSelectionEnd());
 	}
 
 	/**
@@ -236,10 +225,11 @@ public class EngineImplTest {
 	@Test
 	public void testInvalidChangeSelectionStartGreaterThanEnd() throws Exception {
 		final String toInsert = "Test data sample";
-		final int newSelectionStart = 5, newSelectionEnd = 3;
-		final int[] expectedSelection = new int[] { newSelectionEnd, newSelectionStart };
+		final int newSelectionStart = 5, newSelectionEnd = 3, expectedSelectionStart = newSelectionEnd,
+				expectedSelectionEnd = newSelectionStart;
 		engine.insertText(toInsert);
 		engine.changeSelection(newSelectionStart, newSelectionEnd);
-		assertEquals(expectedSelection, engine.getSelection());
+		assertEquals(expectedSelectionStart, engine.getSelectionStart());
+		assertEquals(expectedSelectionEnd, engine.getSelectionEnd());
 	}
 }

@@ -8,6 +8,11 @@
 	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 	</section>
+	<section name="RefactoringStatusDialog">
+		<item value="804" key="DIALOG_WIDTH"/>
+		<item value="1|Sans|10.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="478" key="DIALOG_HEIGHT"/>
+	</section>
 	<section name="RefactoringWizard.Clean Up">
 		<item value="651" key="width"/>
 		<item value="400" key="height"/>

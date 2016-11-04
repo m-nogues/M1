@@ -1,0 +1,13 @@
+package engine;
+
+import java.util.Observable;
+
+public class SBuffer extends Observable {
+
+	private StringBuffer buffer = new StringBuffer();
+
+	public int length() {
+		return buffer.length();
+	}
+
+}

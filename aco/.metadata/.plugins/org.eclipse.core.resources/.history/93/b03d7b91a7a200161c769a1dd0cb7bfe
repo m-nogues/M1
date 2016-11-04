@@ -1,0 +1,25 @@
+package engine;
+
+import java.util.Observable;
+
+public class SBuffer extends Observable {
+
+	private StringBuffer buffer = new StringBuffer();
+
+	public int length() {
+		return buffer.length();
+	}
+
+	public String substring(int selectionStart, int selectionEnd) {
+		return buffer.substring(selectionStart, selectionEnd);
+	}
+
+	public void delete(int selectionStart, int selectionEnd) {
+		buffer.delete(selectionStart, selectionEnd);
+	}
+
+	public void insert(int selectionStart, String text) {
+		buffer.insert(selectionStart, text);
+	}
+
+}

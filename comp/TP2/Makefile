@@ -12,7 +12,7 @@ SRC_DIR=./src
 # Cette partie n'a normalement pas besoin d'être modifiée.
 # -----------------------------------------------------------------------------
 
-CLASSPATH="$(SRC_DIR);$(ANTLR_JAR)"
+CLASSPATH=$(SRC_DIR):$(ANTLR_JAR)
 SRCS=$(wildcard $(SRC_DIR)/*.java)
 OBJS=$(SRCS:.java=.class)
 
@@ -24,16 +24,16 @@ $(SRC_DIR)/%.class: $(SRC_DIR)/%.java
 	javac -cp $(CLASSPATH) $(SRCS)
 
 $(SRC_DIR)/VSLTreeParser.java: $(SRC_DIR)/VSLTreeParser.g $(SRC_DIR)/VSLParser.java VSLParser.tokens
-	java -cp $(CLASSPATH) org.antlr.Tool -o $(SRC_DIR) $(SRC_DIR)/VSLTreeParser.g
+	java -cp $(CLASSPATH) org.antlr.Tool  $(SRC_DIR)/VSLTreeParser.g
 
 $(SRC_DIR)/VSLParser.java: $(SRC_DIR)/VSLParser.g $(SRC_DIR)/VSLLexer.java VSLLexer.tokens
-	java -cp $(CLASSPATH) org.antlr.Tool -o $(SRC_DIR) $(SRC_DIR)/VSLParser.g
+	java -cp $(CLASSPATH) org.antlr.Tool  $(SRC_DIR)/VSLParser.g
 
 %.tokens: $(SRC_DIR)/%.g
 	java -cp $(CLASSPATH) org.antlr.Tool $^
 
 $(SRC_DIR)/VSLLexer.java: $(SRC_DIR)/VSLLexer.g
-	java -cp $(CLASSPATH) org.antlr.Tool -o $(SRC_DIR) $(SRC_DIR)/VSLLexer.g
+	java -cp $(CLASSPATH) org.antlr.Tool $(SRC_DIR)/VSLLexer.g
 
 clean:
 	rm -f $(SRC_DIR)/*.class $(SRC_DIR)/VSLTreeParser.java $(SRC_DIR)/VSLParser.java $(SRC_DIR)/VSLLexer.java *.tokens *.java tmp.vsl_code
