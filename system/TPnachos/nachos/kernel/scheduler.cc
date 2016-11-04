@@ -11,7 +11,7 @@
 //	infinite loop.
 //
 // 	Very simple implementation -- no priorities, straight FIFO.
-*/
+ */
 // Copyright (c) 1992-1993 The Regents of the University of California.
 // All rights reserved.  See copyright.h for copyright notice and limitation 
 // of liability and disclaimer of warranty provisions.
@@ -25,21 +25,21 @@
 //  Scheduler::Scheduler
 /*! 	Constructor. Initialize the list of ready but not 
 //      running threads to empty.
-*/
+ */
 //----------------------------------------------------------------------
 Scheduler::Scheduler()
 { 
-    readyList = new Listint; 
+	readyList = new Listint; 
 } 
 
 //----------------------------------------------------------------------
 // Scheduler::~Scheduler
 /*! 	Destructor. De-allocate the list of ready threads.
-*/
+ */
 //----------------------------------------------------------------------
 Scheduler::~Scheduler()
 { 
-    delete readyList; 
+	delete readyList; 
 } 
 
 //----------------------------------------------------------------------
@@ -48,13 +48,13 @@ Scheduler::~Scheduler()
 //	Put it in the ready list, for later scheduling onto the CPU.
 //
 //	\param thread is the thread to be put on the ready list.
-*/
+ */
 //----------------------------------------------------------------------
 void
 Scheduler::ReadyToRun (Thread *thread)
 {
-    DEBUG('t', (char *)"Putting thread %s in ready list.\n", thread->GetName());
-    readyList->Append((void *)thread);
+	DEBUG('t', (char *)"Putting thread %s in ready list.\n", thread->GetName());
+	readyList->Append((void *)thread);
 }
 
 //----------------------------------------------------------------------
@@ -64,13 +64,13 @@ Scheduler::ReadyToRun (Thread *thread)
 // Side effect:
 //	Thread is removed from the ready list.
 // \return Thread to be scheduled on the CPU
-*/
+ */
 //----------------------------------------------------------------------
 Thread *
 Scheduler::FindNextToRun ()
 {
-  Thread * thread=(Thread*)readyList->Remove();
-  return thread;
+	Thread * thread=(Thread*)readyList->Remove();
+	return thread;
 }
 
 //----------------------------------------------------------------------
@@ -84,41 +84,41 @@ Scheduler::FindNextToRun ()
 //	The global variable g_current_thread becomes nextThread.
 //
 //	\param nextThread is the thread to be put into the CPU.
-*/
+ */
 //----------------------------------------------------------------------
 void
 Scheduler::SwitchTo (Thread *nextThread)
 {
-Thread *oldThread = g_current_thread;
+	Thread *oldThread = g_current_thread;
 
-    g_current_thread->CheckOverflow();	 // check if the old thread
-				 // had an undetected stack overflow
+	g_current_thread->CheckOverflow();	 // check if the old thread
+	// had an undetected stack overflow
 
-    DEBUG('t', (char *)"Switching from thread \"%s\" to thread \"%s\" time %llu\n",
-	  g_current_thread->GetName(), nextThread->GetName(),g_stats->getTotalTicks());
-    
-    // Modify the current thread
-    g_current_thread = nextThread;
+	DEBUG('t', (char *)"Switching from thread \"%s\" to thread \"%s\" time %llu\n",
+			g_current_thread->GetName(), nextThread->GetName(),g_stats->getTotalTicks());
 
-    // Save the context of old thread
-    oldThread->SaveProcessorState();
-    oldThread->SaveSimulatorState();
+	// Modify the current thread
+	g_current_thread = nextThread;
 
-    // Do the context switch if the two threads are different
-    if (oldThread!=g_current_thread) {
-    	// Restore the state of the operating system from its
-    	// kernelContext structure such that it goes on executing when
-    	// it was last interrupted
-    	nextThread->RestoreProcessorState();
-	nextThread->RestoreSimulatorState();
-    }
+	// Save the context of old thread
+	oldThread->SaveProcessorState();
+	oldThread->SaveSimulatorState();
 
-    DEBUG('t', (char *)"Now in thread \"%s\" time %llu\n", g_current_thread->GetName(),g_stats->getTotalTicks());
+	// Do the context switch if the two threads are different
+	if (oldThread!=g_current_thread) {
+		// Restore the state of the operating system from its
+		// kernelContext structure such that it goes on executing when
+		// it was last interrupted
+		nextThread->RestoreProcessorState();
+		nextThread->RestoreSimulatorState();
+	}
 
-    // If the old thread gave up the processor because it was finishing,
-    // we need to delete its carcass.  Note we cannot delete the thread
-    // before now (for example, in Thread::Finish()), because up to this
-    // point, we were still running on the old thread's stack!
+	DEBUG('t', (char *)"Now in thread \"%s\" time %llu\n", g_current_thread->GetName(),g_stats->getTotalTicks());
+
+	// If the old thread gave up the processor because it was finishing,
+	// we need to delete its carcass.  Note we cannot delete the thread
+	// before now (for example, in Thread::Finish()), because up to this
+	// point, we were still running on the old thread's stack!
 
 }
 
@@ -126,12 +126,12 @@ Thread *oldThread = g_current_thread;
 // Scheduler::Print
 /*! 	Print the scheduler state -- in other words, the contents of
 //	the ready list.  For debugging.
-*/
+ */
 //----------------------------------------------------------------------
 void
 Scheduler::Print()
 {
-    printf("Ready list contents: [");
-    readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
-    printf("]\n");
+	printf("Ready list contents: [");
+	readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
+	printf("]\n");
 }
