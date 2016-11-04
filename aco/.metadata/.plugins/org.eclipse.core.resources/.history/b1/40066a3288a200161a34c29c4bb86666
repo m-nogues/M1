@@ -1,0 +1,43 @@
+package engine;
+
+public class EngineImpl implements Engine {
+
+	private StringBuffer	buffer		= new StringBuffer();
+	private String			clipboard	= new String();
+
+	private int[] selection = new int[] { 0, 0 };
+
+	@Override
+	public void cut() {
+		copy();
+		delete();
+		setCursor(selection[0]);
+	}
+
+	private void setCursor(int i) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void delete() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void copy() {
+		clipboard = buffer.substring(selection[0], selection[1]);
+	}
+
+	@Override
+	public void paste() {
+		insertText(clipboard);
+	}
+
+	private void insertText(String text) {
+		delete();
+		buffer.insert(selection[0], text);
+		setCursor(selection[0] + text.length());
+	}
+
+}

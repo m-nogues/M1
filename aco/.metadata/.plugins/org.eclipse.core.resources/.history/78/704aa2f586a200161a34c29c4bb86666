@@ -1,0 +1,16 @@
+package command;
+
+public class Copy implements Command {
+	private Engine receiver;
+
+	public Copy(Engine receiver) {
+		this.receiver = receiver;
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,22 @@
+package command;
+
+import engine.Engine;
+import ui.UserInterface;
+
+public class ChangeSelection implements Command {
+
+	private Engine			receiver;
+	private UserInterface	invoker;
+
+	public ChangeSelection(Engine receiver, UserInterface invoker) {
+		this.receiver = receiver;
+		this.invoker = invoker;
+	}
+
+	@Override
+	public void execute() {
+		int[] selection = invoker.promptSelection();
+		receiver.changeSelection(selection[0], selection[1]);
+	}
+
+}

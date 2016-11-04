@@ -1,0 +1,16 @@
+package command;
+
+import engine.Engine;
+
+public class Paste implements Command {
+private Engine receiver;
+
+public Paste(Engine receiver) {
+	this.receiver = receiver;
+}
+	@Override
+	public void execute() {
+		receiver.paste();
+	}
+
+}

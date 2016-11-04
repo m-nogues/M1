@@ -1,0 +1,18 @@
+package command;
+
+import engine.Engine;
+
+public class Cut implements Command {
+
+	private Engine reciever;
+
+	@Override
+	public void execute() {
+		reciever.cut();
+	}
+	
+	public Cut(EditorEngine receiver) {
+		this.receiver = receiver;
+	}
+
+}

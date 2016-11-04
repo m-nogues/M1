@@ -1,0 +1,9 @@
+package ui;
+
+public interface UserInterface {
+
+	String promptTextToInsert();
+
+	int[] promptSelection();
+
+}
