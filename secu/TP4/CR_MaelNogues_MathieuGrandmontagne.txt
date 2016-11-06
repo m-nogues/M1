@@ -89,23 +89,26 @@ SHA-256 avec chiffrement RSA
 AES 128 GCM
 
 6)
+ECDHE (Elliptic curve Diffie–Hellman): est un protocole d'échange de clés anonyme qui permet à deux pairs,
+chacun ayant un couple de clé privé/publique basé sur les courbes elliptiques
+ECDSA (Elliptic Curve Digital Signature Algorithm) : est un algorithme de signature
+numérique à clé publique qui fait appel à la cryptographie sur les courbes elliptiques
 
 7)
-caf.fr
+--------------------caf.fr---------------------------
 
-3 certificats
+
 caf.fr -> Symantec Class 3 Extended Validation SHA256 SSL CA -> Verisign universal
-root certification authority
-The connection to this site uses a strong protocol (TLS 1.2), an obsolete key
-exchange (RSA), and an obsolete cipher (3DES_EDE_CBC with HMAC-SHA1).
+
+3)
+Connexion chiffrée (clés TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, 256 bits, TLS 1.2)
 4)
   SHA-256 avec chiffrement RSA
 5)
   3DES_EDE_CBC with HMAC-SHA1
 
 8)
-outlook.com
-3 certificats
+--------------------outlook.com---------------------------
   gateway.login.live.com -> Symantec class 3 EV SSL CA-G3 -> VeriSign
 3)
   Connexion chiffrée (clés TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, 256 bits, TLS 1.2)
@@ -113,6 +116,7 @@ outlook.com
   SHA-256 avec chiffrement RSA
 5)
   AES 256
+
 The connection to this site uses a strong protocol (TLS 1.2), a strong key
 exchange (ECDHE_RSA), and an obsolete cipher (AES_256_CBC with HMAC-SHA1).
 
@@ -122,11 +126,30 @@ openssl speed aes
 
 
 
-
-
-
-
 EX3
+La même passphrase est utilisé pour tout et se trouve dans le fichier password
 q1) pourquoi faut-il chiffrer la paire de clé?
-14) chiffrer/signer fichier donner la clé qui permet de vérofier la signature
-et celle qui permet de déchiffrer. Essayer de signer un mail
+Chiffrer la clé privé RSA permet de ne jamais l'avoir en clair bien quelle doit
+rester privé cela ajoute une sécurité suplémentaire vu qu'il faut donner la passphrase
+à chaque utilisation.
+Création de la paire de clé RSA :
+openssl genrsa  -out Keys.pem
+openssl rsa -des3 -in Keys.pem -out cKeys.pem
+
+q2)
+Récupération de la partie publique dans un fichier :
+openssl rsa -pubout -in cKeys.pem -out PKeys.pem
+
+q11) on signe avec la clé privé du CA qui se trouve dans le répertoire private
+
+q13) le serial est incrementé de 1 pou chaque certificat créé. Vue qu'on vient d'en créer 1 le serial est passé a 2
+
+14)
+signature du mail :
+openssl smime -sign -in test.txt  -text -signer cert -inkey Keys.pem -from moi@tp.test -to lui@tp.test -subject "courier signe" -out mailSign
+
+chifrement de mail à partir du certificat créer précédement
+openssl smime -encrypt -in ../test.txt -text -from moi@tp.test -to lui@tp.test -subject "courrier chiffre" -des3 ../cert
+
+On vérifie le message chifré en le déchifrant avce la commande :
+openssl smime -decrypt -in messageChiffre -recip ../cert -inkey ../Keys.pem
