@@ -1,10 +1,10 @@
-FUNC INT roflcopter(tab[])
+FUNC INT test(tab[])
 {
 	PRINT tab[0]
 	RETURN 1
 }
 
-FUNC VOID lol(a)
+FUNC VOID test2(a)
 {
 	PRINT a
 }
@@ -28,14 +28,14 @@ FUNC VOID main()
 	FI
 	
 	a[0] := 1
-	a[1] := roflcopter(a)
+	a[1] := test(a)
 
-	z := roflcopter(a)
+	z := test(a)
 	
-	lol(x)
-	lol(1)
+	test2(x)
+	test2(1)
 
-	PRINT "lololol", x, a[1], z, "roflrofl"
+	PRINT "Test sample", x, a[1], z, "Second test sample"
 
 	READ z
 }
