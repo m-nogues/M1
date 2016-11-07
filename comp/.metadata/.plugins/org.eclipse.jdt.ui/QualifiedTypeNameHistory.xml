@@ -10,4 +10,6 @@
 <fullyQualifiedTypeName name="Inst3a"/>
 <fullyQualifiedTypeName name="Inst3a.TAC"/>
 <fullyQualifiedTypeName name="VSLParser.s_return"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 </qualifiedTypeNameHistroy>

@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -31,7 +33,7 @@ public class VslComp {
 
 		// Check if user supplied a filename
 		if (args.length < 1) {
-			System.err.println("USAGE: java VslComp <fichier.vsl>");
+			System.err.println("USAGE: java VslComp <fichier.vsl> sans extention");
 			System.exit(1);
 		}
 
@@ -51,10 +53,10 @@ public class VslComp {
 		try {
 			// Util.vslFilename contains the name of the file being compiled, to
 			// emulate gcc's style of error messages.
-			Util.vslFilename = args[0];
+			Util.vslFilename = args[0] + ".vsl";
 			// We give the file as input for ANTLR, which produces a character
 			// stream.
-			ANTLRFileStream input = new ANTLRFileStream(args[0]);
+			ANTLRFileStream input = new ANTLRFileStream(args[0] + ".vsl");
 			// Then, we run the lexer...
 			VSLLexer lexer = new VSLLexer(input);
 			// To obtain a token stream.
@@ -85,17 +87,9 @@ public class VslComp {
 				code.print();
 				// We prepare the MIPS code generator, which will compile
 				// the three-address code into MIPS assembly.
-				MIPSCodeGenerator cg = new MIPSCodeGenerator(System.out); // NOT
-																			// NEEDED
-																			// AT
-																			// THE
-																			// BEGINNING
-
-				// NOTE: if necessary, uncomment the call to addStubMain
-				// to add the header and footer for the main function.
-				// This allows the program to be run using the NachOS
-				// emulator.
-				code = cg.addStubMain(code); // NOT NEEDED AT THE BEGINNING
+				File output = new File(args[0] + ".s");
+				output.createNewFile();
+				MIPSCodeGenerator cg = new MIPSCodeGenerator(new PrintStream(output));
 
 				// Generates the actual MIPS code, printing it to the
 				// stream chosen previously (by default, System.out).

@@ -13,7 +13,7 @@ s [SymbolTable ts] returns [Code3a code]
 program [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
 	: ^(PROG (unit[ts] {$code.append($unit.code);})+)
 	;
-	
+
 unit [SymbolTable ts] returns [Code3a code]
 	: function[ts] {$code = $function.code;}
 	| proto[ts] {$code = new Code3a();}
@@ -23,8 +23,8 @@ function [SymbolTable ts] returns [Code3a code]
 	: ^(FUNC_KW type {FunctionType t = new FunctionType($type.type_ret, false);} IDENT {ts.enterScope();} pl=param_list[ts, t] ^(BODY body=statement[ts]) {ts.leaveScope();} )
 		{
 			Operand3a op = ts.lookup($IDENT.text);
-			LabelSymbol label = new LabelSymbol($IDENT.text);	
-			
+			LabelSymbol label = new LabelSymbol($IDENT.text);
+
 			if (op == null) // No declared prototype
 				ts.insert($IDENT.text, new FunctionSymbol(label, t));
 			else if (op instanceof FunctionSymbol) {
@@ -34,7 +34,7 @@ function [SymbolTable ts] returns [Code3a code]
 					System.exit(1);
 				} if (!fs.type.isCompatible((Type)t)) {
 					Errors.incompatibleTypes($IDENT, fs.type, t, null);
-					System.exit(1);				
+					System.exit(1);
 				}
 			}
 			$code = Code3aGenerator.genFuncStart(new VarSymbol($IDENT.text));
@@ -116,7 +116,7 @@ statement [SymbolTable ts] returns [Code3a code]
 					System.exit(1);
 				} if (!fs.type.isCompatible((Type)t)) {
 					Errors.incompatibleTypes($IDENT, fs.type, t, null);
-					System.exit(1);				
+					System.exit(1);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ statement_lhs [SymbolTable ts, ExpAttribute exp] returns [Code3a code]
 					Errors.incompatibleTypes($IDENT, Type.INT, op.type, null);
 					System.exit(1);
 				}
-				
+
 				$code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), new VarSymbol($IDENT.text)));
 			} else {
 				Errors.unknownIdentifier($IDENT, $IDENT.text, null);
@@ -243,7 +243,7 @@ decl_item [SymbolTable ts] returns [Code3a code]
 				Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
 				System.exit(1);
 			}
-			
+
 			v = new VarSymbol(Type.INT, $IDENT.text, ts.getScope());
 			ts.insert($IDENT.text, v);
 			code = Code3aGenerator.genVar(v);
@@ -255,7 +255,7 @@ decl_item [SymbolTable ts] returns [Code3a code]
 				Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
 				System.exit(1);
 			}
-			
+
 			ArrayType t = new ArrayType(Type.INT, Integer.parseInt($INTEGER.text));
 			v = new VarSymbol(t, $IDENT.text, ts.getScope());
 			ts.insert($IDENT.text, v);
@@ -287,14 +287,14 @@ print_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
 	;
 
 print_item [SymbolTable ts] returns [Code3a code]
-	: TEXT {$code = Code3aGenerator.genPrintText(new Data3a($TEXT.text));}
+	: TEXT {$code = Code3aGenerator.genPrintText(new Data3a($TEXT.text.substring(1,$TEXT.text.length() - 1)));}
     | expression[ts] {$code = Code3aGenerator.genPrintExpression($expression.expAtt);}
     ;
 
 read_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
 	: (read_item[ts] {$code.append($read_item.code);} )+
 	;
-	
+
 read_item [SymbolTable ts] returns [Code3a code]
 	: IDENT
 		{
