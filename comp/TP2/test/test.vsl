@@ -1,12 +1,12 @@
 FUNC INT test(tab[])
 {
-	PRINT tab[0]
+	PRINT tab[0], "\n"
 	RETURN 1
 }
 
 FUNC VOID test2(a)
 {
-	PRINT a
+	PRINT a, "\n"
 }
 
 FUNC VOID main()
@@ -26,16 +26,18 @@ FUNC VOID main()
 	ELSE
 		x := 6
 	FI
-	
+
 	a[0] := 1
 	a[1] := test(a)
 
 	z := test(a)
-	
+
 	test2(x)
 	test2(1)
 
-	PRINT "Test sample", x, a[1], z, "Second test sample"
+	PRINT "Test sample\n", x, "\n", a[1], "\n", z, "\nSecond test sample\n"
 
 	READ z
+
+	PRINT z
 }

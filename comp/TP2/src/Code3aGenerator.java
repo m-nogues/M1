@@ -18,7 +18,7 @@ public class Code3aGenerator {
 	 *            the index
 	 * @return the code 3 a
 	 */
-	public static Code3a genArrayAccess(VarSymbol dest, VarSymbol arrayName, ExpAttribute index) {
+	public static Code3a genArrayAccess(VarSymbol dest, Operand3a arrayName, ExpAttribute index) {
 		Code3a code = index.code;
 		code.append(new Inst3a(Inst3a.TAC.TABVAR, dest, arrayName, index.place));
 		return code;

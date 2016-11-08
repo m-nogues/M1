@@ -44,7 +44,7 @@ function [SymbolTable ts] returns [Code3a code]
 	;
 
 proto [SymbolTable ts]
-	: ^(PROTO_KW type {FunctionType t = new FunctionType($type.type_ret, true);} IDENT {ts.enterScope();} ^(PARAM pl=param_list[ts, t] {ts.leaveScope();}))
+	: ^(PROTO_KW type {FunctionType t = new FunctionType($type.type_ret, true);} IDENT {ts.enterScope();} pl=param_list[ts, t] {ts.leaveScope();})
 		{
 			if(ts.lookup($IDENT.text) == null)
 				ts.insert($IDENT.text, new FunctionSymbol(new LabelSymbol($IDENT.text), t));
@@ -204,7 +204,7 @@ primary_exp [SymbolTable ts] returns [ExpAttribute expAtt]
 					VarSymbol temp = SymbDistrib.newTemp();
 					Code3a code = Code3aGenerator.genVar(temp);
 					code.append(Code3aGenerator.genCallReturn($argument_list.code, new VarSymbol($IDENT.text), temp));
-					expAtt = new ExpAttribute(new FunctionType(fs.type), code, temp);
+					expAtt = new ExpAttribute(((FunctionType)fs.type).getReturnType(), code, temp);
 				} else {
 					Errors.incompatibleTypes($IDENT, Type.INT, ((FunctionType)fs.type).getReturnType(), null);
 					System.exit(1);
@@ -215,6 +215,16 @@ primary_exp [SymbolTable ts] returns [ExpAttribute expAtt]
 			}
 		}
     | array_elem[ts, null] {$expAtt = $array_elem.expAtt;}
+		| ^(NEGAT p=primary[ts])
+		{
+				Code3a code = new Code3a();
+				code.append(new Inst3a(Inst3a.TAC.NEG, p.place, p.place, null));
+				expAtt = new ExpAttribute(p.type, code, p.place);
+		}
+	;
+
+primary [SymbolTable ts] returns [ExpAttribute expAtt]
+	: pe=primary_exp[ts] { expAtt = pe; }
 	;
 
 block [SymbolTable ts] returns [Code3a code]
@@ -283,7 +293,7 @@ argument_list [SymbolTable ts, FunctionType t] returns [Code3a code]
 	;
 
 print_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
-	: (print_item[ts] {$code.append($print_item.code);} )+
+	: (print_item[ts] {$code.append($print_item.code);} )*
 	;
 
 print_item [SymbolTable ts] returns [Code3a code]
@@ -292,7 +302,7 @@ print_item [SymbolTable ts] returns [Code3a code]
     ;
 
 read_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
-	: (read_item[ts] {$code.append($read_item.code);} )+
+	: (read_item[ts] {$code.append($read_item.code);} )*
 	;
 
 read_item [SymbolTable ts] returns [Code3a code]
@@ -318,7 +328,8 @@ array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 				$expAtt = new ExpAttribute(Type.INT, c, v);
 			} else {
 				VarSymbol tmp = SymbDistrib.newTemp();
-				Code3a c = Code3aGenerator.genArrayAccess(tmp, new VarSymbol($IDENT.text), $expression.expAtt);
+				Operand3a op = ts.lookup($IDENT.text);
+				Code3a c = Code3aGenerator.genArrayAccess(tmp, op, $expression.expAtt);
 				$expAtt = new ExpAttribute(Type.INT, c, tmp);
 			}
 		}
