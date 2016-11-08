@@ -1,0 +1,10 @@
+Pour exécuter les tests de la grammaire :
+	- Lancer antlrworks
+	- Ouvrir le fichier de grammaire Turtle.g
+	- Lancer le mode debug (raccourci ctrl+d) et lui donner un fichier test (test1.ttl ou test2.ttl)
+	
+Si une erreur survient, il sagît probablement du path de javac qui est mal renseigné dans antlrworks.
+Pour résoudre cette erreur :
+	- Ouvrir les préférences (raccourci ctrl+virgule)
+	- Onglet Compiler, renseigner le Path du dossier contenant le javac
+	- Appliquer les modifications (bouton Apply en bas à droite de la fenètre)
