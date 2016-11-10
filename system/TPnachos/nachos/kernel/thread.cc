@@ -384,9 +384,11 @@ Thread::SaveProcessorState()
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
-	memcpy(thread_context.int_registers, g_machine->int_registers, sizeof(thread_context.int_registers));
-	memcpy(thread_context.float_registers, g_machine->float_registers, sizeof(thread_context.float_registers));
-	memcpy(&thread_context.cc, &g_machine->cc, sizeof(thread_context.cc));
+	for (int i = 0; i < NUM_INT_REGS; i++)
+		thread_context.int_registers[i] = g_machine->ReadIntRegister(i);
+	for (int i = 0; i < NUM_FP_REGS; i++)
+		thread_context.float_registers[i] = g_machine->ReadFPRegister(i);
+	thread_context.cc = g_machine->ReadCC();
 #endif
 }
 
@@ -404,9 +406,11 @@ Thread::RestoreProcessorState()
 	exit(-1);
 #endif
 #ifdef ETUDIANTS_TP
-	memcpy(g_machine->int_registers, thread_context.int_registers, sizeof(thread_context.int_registers));
-	memcpy(g_machine->float_registers, thread_context.float_registers, sizeof(thread_context.float_registers));
-	memcpy(&g_machine->cc, &thread_context.cc, sizeof(thread_context.cc));
+	for (int i = 0; i < NUM_INT_REGS; i++)
+		 g_machine->WriteIntRegister(i, thread_context.int_registers[i]);
+	for (int i = 0; i < NUM_FP_REGS; i++)
+		g_machine->WriteFPRegister(i, thread_context.float_registers[i]);
+	g_machine->WriteCC(thread_context.cc);
 #endif
 }
 

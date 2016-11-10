@@ -28,6 +28,7 @@ FUNC VOID main()
 	FI
 
 	a[0] := 1
+	PRINT a[0]
 	a[1] := test(a)
 
 	z := test(a)

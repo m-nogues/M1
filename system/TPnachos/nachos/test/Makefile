@@ -5,7 +5,7 @@
 #
 # To add generate a new program, just update the PROGRAMS target below
 
-PROGRAMS = halt hello shell matmult sort testLock 3thread+sema
+PROGRAMS = halt hello shell matmult sort testLock 3thread+sema condTest
 
 all: $(PROGRAMS)
 

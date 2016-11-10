@@ -154,15 +154,33 @@ L13:
        add   $8,$8,$9
        li   $9, 1
        sw  $9,0($8)
-# var T_2
+# T_2 = a [ 0 ]
+       li   $8, 0
+       li   $10,4
+       mult   $8,$10
+       mflo   $8
+       add   $10,$29,68
+       add   $8,$8,$10
+       lw  $8,0($8)
+# arg T_2
+       sw  $8,0($29)
+	 sw   $8,0($29)
+	move   $4,$8
+# call L2
+       move $5,$4
+       lui   $4,%hi($LC0)
+       addiu   $4,$4,%lo($LC0)
+	 jal   n_printf
+	 nop
+# var T_3
 # arg a
 	 add   $8,$29,68
 	 sw   $8,0($29)
 	move   $4,$8
-# T_2 =  call test
+# T_3 =  call test
 	 jal   test
 	 nop
-# a [ 1 ] = T_2
+# a [ 1 ] = T_3
        li   $8, 1
        li   $9,4
        mult   $8,$9
@@ -171,17 +189,17 @@ L13:
        add   $8,$8,$9
        move  $9,$2
        sw  $9,0($8)
-# var T_3
+# var T_4
 # arg a
 	 add   $8,$29,68
 	 sw   $8,0($29)
 	move   $4,$8
-# T_3 =  call test
+# T_4 =  call test
        sw  $2,80($29)
        sw  $9,80($29)
 	 jal   test
 	 nop
-# z = T_3
+# z = T_4
        move  $8,$2
 # arg x
        lw  $9,56($29)
@@ -225,7 +243,7 @@ L13:
 # call L4
 	 jal   n_printf
 	 nop
-# T_4 = a [ 1 ]
+# T_5 = a [ 1 ]
        li   $8, 1
        li   $9,4
        mult   $8,$9
@@ -233,7 +251,7 @@ L13:
        add   $9,$29,68
        add   $8,$8,$9
        lw  $8,0($8)
-# arg T_4
+# arg T_5
        sw  $8,0($29)
 	 sw   $8,0($29)
 	move   $4,$8

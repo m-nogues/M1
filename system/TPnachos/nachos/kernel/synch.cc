@@ -282,9 +282,7 @@ void Condition::Signal() {
 #ifdef ETUDIANTS_TP
 	DEBUG('e', (char*)"COND_SIGNAL syscall called\n");
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
-	if (waitqueue->IsEmpty()) {
-		this->~Condition();
-	} else g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
+	g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
 	g_machine->interrupt->SetStatus(status);
 #endif
 }
@@ -305,7 +303,6 @@ void Condition::Broadcast() {
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	while (!waitqueue->IsEmpty())
 		g_scheduler->ReadyToRun((Thread*) waitqueue->Remove());
-	this->~Condition();
 	g_machine->interrupt->SetStatus(status);
 #endif
 }
