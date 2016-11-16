@@ -1,0 +1,19 @@
+pour chaque attaque
+	-type de l'attaque
+	-quelle page du site
+	- comment fonctionne l'attaque
+	- dans quel fichier des code source se trouve la faille
+		-recopier la ligne
+	-pourquoi c'est une faille
+	- comment corriger
+	
+String injection sql sur login page
+$req = "select id,Nom, Mdp from Users where Nom=\"".$login."\" and Mdp=\"".$mdp."\" limit 1;";
+
+-
+
+http://localhost/~introsecu/admin/afficherMesInfos.php?id=4
+http://localhost/~introsecu/admin/welcome.php?id=2
+
+
+-dans afficher info si on change la lsite HTML avec Mdp par exemple après validation on obtient le mdp de l'utilisateur indiqué
