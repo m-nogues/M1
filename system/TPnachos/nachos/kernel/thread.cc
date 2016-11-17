@@ -285,7 +285,6 @@ Thread::Finish ()
 #ifdef ETUDIANTS_TP
 	IntStatus status = g_machine->interrupt->SetStatus(INTERRUPTS_OFF);
 	g_thread_to_be_destroyed = this;
-	g_alive->RemoveItem(this);
 	Sleep();
   g_machine->interrupt->SetStatus(status);
 #endif
