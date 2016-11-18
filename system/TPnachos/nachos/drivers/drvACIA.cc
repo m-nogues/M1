@@ -57,6 +57,10 @@ DriverACIA::DriverACIA()
   if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
     send_sema = new Semaphore((char*)"Send_sema", 1);
     receive_sema = new Semaphore((char*)"Receive_sema", 1);
+  }else if(g_machine->acia->GetWorkingMode()== (SEND_INTERRUPT|REC_INTERRUPT)){
+      receive_sema = new Semaphore((char*)"Receive_sema", 0);
+      send_sema = new Semaphore((char*)"Send_sema", 1);
+      ind_rec=0;
   }
 
   #endif
@@ -81,16 +85,27 @@ int DriverACIA::TtySend(char* buff)
   if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
     send_sema->P();
     int index = 0;
-    while (g_machine->acia->GetOutputStateReg()==FULL) {
-      while (buff[index-1]!= '0') {
+    while (buff[index-1]!= '\0') {
+      while (g_machine->acia->GetOutputStateReg()!=EMPTY) {}
+
         g_machine->acia->PutChar(buf[index]);
         index++;
       }
     }
     send_sema->V();
-
+    return index
+  }else if(g_machine->acia->GetWorkingMode()== (REC_INTERRUPT | SEND_INTERRUPT)){
+    int index = 0;
+    while (buff[index-1]!= '\0' && index < BUFFER_SIZE) {
+      send_buffer[index]= buff[index];
+      index++;
+    }
+    send_buffer[index-1]= '\0';
+    g_machine->acia->PutChar(send_buffer[ind_send]);
+    ind_send++;
+    return index;
   }
-  return index
+
 }
 
 
@@ -115,16 +130,28 @@ int DriverACIA::TtyReceive(char* buff,int lg)
   if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
     receive_sema->P();
     int index = 0;
-    while (g_machine->acia->GetInputStateReg()==FULL) {
-      while(buff[index-1] != '0'){
-        g_machine->acia->GetChar();
+    while(buff[index-1] != '\0' && (index < lg)){
+      while (g_machine->acia->GetInputStateReg()==EMPTY) {
+
+        buff[index]=g_machine->acia->GetChar();
         index ++;
       }
 
     }
     *(&lg)=index;
     receive_sema->V();
+    return index;
+  }else if(g_machine->acia->GetWorkingMode()==SEND_INTERRUPT){
+    int index = 0;;
 
+    while(buff[index-1] != '\0'&& index < lg){
+      buff[index]= receive_buffer[index];
+      index++;
+    }
+    buf[index-1]='\0';
+    ind_rec=0;
+    g_machine->acia->SetWorkingMode(SEND_INTERRUPT| REC_INTERRUPT);
+    return index;
   }
 
 
@@ -151,7 +178,7 @@ void DriverACIA::InterruptSend()
   #endif
   #ifdef ETUDIANT_TP
   if(send_buffer[ind_send-1] =! '\0'){
-    g_machine->acia->PutChar(send_buffer);
+    g_machine->acia->PutChar(send_buffer[ind_send]);
     ind_send++;
   }else{
     send_sema->V();
@@ -179,12 +206,13 @@ void DriverACIA::InterruptReceive()
 
   char c = g_machine->acia->GetChar();
   if(c == '\0' || ind_rec == BUFFER_SIZE-1 {
-
+    receive_sema->V();
     g_machine->acia->SetWorkingMode(SEND_INTERRUPT)
 
-    receive_sema->V();
+
   }else{
-    rece
+    receive_buffer[ind_rec]=c;
+    ind_rec++;
   }
 
   #endif
