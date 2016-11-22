@@ -2,7 +2,7 @@
 if [[ "$#" -eq "0" ]]; then
   echo "You need to provide the test program name (without extension & situated in the directory test)"
 else
-  java -cp antlr-3.5.2-complete.jar:src VslComp test/$1 -debug
+  java -cp antlr-3.5.2-complete.jar:src VslComp test/$1
   ./nachos/asm2bin.sh $1
   cd nachos/
   ./exec.sh $1

@@ -9,21 +9,21 @@ s returns [String nTriples]                :
         ;
 
 p[String S] returns [String nTriples]        :
-        IDENT {$nTriples = $IDENT.text + " ";} {int i = 1;} (op=o|op=bloc[i]) {$nTriples += $op.nTriples;} (',' {i++;} (op=o|op=bloc[i]) {$nTriples += " .\n" + $S + $IDENT.text + " " + $op.nTriples;})*
+        IDENT {$nTriples = $IDENT.text + " ";} {int i = 1;} (op=o|op=block[i]) {$nTriples += $op.nTriples;} (',' {i++;} (op=o|op=block[i]) {$nTriples += " .\n" + $S + $IDENT.text + " " + $op.nTriples;})*
         ;
 
 o returns [String nTriples]                :
-        IDENT {$nTriples = "<" + $IDENT.text + "> ";} | STRING {$nTriples = $STRING.text;}
+        IDENT {$nTriples = $IDENT.text + " ";} | STRING {$nTriples = $STRING.text;}
         ;
-       
-bloc[int i] returns [String nTriples]        :
+
+block[int i] returns [String nTriples]        :
         '[' anon=a["_:v" + i] ']' {$nTriples = "_:v" + i + " .\n" + $anon.nTriples;}
         ;
-       
+
 a[String name] returns [String nTriples]:
         pred=p[$name] {$nTriples = $name + " " + $pred.nTriples;} (';' pred=p[$name] {$nTriples += " .\n" + $name + " " + $pred.nTriples;})*
         ;
-        
+
 IDENT	:       '<' ID '>';
 STRING	:	'"' ('a'..'z'|'A'..'Z'|'-'|'_'|'0'..'9'|'&'|' ')+ '"';
 ID	:	('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'-'|'_'|'0'..'9'|'&')+;
