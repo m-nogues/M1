@@ -127,11 +127,11 @@ int DriverACIA::TtyReceive(char* buff,int lg)
     receive_sema->P();
     int index = 0;
     while(buff[index-1] != '\0' && (index < lg)){
-      while (g_machine->acia->GetInputStateReg()==EMPTY) {
+      while (g_machine->acia->GetInputStateReg()==EMPTY) {}
 
         buff[index]=g_machine->acia->GetChar();
         index ++;
-      }
+      
 
     }
     *(&lg)=index;
