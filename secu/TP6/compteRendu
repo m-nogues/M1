@@ -6,14 +6,25 @@ pour chaque attaque
 		-recopier la ligne
 	-pourquoi c'est une faille
 	- comment corriger
-	
+
+
+Nous avons identifié une attaque de type injection SQL, et plus
 String injection sql sur login page
+sur la page de l'authentification on peut réaliser cette injection.
+----------
+La faille se trouve dans le fichier verif.php plus précisement au niveau de la requête sur la base de données :
 $req = "select id,Nom, Mdp from Users where Nom=\"".$login."\" and Mdp=\"".$mdp."\" limit 1;";
-
+Ceci est une faille très important car n'importe qui peut se connecter au site juste en mettant l'injection SQL noté précédement dans le champs mot de passe et login ( si on ne le connait pas).
+On corrige simplement cette faille en utilisant la fonctio PHP qui déférence les caractère spéciaux est ainsi évité la prise en compte des \.
+De nombreuses méthodes PHP telles que addslashes ou mysql_real_escape_string permettent d’échapper les caractères spéciaux. Il ne faut pas s’en priver. Il est également efficace de transtyper les données numériques.
 -
-
+Il y a un problème avec les sessions. L'Id n'est pas mis en variable de session, il est donc modifiable dans l'URL et permet d'accéder au profil d'un autre utilisateur.
+Voici un exmple de
 http://localhost/~introsecu/admin/afficherMesInfos.php?id=4
 http://localhost/~introsecu/admin/welcome.php?id=2
 
 
 -dans afficher info si on change la lsite HTML avec Mdp par exemple après validation on obtient le mdp de l'utilisateur indiqué
+
+
+http://www.blogoergosum.com/16638-quelques-exemples-basiques-dattaque-sur-une-application-web
