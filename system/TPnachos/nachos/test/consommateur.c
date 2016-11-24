@@ -1,7 +1,7 @@
 #include "userlib/syscall.h"
 #include "userlib/libnachos.h"
 
-#define TAILLE 257
+#define TAILLE 256
 
 void routine_reception(){
 	char s[TAILLE];
@@ -12,7 +12,8 @@ void routine_reception(){
 		Exit(1);
 	}
 
-	n_printf("Succes Chaine recue avec : %d caractere(s)\n", nb_recu);
+	n_printf("Succes Chaine reçue avec : %d caractere(s)\n", nb_recu);
+	n_printf("Chaine reçue : \n%s\n", s);
 }
 
 
@@ -24,25 +25,28 @@ int main (){
     PError("creation thread 1 failled");
   }
 
-  if((thread2 = threadCreate(threadName,routine_reception))==-1){
-    PError("creation thread 2 failled");
-  }
-
-  if((thread3 = threadCreate(threadName,routine_reception))==-1){
-    PError("creation thread 3 failled");
-  }
-
   if(Join(thread1)==-1){
     PError("liberation thread 1 failled");
+  }
+
+
+  if((thread2 = threadCreate(threadName,routine_reception))==-1){
+    PError("creation thread 2 failled");
   }
 
   if(Join(thread2)==-1){
     PError("liberation thread 2 failled");
   }
 
+
+  if((thread3 = threadCreate(threadName,routine_reception))==-1){
+    PError("creation thread 3 failled");
+  }
+
   if(Join(thread3)==-1){
     PError("liberation thread 3 failled");
   }
+
 
   n_printf("Exiting main\n");
   return 0;
