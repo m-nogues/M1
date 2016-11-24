@@ -1,34 +1,34 @@
 #include "userlib/syscall.h"
 #include "userlib/libnachos.h"
 
-void routine_envoi(char *s){
+void routine_envoi(char *s, int taille){
 
 	int nb_envoi = TtySend(s);
 	//n_printf("%d\n", nb_envoi);
 
-	if(nb_envoi != (n_strlen(s)+1) && nb_envoi != 256 ){
+	if(nb_envoi != taille){
 
-		n_printf("failled nb_envoi = %d/256 \n",nb_envoi);
+		n_printf("failled nb_envoi = %d/%d \n",nb_envoi, taille);
 		Exit(1);
 	}
-		n_printf("succes evoie");	
+		n_printf("succes evoie");
 }
 
 void fullChar(){
 
-	routine_envoi("abcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuv");
+	routine_envoi("abcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuvwxyzabcdefghijklmopqrstuv", 256);
 	Exit(0);
 }
 
 void plusChar(){
 
-	routine_envoi("blablabla");
+	routine_envoi("blablabla", 9);
 	Exit(0);
 }
 
 void unChar(){
 
-	routine_envoi("a");
+	routine_envoi("a", 1);
 	Exit(0);
 }
 
