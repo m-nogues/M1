@@ -37,21 +37,24 @@
 
 DriverACIA::DriverACIA()
 {
-  // #ifndef ETUDIANT_TP
-  // printf("**** Warning: contructor of the ACIA driver not implemented yet\n");
-  // exit(-1);
-  // #endif
-  #ifdef ETUDIANT_TP
+  #ifndef ETUDIANTS_TP
+  printf("**** Warning: contructor of the ACIA driver not implemented yet\n");
+  exit(-1);
+  #endif
+  #ifdef ETUDIANTS_TP
 
-  memset(send_buffer, 0 , BUFFER_SIZE);
-  memset(receive_buffer, 0, BUFFER_SIZE);
-  if (g_cfg->ACIA == ACIA_BUSSY_WAITING){
-    g_machine->acia->SetWorkingMode(BUSSY_WAITNG)
+
+  //memset(send_buffer, 0 , BUFFER_SIZE);
+  //memset(receive_buffer, 0, BUFFER_SIZE);
+
+  if (g_cfg->ACIA == ACIA_BUSY_WAITING){
+    g_machine->acia->SetWorkingMode(BUSY_WAITING);
   }
   if(g_cfg->ACIA == ACIA_INTERRUPT){
     g_machine->acia->SetWorkingMode(SEND_INTERRUPT | REC_INTERRUPT);
   }
-  if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
+
+  if(g_machine->acia->GetWorkingMode()== BUSY_WAITING){
     send_sema = new Semaphore((char*)"Send_sema", 1);
     receive_sema = new Semaphore((char*)"Receive_sema", 1);
   }else if(g_machine->acia->GetWorkingMode()== (SEND_INTERRUPT|REC_INTERRUPT)){
@@ -59,9 +62,8 @@ DriverACIA::DriverACIA()
       send_sema = new Semaphore((char*)"Send_sema", 1);
       ind_rec=0;
   }
+
   #endif
-
-
 }
 
 //-------------------------------------------------------------------------
@@ -72,38 +74,37 @@ DriverACIA::DriverACIA()
 
 int DriverACIA::TtySend(char* buff)
 {
-  // #ifndef ETUDIANT_TP
-  // printf("**** Warning: method Tty_Send of the ACIA driver not implemented yet\n");
-  // exit(-1);
-  // return 0;
-  // #endif
-  #ifdef ETUDIANT_TP
-  if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
+  #ifndef ETUDIANTS_TP
+  printf("**** Warning: method Tty_Send of the ACIA driver not implemented yet\n");
+  exit(-1);
+  return 0;
+  #endif
+  #ifdef ETUDIANTS_TP
+  int index = 0;
+  if(g_machine->acia->GetWorkingMode()== BUSY_WAITING){
     send_sema->P();
-    int index = 0;
-    while (buff[index-1]!= '\0') {
-      while (g_machine->acia->GetOutputStateReg()!=EMPTY) {}
 
-        g_machine->acia->PutChar(buf[index]);
+    while (buff[index-1]!= '\0') {
+        while (g_machine->acia->GetOutputStateReg()!=EMPTY) {}
+
+        g_machine->acia->PutChar(buff[index]);
+        index++;
+
+      }
+      send_sema->V();
+
+    }else if(g_machine->acia->GetWorkingMode()== (REC_INTERRUPT | SEND_INTERRUPT)){
+
+      while (buff[index-1]!= '\0' && index < BUFFER_SIZE) {
+        send_buffer[index]= buff[index];
         index++;
       }
+      send_buffer[index-1]= '\0';
+      g_machine->acia->PutChar(send_buffer[ind_send]);
+      ind_send++;
+
     }
-    send_sema->V();
-    return index
-  }else if(g_machine->acia->GetWorkingMode()== (REC_INTERRUPT | SEND_INTERRUPT)){
-    int index = 0;
-    while (buff[index-1]!= '\0' && index < BUFFER_SIZE) {
-      send_buffer[index]= buff[index];
-      index++;
-    }
-    send_buffer[index-1]= '\0';
-    g_machine->acia->PutChar(send_buffer[ind_send]);
-    ind_send++;
     return index;
-  }
-
-}
-
 
   #endif
 }
@@ -117,42 +118,37 @@ int DriverACIA::TtySend(char* buff)
 
 int DriverACIA::TtyReceive(char* buff,int lg)
 {
-  // #ifndef ETUDIANT_TP
-  //  printf("**** Warning: method Tty_Receive of the ACIA driver not implemented yet\n");
-  // exit(-1);
-  // return 0;
-  // #endif
-  #ifdef ETUDIANT_TP
-  if(g_machine->acia->GetWorkingMode()== BUSSY_WAITNG){
+  #ifndef ETUDIANTS_TP
+   printf("**** Warning: method Tty_Receive of the ACIA driver not implemented yet\n");
+  exit(-1);
+  return 0;
+  #endif
+  #ifdef ETUDIANTS_TP
+  int index = 0;
+  if(g_machine->acia->GetWorkingMode()== BUSY_WAITING){
     receive_sema->P();
-    int index = 0;
     while(buff[index-1] != '\0' && (index < lg)){
       while (g_machine->acia->GetInputStateReg()==EMPTY) {}
 
-        buff[index]=g_machine->acia->GetChar();
-        index ++;
-      
-
+      buff[index]=g_machine->acia->GetChar();
+      index ++;
     }
-    *(&lg)=index;
+    buff[index-1]='\0';
     receive_sema->V();
-    return index;
+
   }else if(g_machine->acia->GetWorkingMode()==SEND_INTERRUPT){
-    int index = 0;;
+
 
     while(buff[index-1] != '\0'&& index < lg){
       buff[index]= receive_buffer[index];
       index++;
     }
-    buf[index-1]='\0';
+    buff[index-1]='\0';
     ind_rec=0;
     g_machine->acia->SetWorkingMode(SEND_INTERRUPT| REC_INTERRUPT);
-    return index;
+
   }
-
-
-
-
+  return index;
   #endif
 
 }
@@ -168,12 +164,12 @@ int DriverACIA::TtyReceive(char* buff,int lg)
 
 void DriverACIA::InterruptSend()
 {
-  // #ifndef ETUDIANT_TP
-  // printf("**** Warning: send interrupt handler not implemented yet\n");
-  // exit(-1);
-  // #endif
-  #ifdef ETUDIANT_TP
-  if(send_buffer[ind_send-1] =! '\0'){
+  #ifndef ETUDIANTS_TP
+  printf("**** Warning: send interrupt handler not implemented yet\n");
+  exit(-1);
+  #endif
+  #ifdef ETUDIANTS_TP
+  if(send_buffer[ind_send-1] != '\0'){
     g_machine->acia->PutChar(send_buffer[ind_send]);
     ind_send++;
   }else{
@@ -194,16 +190,16 @@ void DriverACIA::InterruptSend()
 
 void DriverACIA::InterruptReceive()
 {
-  // #ifndef ETUDIANT_TP
-  // printf("**** Warning: receive interrupt handler not implemented yet\n");
-  // exit(-1);
-  // #endif
-  #ifdef ETUDIANT_TP
+  #ifndef ETUDIANTS_TP
+  printf("**** Warning: receive interrupt handler not implemented yet\n");
+  exit(-1);
+  #endif
+  #ifdef ETUDIANTS_TP
 
   char c = g_machine->acia->GetChar();
-  if(c == '\0' || ind_rec == BUFFER_SIZE-1 {
+  if(c == '\0' || ind_rec == BUFFER_SIZE-1){
     receive_sema->V();
-    g_machine->acia->SetWorkingMode(SEND_INTERRUPT)
+    g_machine->acia->SetWorkingMode(SEND_INTERRUPT);
 
 
   }else{

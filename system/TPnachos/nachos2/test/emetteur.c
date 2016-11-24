@@ -11,10 +11,7 @@ void routine_envoi(char *s){
 		n_printf("failled nb_envoi = %d/256 \n",nb_envoi);
 		Exit(1);
 	}
-	else{
-
-		n_printf("succes evoie");
-	}
+		n_printf("succes evoie");	
 }
 
 void fullChar(){
