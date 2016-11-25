@@ -1,0 +1,117 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package engine;
+
+/**
+ * The class selection represents the selection that the user has done.
+ */
+public final class Selection {
+	/** Selection start index. */
+	private int	start;
+	/** Selection end index. */
+	private int	end;
+
+	/**
+	 * Instantiate a new selection from the start index to the end index.
+	 *
+	 * @param start
+	 *            Le début de la sélection (positif ou nul)
+	 * @param end
+	 *            La end de la sélection (supérieur ou égal à début)
+	 */
+	public Selection(int start, int end) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Start < 0");
+		if (end < 0)
+			throw new IllegalArgumentException("End < 0");
+		if (end < start)
+			throw new IllegalArgumentException("End < Start");
+		/* Treatment */
+		this.start = start;
+		this.end = end;
+	}
+
+	/**
+	 * Flush the selection by making start and end equal.
+	 */
+	public final void flush() {
+		end = start;
+	}
+
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
+	public final int getEnd() {
+		return end;
+	}
+
+	/**
+	 * Gets the length.
+	 *
+	 * @return the length
+	 */
+	public final int getLength() {
+		return end - start;
+	}
+
+	/**
+	 * Gets the start.
+	 *
+	 * @return the start
+	 */
+	public final int getStart() {
+		return start;
+	}
+
+	/**
+	 * Checks if is empty.
+	 *
+	 * @return true, if is empty
+	 */
+	public final boolean isEmpty() {
+		return start == end;
+	}
+
+	/**
+	 * Sets the selection with start and end index.
+	 *
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 */
+	public final void setSelection(final int start, final int end) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Début est négatif");
+		if (end < 0)
+			throw new IllegalArgumentException("Fin est négatif");
+		if (end < start)
+			throw new IllegalArgumentException("Fin est inférieur à début");
+		/* Treatment */
+		this.start = start;
+		this.end = end;
+	}
+
+	/**
+	 * Sets the selection with given selection.
+	 *
+	 * @param selection
+	 *            the new selection
+	 */
+	public final void setSelection(final Selection selection) {
+		/* Preconditions */
+		if (selection == null)
+			throw new IllegalArgumentException("selection est négatif");
+		/* Treatment */
+		start = selection.getStart();
+		end = selection.getEnd();
+	}
+}

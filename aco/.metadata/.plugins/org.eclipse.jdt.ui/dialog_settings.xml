@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="7" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="8" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
 	<item value="false" key="org.eclipse.jdt.ui.formatter_page.show_invisible_characters"/>
 	<item value="504" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
 	<item value="14" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="0" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_y"/>
 	<item value="568" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_x"/>
-	<item value="-1" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
+	<item value="18" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="false" key="delegateUpdating"/>
 	<item value="530" key="clean_up_save_particpant_modify_dialog.preferred_x"/>
 	<item value="112" key="clean_up_save_particpant_modify_dialog.preferred_y"/>
@@ -16,11 +16,11 @@
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space_tab_page.node"/>
 	<item value="1015" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="863" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_height"/>
-	<item value="5" key="clean_up_save_particpant_modify_dialog.last_focus"/>
+	<item value="2" key="clean_up_save_particpant_modify_dialog.last_focus"/>
 	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
 	<item value="759" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_height"/>
-	<item value="2" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
+	<item value="1" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="renameSubpackages"/>
 		<item value="false" key="updateQualifiedNames"/>
@@ -28,6 +28,16 @@
 		<item value="true" key="updateSimilarElements"/>
 		<item value="true" key="updateTextualMatches"/>
 		<item value="1" key="updateSimilarElementsMatchStrategy"/>
+	</section>
+	<section name="ProblemSeveritiesConfigurationBlock">
+		<item value="false" key="expanded2"/>
+		<item value="false" key="expanded1"/>
+		<item value="false" key="expanded4"/>
+		<item value="false" key="expanded3"/>
+		<item value="false" key="expanded6"/>
+		<item value="false" key="expanded5"/>
+		<item value="false" key="expanded7"/>
+		<item value="true" key="expanded0"/>
 	</section>
 	<section name="DialogBounds_SuperInterfaceSelectionDialog">
 		<item value="368" key="DIALOG_WIDTH"/>
@@ -75,8 +85,8 @@
 		<item value="false" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="490" key="width"/>
-		<item value="290" key="height"/>
+		<item value="530" key="width"/>
+		<item value="365" key="height"/>
 	</section>
 	<section name="javadoc">
 		<item value="private" key="access"/>
@@ -109,6 +119,11 @@
 				<item value="https://docs.oracle.com/javase/8/docs/api/;file:/D:/UserData/GitHub/M1/aco/fr.istic.m1.aco.miniediteur.v1/doc/;http://docs.oracle.com/javase/8/javafx/api/" key="href"/>
 			</section>
 		</section>
+	</section>
+	<section name="JavaBuildConfigurationBlock">
+		<item value="false" key="expanded2"/>
+		<item value="false" key="expanded1"/>
+		<item value="true" key="expanded0"/>
 	</section>
 	<section name="RenameInformationPopup">
 	</section>

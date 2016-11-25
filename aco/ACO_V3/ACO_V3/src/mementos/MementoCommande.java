@@ -1,7 +1,7 @@
 package mementos;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.CommandeEnregistrable;
 
 /**
@@ -12,14 +12,14 @@ import recordables.CommandeEnregistrable;
  */
 public abstract class MementoCommande {
 
-	protected MoteurEdition moteur;
+	protected EditionEngine moteur;
 	protected Enregistreur enregistreur;
 	
 	/**
 	 * Permet de sauvegarder l'attribut moteur d'une commande enregistrable
 	 * @param moteur L'attribut moteur de la commande enregistrable (non null)
 	 */
-	public MementoCommande(MoteurEdition moteur, Enregistreur enregistreur){
+	public MementoCommande(EditionEngine moteur, Enregistreur enregistreur){
 		
 		if(moteur == null){
 			
@@ -39,7 +39,7 @@ public abstract class MementoCommande {
 	 * Getter de l'attribut moteur
 	 * @return L'attribut moteur de l'objet
 	 */
-	public final MoteurEdition getMoteur(){
+	public final EditionEngine getMoteur(){
 		
 		return moteur;
 	}
@@ -48,7 +48,7 @@ public abstract class MementoCommande {
 	 * Setter de l'attribut moteur de l'objet
 	 * @param moteur Le nouveau moteur (non null)
 	 */
-	public final void setMoteur(MoteurEdition moteur){
+	public final void setMoteur(EditionEngine moteur){
 		
 		if(moteur == null){
 			

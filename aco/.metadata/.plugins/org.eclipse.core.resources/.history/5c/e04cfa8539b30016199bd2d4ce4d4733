@@ -1,0 +1,55 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package engine;
+
+/**
+ * The clipboard saves a string and gives it on demand.
+ */
+public final class Clipboard {
+	/** the content. */
+	private String content;
+
+	/**
+	 * Instantiate a clipboard with an empty content.
+	 */
+	public Clipboard() {
+		content = "";
+	}
+
+	/**
+	 * Retourne le content du presse-papier.
+	 *
+	 * @return Le content du presse-papier
+	 */
+	public final String getContent() {
+		return new String(content);
+	}
+
+	/**
+	 * Vide.
+	 *
+	 * @return Vrai si le presse-papier est vide, faux sinon
+	 */
+	public boolean isEmpty() {
+		return content.isEmpty();
+	}
+
+	/**
+	 * Change le content du presse-papier.
+	 *
+	 * @param chaine
+	 *            Le nouveau content du presse-papier
+	 */
+	public final void setContent(String chaine) {
+		/* Préconditions */
+		if (chaine == null)
+			throw new IllegalArgumentException("Chaine est à null");
+		// On crée une nouvelle instance de string pour assurer l'int�grit� de
+		// nos données
+		content = new String(chaine);
+	}
+}

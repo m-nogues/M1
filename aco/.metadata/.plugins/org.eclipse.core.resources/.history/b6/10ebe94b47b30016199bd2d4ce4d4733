@@ -1,0 +1,24 @@
+package mementos;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import editor.Recorder;
+import engine.MoteurEdition;
+import recordables.CopyRecordable;
+
+/**
+ * Cette classe est chargée de stocker l'état d'une commande CopyRecordable
+ * @see CopyRecordable
+ * @see MementoCommande
+ */
+public final class MementoCopy extends MementoCommande{
+
+	private static final Logger LOGGER = LogManager.getLogger(MementoCopy.class.getName());	
+	
+	public MementoCopy(MoteurEdition moteur, Recorder recorder){
+		
+		super(moteur, recorder);
+		LOGGER.trace("Création d'un MementoCopy");
+	}
+}

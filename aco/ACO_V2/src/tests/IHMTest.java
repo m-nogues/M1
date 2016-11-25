@@ -5,7 +5,7 @@ import editor.Observateur;
 import engine.Buffer;
 
 /**
- * Cette classe, crée exclusivement pour les tests sert à vérifier que les changements effectuées au niveau du moteur d'édition sont bien répercutés au niveau de l'IHM
+ * Cette classe, crée exclusivement pour les tests sert à vérifier que les changements effectuées au niveau du engine d'édition sont bien répercutés au niveau de l'IHM
  *
  */
 public final class IHMTest implements Observateur {

@@ -25,7 +25,7 @@ import editor.GestionnaireHisto;
 import editor.Observable;
 import editor.Observateur;
 import engine.Buffer;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.CollerEnregistrable;
 import recordables.CopierEnregistrable;
 import recordables.CouperEnregistrable;
@@ -55,7 +55,7 @@ public final class IHM extends JFrame implements Observateur, ActionListener
 	private final JTextArea zoneTexte;
 
 	//Moteur d'édition
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	//Listener d'insertions
 	private final FiltreModifications filtreModifs;
@@ -64,7 +64,7 @@ public final class IHM extends JFrame implements Observateur, ActionListener
 	//Enregistreur des mementos des commandes enregistrables
 	private final Enregistreur enregistreur;
 	
-    public IHM(final MoteurEdition moteur, final Enregistreur enregistreur, final GestionnaireHisto gestionnaireHisto){
+    public IHM(final EditionEngine moteur, final Enregistreur enregistreur, final GestionnaireHisto gestionnaireHisto){
 
     	/* Préconditions */
     	if(moteur == null){

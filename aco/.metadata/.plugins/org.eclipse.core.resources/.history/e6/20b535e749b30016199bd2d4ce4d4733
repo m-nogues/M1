@@ -1,0 +1,86 @@
+package mementos;
+
+import editor.Recorder;
+import engine.EditionEngine;
+import recordables.CommandRecordable;
+
+/**
+ * La classe MementoCommand sert à stocker l'état des commandes enregistrables.
+ * Comme toutes les commandes enregsitrables ont un attribut engine et recorder,
+ * ceux-ci ainsi que les getters/setters qui leurs sont associés sont définis au
+ * sein de cette classe abstraite
+ *
+ * @see CommandRecordable
+ * @see Recorder
+ */
+public abstract class MementoCommand {
+
+	protected EditionEngine	engine;
+	protected Recorder		recorder;
+
+	/**
+	 * Permet de sauvegarder l'attribut engine d'une commande enregistrable
+	 *
+	 * @param engine
+	 *            L'attribut engine de la commande enregistrable (non null)
+	 */
+	public MementoCommand(EditionEngine moteur, Recorder recorder) {
+
+		if (moteur == null)
+			throw new IllegalArgumentException("engine est à null");
+
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder est à null");
+
+		engine = moteur;
+		this.recorder = recorder;
+	}
+
+	/**
+	 * Le getter de l'attribut recorder
+	 *
+	 * @return L'attribut recorder de l'objet
+	 */
+	public final Recorder getEnregistreur() {
+
+		return recorder;
+	}
+
+	/**
+	 * Getter de l'attribut engine
+	 *
+	 * @return L'attribut engine de l'objet
+	 */
+	public final MoteurEdition getMoteur() {
+
+		return engine;
+	}
+
+	/**
+	 * Setter de l'attribut recorder de l'objet
+	 *
+	 * @param recorder
+	 *            Le nouvel recorder (non null)
+	 */
+	public final void setEnregistreur(Recorder recorder) {
+
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder est à null");
+
+		this.recorder = recorder;
+	}
+
+	/**
+	 * Setter de l'attribut engine de l'objet
+	 *
+	 * @param engine
+	 *            Le nouveau engine (non null)
+	 */
+	public final void setMoteur(MoteurEdition moteur) {
+
+		if (moteur == null)
+			throw new IllegalArgumentException("engine est à null");
+
+		engine = moteur;
+	}
+}

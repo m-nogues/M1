@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.InsTexteEnregistrable;
 
 /**
@@ -24,7 +24,7 @@ public final class MementoInsTexte extends MementoCommande{
 	 * @see MementoCommande
 	 * @see InsTexteEnregistrable
 	 */
-	public MementoInsTexte(MoteurEdition moteur, Enregistreur enregistreur, String texte){
+	public MementoInsTexte(EditionEngine moteur, Enregistreur enregistreur, String texte){
 		
 		super(moteur, enregistreur);
 		

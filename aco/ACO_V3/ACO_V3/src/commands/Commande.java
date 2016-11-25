@@ -1,10 +1,10 @@
 package commands;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 
 /**
- * On commande est chargée de transmettre un ordre à une classe implémentant l'interface MoteurEdition
- * @see MoteurEdition
+ * On commande est chargée de transmettre un ordre à une classe implémentant l'interface EditionEngine
+ * @see EditionEngine
  */
 public  interface Commande 
 {

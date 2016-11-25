@@ -7,28 +7,28 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import editor.Enregistreur;
+import editor.Recorder;
 import engine.MoteurImplementation;
 import engine.Selection;
-import recordables.CollerEnregistrable;
-import recordables.CopierEnregistrable;
-import recordables.CouperEnregistrable;
-import recordables.InsTexteEnregistrable;
-import recordables.SelectionnerEnregistrable;
-import recordables.SupTexteEnregistrable;
+import recordables.PasteRecordable;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.InsTextRecordable;
+import recordables.SelectRecordable;
+import recordables.DelTextRecordable;
 
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv2 {
 
 	private MoteurImplementation moteur;
 	private IHMTest ihm;
-	private Enregistreur enregistreur;
+	private Recorder recorder;
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		moteur = new MoteurImplementation();
-		enregistreur = new Enregistreur();
+		recorder = new Recorder();
 		ihm = new IHMTest();
 		moteur.getBuffer().ajouterObservateur(ihm);
 	}
@@ -38,40 +38,40 @@ public class TestsIntegrationv2 {
 
 		//On réalise le premier jeu
 		//Insertion de "Test", sélection des 4 premiers car., on coupe, on ajoute "nouv" et on colle à la suite
-		new InsTexteEnregistrable(moteur, enregistreur, "Test").executer();
-		enregistreur.activer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 4)).executer();
-		new CouperEnregistrable(moteur, enregistreur).executer();
-		new InsTexteEnregistrable(moteur, enregistreur, "nouv").executer();
-		new CollerEnregistrable(moteur, enregistreur).executer();
-		enregistreur.desactiver();
+		new InsTextRecordable(moteur, recorder, "Test").execute();
+		recorder.activate();
+		new SelectRecordable(moteur, recorder, new Selection(0, 4)).execute();
+		new CutRecordable(moteur, recorder).executer();
+		new InsTextRecordable(moteur, recorder, "nouv").execute();
+		new PasteRecordable(moteur, recorder).execute();
+		recorder.deactivate();
 		assertEquals("nouvTest", ihm.getDerniereInsert());
 		
 		//RàZ et ajout d'un nouveau texte pour le rejeu
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 8)).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		new InsTexteEnregistrable(moteur, enregistreur, "Youp").executer();
+		new SelectRecordable(moteur, recorder, new Selection(0, 8)).execute();
+		new DelTextRecordable(moteur, recorder).executer();
+		new InsTextRecordable(moteur, recorder, "Youp").execute();
 		assertEquals("Youp", ihm.getDerniereInsert());
-		enregistreur.rejouerCommandes();
+		recorder.replayCommands();
 		assertEquals("nouvYoup", ihm.getDerniereInsert());
 		
 		//Copie du texte actuel et suppression des 2 derniers car.
-		enregistreur.activer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 8)).executer();
-		new CopierEnregistrable(moteur, enregistreur).executer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(8, 8)).executer();
-		new CollerEnregistrable(moteur, enregistreur).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		enregistreur.desactiver();
+		recorder.activate();
+		new SelectRecordable(moteur, recorder, new Selection(0, 8)).execute();
+		new CopyRecordable(moteur, recorder).executer();
+		new SelectRecordable(moteur, recorder, new Selection(8, 8)).execute();
+		new PasteRecordable(moteur, recorder).execute();
+		new DelTextRecordable(moteur, recorder).executer();
+		new DelTextRecordable(moteur, recorder).executer();
+		recorder.deactivate();
 		assertEquals("nouvYoupnouvYo", ihm.getDerniereInsert());
 		
 		//RàZ et ajout d'un nouveau texte pour le rejeu
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 14)).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
+		new SelectRecordable(moteur, recorder, new Selection(0, 14)).execute();
+		new DelTextRecordable(moteur, recorder).executer();
 		assertEquals("", ihm.getDerniereInsert());
-		new InsTexteEnregistrable(moteur, enregistreur, "Hello").executer();
-		enregistreur.rejouerCommandes();
+		new InsTextRecordable(moteur, recorder, "Hello").execute();
+		recorder.replayCommands();
 		assertEquals("HelloHel", ihm.getDerniereInsert());
 	}
 }

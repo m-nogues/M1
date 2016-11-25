@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.Selection;
 import recordables.SelectionnerEnregistrable;
 
@@ -19,7 +19,7 @@ public final class MementoSelectionner extends MementoCommande{
 	
 	private Selection selection;
 		
-	public MementoSelectionner(MoteurEdition moteur, Enregistreur enregistreur, Selection selection){
+	public MementoSelectionner(EditionEngine moteur, Enregistreur enregistreur, Selection selection){
 		
 		super(moteur, enregistreur);
 		

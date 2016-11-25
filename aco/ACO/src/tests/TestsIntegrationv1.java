@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package tests;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +29,7 @@ import engine.Selection;
 public class TestsIntegrationv1 {
 	/** The engine. */
 	private ImplementedEngine	engine;
-	/** The gui. */
+	/** The graphical user interface. */
 	private GUITest				gui;
 
 	/**
@@ -65,10 +71,10 @@ public class TestsIntegrationv1 {
 	}
 
 	/**
-	 * Insertion suppression.
+	 * Insert delete.
 	 */
 	@Test
-	public void insertionSuppression() {
+	public void insertDelete() {
 		// Insert text
 		new InsertText(engine, "Test").execute();
 		assertEquals("Test", gui.getLastInsert());

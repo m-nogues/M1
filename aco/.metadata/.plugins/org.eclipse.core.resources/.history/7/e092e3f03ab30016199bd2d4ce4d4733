@@ -1,0 +1,67 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package engine;
+
+/**
+ * An edition engine allows for a variety of actions to edit a text. These
+ * actions are:
+ * - Copy
+ * - Cut
+ * - Paste
+ * - Select
+ * - Delete text
+ * - Insert text
+ * An edition engine is composed of :
+ * - A buffer, allowing modification and storage of a text.
+ * - A clipboard, allowing the copy/cut/paste actions.
+ * copier/coupe/collage - D'une sélection, permettant de manipuler des parties
+ * du texte entré par l'utilisateur
+ *
+ * @see Buffer
+ * @see Clipboard
+ * @see Selection
+ */
+public interface EditionEngine {
+	/**
+	 * Effectue une opération de copie du contenu du buffer vers le
+	 * presse-papier.
+	 */
+	public void copy();
+
+	/**
+	 * Effectue une opération de copie du contenu du buffer vers le
+	 * presse-papier avec supression du contenu copié dans le buffer.
+	 */
+	public void cut();
+
+	/**
+	 * Effectue une suppression de texte dans le buffer.
+	 */
+	public void deleteText();
+
+	/**
+	 * Effectue une insertion de texte dans le buffer.
+	 *
+	 * @param s
+	 *            La chaîne à insérer
+	 */
+	public void insertText(String s);
+
+	/**
+	 * Effectue une opération de collage du contenu du presse-papier vers le
+	 * buffer.
+	 */
+	public void paste();
+
+	/**
+	 * Modifie la sélection du engine d'édition.
+	 *
+	 * @param s
+	 *            La nouvelle sélection
+	 */
+	public void select(Selection s);
+}

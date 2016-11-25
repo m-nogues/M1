@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.CopierEnregistrable;
 
 /**
@@ -16,7 +16,7 @@ public final class MementoCopier extends MementoCommande{
 
 	private static final Logger LOGGER = LogManager.getLogger(MementoCopier.class.getName());	
 	
-	public MementoCopier(MoteurEdition moteur, Enregistreur enregistreur){
+	public MementoCopier(EditionEngine moteur, Enregistreur enregistreur){
 		
 		super(moteur, enregistreur);
 		LOGGER.trace("Création d'un MementoCopier");

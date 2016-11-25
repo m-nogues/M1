@@ -97,3 +97,28 @@
 1480088072578	Rename method 'testInsererTexte'
 1480088080466	Rename method 'testSelectionner'
 1480088094819	Rename method 'testSupprimerTexte'
+1480093179084	Rename field 'moteur'
+1480093312783	Rename local variable 'moteur'
+1480093413398	Rename local variable 'selection'
+1480093418270	Rename field 'selection'
+1480093759387	Rename local variable 'moteur'
+1480093768082	Rename field 'moteur'
+1480093943103	Rename field 'moteur'
+1480093951457	Rename field 'chaine'
+1480094078147	Rename local variable 'moteur'
+1480094084450	Rename local variable 'chaine'
+1480094229454	Rename field 'moteur'
+1480094236030	Rename local variable 'moteur'
+1480094509985	Rename field 'moteur'
+1480094514571	Rename local variable 'moteur'
+1480096957213	Rename field 'contenu'
+1480097134534	Rename local variable 'chaine'
+1480098429079	Delete element
+1480098434694	Delete element
+1480101708692	Rename method 'insertionSuppression'
+1480101716920	Rename method 'insertdelete'
+1480101940084	Copy compilation units
+1480101975871	Copy compilation unit
+1480102032925	Copy package
+1480102046630	Copy packages
+1480102258665	Copy package

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import commands.InsererTexte;
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import mementos.MementoCommande;
 import mementos.MementoInsTexte;
 
@@ -24,17 +24,17 @@ public final class InsTexteEnregistrable implements CommandeEnregistrable {
 	private static final Logger LOGGER = LogManager.getLogger(InsTexteEnregistrable.class.getName());
 	
 	private Enregistreur enregistreur;
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 	private String chaine;
 	
 	/**
 	 * Créé une commande InsTexteEnregistrable
 	 * L'ensemble des paramètres doit être renseigné
-	 * @param moteur Le MoteurEdition auquel adresser la commande
+	 * @param moteur Le EditionEngine auquel adresser la commande
 	 * @param enregistreur L'enregsitreur de commande
 	 * @param chaine La chaîne associer à la commande
 	 */
-	public InsTexteEnregistrable(MoteurEdition moteur, Enregistreur enregistreur, String chaine){
+	public InsTexteEnregistrable(EditionEngine moteur, Enregistreur enregistreur, String chaine){
 		
 		/* Préconditions */
 		if(enregistreur == null){

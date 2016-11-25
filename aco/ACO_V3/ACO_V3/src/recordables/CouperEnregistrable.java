@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import commands.Couper;
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import mementos.MementoCommande;
 import mementos.MementoCouper;
 
@@ -24,15 +24,15 @@ public final class CouperEnregistrable implements CommandeEnregistrable {
 	private static final Logger LOGGER = LogManager.getLogger(CouperEnregistrable.class.getName());
 	
 	private Enregistreur enregistreur;
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 	
 	/**
 	 * Créé une commande CouperEnregistrable
 	 * L'ensemble des paramètres doit être renseigné
-	 * @param moteur Le MoteurEdition auquel adresser la commande
+	 * @param moteur Le EditionEngine auquel adresser la commande
 	 * @param enregistreur L'enregsitreur de commande
 	 */
-	public CouperEnregistrable(MoteurEdition moteur, Enregistreur enregistreur){
+	public CouperEnregistrable(EditionEngine moteur, Enregistreur enregistreur){
 		
 		/* Préconditions */
 		if(enregistreur == null){

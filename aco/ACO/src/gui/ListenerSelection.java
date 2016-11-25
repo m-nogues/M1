@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package gui;
 
 import javax.swing.event.CaretEvent;
@@ -17,8 +23,7 @@ import engine.Selection;
  * JTextArea
  */
 public final class ListenerSelection implements CaretListener {
-	private static final Logger	LOGGER	= LogManager
-			.getLogger(ListenerSelection.class.getName());
+	private static final Logger	LOGGER	= LogManager.getLogger(ListenerSelection.class.getName());
 	private boolean				reagir;
 	/**
 	 * Le engine d'édition à renseigner pour les commands

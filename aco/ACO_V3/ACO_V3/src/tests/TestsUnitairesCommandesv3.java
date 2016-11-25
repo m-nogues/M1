@@ -10,14 +10,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import commands.Defaire;
 import commands.Refaire;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.MoteurImplementation;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MoteurImplementation.class)
 public class TestsUnitairesCommandesv3 {
 	
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 
 	
 	@Before

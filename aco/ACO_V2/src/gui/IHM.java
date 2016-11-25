@@ -15,18 +15,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.AbstractDocument;
 
-import commands.Arreter;
-import commands.Demarrer;
-import commands.Rejouer;
-import editor.Enregistreur;
+import commands.Stop;
+import commands.Start;
+import commands.Replay;
+import editor.Recorder;
 import editor.Observable;
 import editor.Observateur;
 import engine.Buffer;
 import engine.MoteurEdition;
-import recordables.CollerEnregistrable;
-import recordables.CopierEnregistrable;
-import recordables.CouperEnregistrable;
-import recordables.SupTexteEnregistrable;
+import recordables.PasteRecordable;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.DelTextRecordable;
 
 /**
  * Interface graphique de notre éditeur
@@ -56,31 +56,31 @@ public final class IHM extends JFrame implements Observateur, ActionListener
 	private final FiltreModifications filtreModifs;
 	private final ListenerSelection listenerSelection;
 	
-	//Enregistreur des mementos des commandes enregistrables
-	private final Enregistreur enregistreur;
+	//Recorder des mementos des commandes enregistrables
+	private final Recorder recorder;
 	
-    public IHM(final MoteurEdition moteur, final Enregistreur enregistreur){
+    public IHM(final MoteurEdition moteur, final Recorder recorder){
 
     	/* Préconditions */
     	if(moteur == null){
     		
-    		throw new IllegalArgumentException("moteur est à null");
+    		throw new IllegalArgumentException("engine est à null");
     	}
     	
 
-    	if(enregistreur == null){
+    	if(recorder == null){
     		
-    		throw new IllegalArgumentException("enregistreur est à null");
+    		throw new IllegalArgumentException("recorder est à null");
     	}
     	
     	/* Traitement */
     	this.moteur = moteur;
-    	this.enregistreur = enregistreur;
+    	this.recorder = recorder;
     	
-    	filtreModifs = new FiltreModifications(moteur, enregistreur);
-    	listenerSelection = new ListenerSelection(moteur, enregistreur);
+    	filtreModifs = new FiltreModifications(moteur, recorder);
+    	listenerSelection = new ListenerSelection(moteur, recorder);
     	
-        zoneTexte = new ZoneTexte(15, 80, moteur, enregistreur);
+        zoneTexte = new ZoneTexte(15, 80, moteur, recorder);
         zoneTexte.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         zoneTexte.setFont(new Font("monospaced", Font.PLAIN, 14));
         zoneTexte.addCaretListener(listenerSelection);
@@ -107,9 +107,9 @@ public final class IHM extends JFrame implements Observateur, ActionListener
         jouer = new BoutonJouer();
         stop = new BoutonStop();
         
-        enregistreur.ajouterObservateur((Observateur)enregistrer);
-        enregistreur.ajouterObservateur((Observateur)jouer);
-        enregistreur.ajouterObservateur((Observateur)stop);
+        recorder.ajouterObservateur((Observateur)enregistrer);
+        recorder.ajouterObservateur((Observateur)jouer);
+        recorder.ajouterObservateur((Observateur)stop);
 
         //Association des icones aux boutons
         coller.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
@@ -206,31 +206,31 @@ public final class IHM extends JFrame implements Observateur, ActionListener
 		
 		if (e.getSource()==coller){
 
-			new CollerEnregistrable(moteur, enregistreur).executer();
+			new PasteRecordable(moteur, recorder).execute();
 		}
 		else if (e.getSource()==copier){
 
-			new CopierEnregistrable(moteur, enregistreur).executer();
+			new CopyRecordable(moteur, recorder).executer();
 		}
 		else if (e.getSource()==couper){
 
-			new CouperEnregistrable(moteur, enregistreur).executer();
+			new CutRecordable(moteur, recorder).executer();
 		}
 		else if (e.getSource()==supprimer){
 
-			new SupTexteEnregistrable(moteur, enregistreur).executer();
+			new DelTextRecordable(moteur, recorder).executer();
 		}
 		else if (e.getSource()==enregistrer){
 			
-			new Demarrer(enregistreur).executer();
+			new Start(recorder).execute();
 		}
 		else if (e.getSource()==jouer){
 			
-			new Rejouer(enregistreur).executer();
+			new Replay(recorder).execute();
 		}
 		else if (e.getSource()==stop){
 			
-			new Arreter(enregistreur).executer();
+			new Stop(recorder).execute();
 		}
 	}
 }

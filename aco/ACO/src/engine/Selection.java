@@ -1,28 +1,32 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package engine;
 
 /**
- * La classe Selection représente la sélection de l'utilisateur.
+ * The class selection represents the selection that the user has done.
  */
 public final class Selection {
-	/** Indique l'indice de début de la sélection. */
+	/** Selection start index. */
 	private int	start;
-	/** Indique l'indice de end de la sélection. */
+	/** Selection end index. */
 	private int	end;
 
 	/**
-	 * Crée une sélection à partir du début et de la end de celle-ci.
+	 * Instantiate a new selection from the start index to the end index.
 	 *
 	 * @param start
-	 *            Le début de la sélection (positif ou nul)
+	 *            selection start (> 0)
 	 * @param end
-	 *            La end de la sélection (supérieur ou égal à début)
+	 *            selection end (>= start)
 	 */
-	public Selection(final int start, final int end) {
+	public Selection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
 			throw new IllegalArgumentException("Start < 0");
-		if (end < 0)
-			throw new IllegalArgumentException("End < 0");
 		if (end < start)
 			throw new IllegalArgumentException("End < Start");
 		/* Treatment */
@@ -38,7 +42,7 @@ public final class Selection {
 	}
 
 	/**
-	 * Gets the end.
+	 * Gets the end of the selection.
 	 *
 	 * @return the end
 	 */
@@ -47,7 +51,7 @@ public final class Selection {
 	}
 
 	/**
-	 * Gets the length.
+	 * Gets the length of the selection.
 	 *
 	 * @return the length
 	 */
@@ -56,7 +60,7 @@ public final class Selection {
 	}
 
 	/**
-	 * Gets the start.
+	 * Gets the start of the selection.
 	 *
 	 * @return the start
 	 */
@@ -65,7 +69,7 @@ public final class Selection {
 	}
 
 	/**
-	 * Checks if is empty.
+	 * Checks if the selection is empty.
 	 *
 	 * @return true, if is empty
 	 */
@@ -81,14 +85,12 @@ public final class Selection {
 	 * @param end
 	 *            the end
 	 */
-	public final void setSelection(final int start, final int end) {
+	public final void setSelection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
-			throw new IllegalArgumentException("Début est négatif");
-		if (end < 0)
-			throw new IllegalArgumentException("Fin est négatif");
+			throw new IllegalArgumentException("Start < 0");
 		if (end < start)
-			throw new IllegalArgumentException("Fin est inférieur à début");
+			throw new IllegalArgumentException("End < Start");
 		/* Treatment */
 		this.start = start;
 		this.end = end;
@@ -100,10 +102,10 @@ public final class Selection {
 	 * @param selection
 	 *            the new selection
 	 */
-	public final void setSelection(final Selection selection) {
+	public final void setSelection(Selection selection) {
 		/* Preconditions */
 		if (selection == null)
-			throw new IllegalArgumentException("selection est négatif");
+			throw new IllegalArgumentException("Selection is null");
 		/* Treatment */
 		start = selection.getStart();
 		end = selection.getEnd();

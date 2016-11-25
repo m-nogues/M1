@@ -1,0 +1,53 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package commands;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import engine.EditionEngine;
+import engine.Selection;
+
+/**
+ * The selection command, executes a selection from the engine.
+ */
+public final class Select implements Command {
+	/** The Constant LOGGER. */
+	private static final Logger	LOGGER	= LogManager.getLogger(Select.class.getName());
+	/** Engine that will execute the command */
+	private final EditionEngine	engine;
+	/** New selection. */
+	private final Selection		selection;
+
+	/**
+	 * Instantiate a new Select that will execute the given selection in the given engine 
+	 *
+	 * @param engine
+	 *            the engine
+	 * @param selection
+	 *            La nouvelle selection (non null)
+	 */
+	public Select(EditionEngine moteur, Selection selection) {
+		/* Préconditions */
+		if (moteur == null)
+			throw new IllegalArgumentException("Moteur est à null");
+		if (selection == null)
+			throw new IllegalArgumentException("Selection est à null");
+		/* Traitement */
+		engine = moteur;
+		this.selection = selection;
+	}
+
+	/**
+	 * Execute la commande.
+	 */
+	@Override
+	public final void execute() {
+		LOGGER.trace("Exécution d'une commande Select");
+		engine.select(selection);
+	}
+}

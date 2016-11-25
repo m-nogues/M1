@@ -1,0 +1,119 @@
+package recordables;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import commands.Selectionner;
+import editor.Recorder;
+import engine.MoteurEdition;
+import engine.Selection;
+import mementos.MementoCommand;
+import mementos.MementoSelect;
+
+/**
+ * La classe SelectRecordable execute une commande Selectionner et enregistre son MementoCommand dans un Recorder
+ * @see Recorder
+ * @see Selectionner
+ * @see CommandRecordable
+ */
+public final class SelectRecordable implements CommandRecordable {
+
+
+	/**
+	 * Logger pour suivre le déroulement de l'application
+	 */
+	private static final Logger LOGGER = LogManager.getLogger(SelectRecordable.class.getName());
+	
+	private Recorder recorder;
+	private MoteurEdition moteur;
+	private Selection selection;
+	
+	/**
+	 * Créé une commande SelectRecordable
+	 * L'ensemble des paramètres doit être renseigné
+	 * @param engine Le MoteurEdition auquel adresser la commande
+	 * @param recorder L'enregsitreur de commande
+	 * @param selection La selection à associer à la commande
+	 */
+	public SelectRecordable(MoteurEdition moteur, Recorder recorder, Selection selection){
+		
+		/* Préconditions */
+		if(recorder == null){
+			
+			throw new IllegalArgumentException("recorder est à null");
+		}
+		if(moteur == null){
+			
+			throw new IllegalArgumentException("engine est à null");
+		}
+		if(selection == null){
+			
+			throw new IllegalArgumentException("selection est à null");
+		}
+		
+		/*Traitement*/
+		
+		this.recorder = recorder;
+		this.moteur = moteur;
+		this.selection = selection;
+	}
+	
+	/**
+	 * Créé une Command SelectRecordable à partir d'un MementoSelect et execute une commande Selectionner
+	 * @param memento Le memento duquel on restaure l'état de la commande enregistrable
+	 */
+	public SelectRecordable(MementoCommand memento){
+		
+		restaurer(memento);
+		LOGGER.trace("Exécution d'une commande Selectionner");
+		new Selectionner(moteur, selection).executer();
+	}
+	
+	/**
+	 * Effectue l'enregistrement de la commande auprès de l'recorder et execute la commande auprès du engine
+	 */
+	@Override
+	public final void executer() {
+		
+		recorder.enregistrer(this);
+		LOGGER.trace("Exécution d'une commande Selectionner");
+		new Selectionner(moteur, selection).executer();
+	}
+
+	/**
+	 * Retour l'état de l'objet sous forme d'un objet MementoSelect
+	 * @see MementoSelect
+	 */
+	@Override
+	public final MementoCommand getMemento() {
+		
+		return new MementoSelect(moteur, recorder, selection);
+	}
+
+	/**
+	 * Restaure l'état d'une commande à partir d'un memento
+	 * @param memento L'objet memento de la classe MementoSelect (non null)
+	 * @see MementoSelect
+	 */
+	@Override
+	public final void restaurer(MementoCommand memento) {
+		
+		/* Préconditions */
+		if(memento == null){
+			
+			throw new IllegalArgumentException("memento est à null");
+		}
+		
+		if(!(memento instanceof MementoSelect)){
+			
+			throw new IllegalArgumentException("Le memento n'est pas de la classe MementoInsSelectionner");
+		}
+		
+		LOGGER.trace("Restauration d'une commande SelectRecordable à partir d'un memento");
+		
+		/*Traitement*/
+		this.moteur = memento.getMoteur();
+		this.recorder = memento.getEnregistreur();
+		this.selection = ((MementoSelect)memento).getSelection();
+	}
+}

@@ -3,7 +3,7 @@ package commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 
 /**
  * La commande Coller ordonne à l'implémentation du moteur d'édition d'effectuer une opération de collage
@@ -16,13 +16,13 @@ public final class Coller implements Commande
 	/**
 	 * Moteur d'édition qui exécutera la commande
 	 */
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	/**
 	 * Le constructeur a besoin de savoir à quel moteur d'édition envoyer la commande
 	 * @param moteur	Le Moteur d'édition auquel envoyer la commande (non null)
 	 */
-	public Coller(MoteurEdition moteur){
+	public Coller(EditionEngine moteur){
 
 		/* Préconditions */
 		

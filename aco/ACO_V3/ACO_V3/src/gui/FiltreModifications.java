@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.InsTexteEnregistrable;
 import recordables.SupTexteEnregistrable;
 
@@ -21,7 +21,7 @@ public final class FiltreModifications extends DocumentFilter {
 
 	private static final Logger LOGGER = LogManager.getLogger(FiltreModifications.class.getName());	
 	
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	private final Enregistreur enregistreur;
 	
 	private boolean reagir;
@@ -31,7 +31,7 @@ public final class FiltreModifications extends DocumentFilter {
 	 * @param moteur	Le Moteur d'édition à renseigner pour les commandes (non null)
 	 * @param enregistreur L'enregistreur de commandes (non null)
 	 */
-	public FiltreModifications(MoteurEdition moteur, Enregistreur enregistreur){
+	public FiltreModifications(EditionEngine moteur, Enregistreur enregistreur){
 		
 		super();
 		

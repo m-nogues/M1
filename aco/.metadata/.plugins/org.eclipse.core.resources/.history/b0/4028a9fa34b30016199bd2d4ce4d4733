@@ -1,0 +1,29 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package editor;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import engine.ImplementedEngine;
+import gui.GUI;
+
+/**
+ * This class is the application starter. It creates and link all necessary objects to launch the editor with the graphical user interface.
+ * Cette classe est chargée d'instancier les classes nécessaires à l'éditeur,
+ * les lier si nécessaire et de lancer l'interface graphique
+ */
+public final class EditorClient {
+	private static final Logger LOGGER = LogManager.getLogger(EditorClient.class.getName());
+
+	public static void main(String[] args) {
+		final ImplementedEngine engine = new ImplementedEngine();
+		final GUI gui = new GUI(engine);
+		engine.getBuffer().addObserver(gui);
+		LOGGER.trace("Mise en place des différents éléments de l'application effectué, prêt à l'utilisation !");
+	}
+}

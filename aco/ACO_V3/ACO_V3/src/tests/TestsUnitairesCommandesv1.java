@@ -13,7 +13,7 @@ import commands.Couper;
 import commands.InsererTexte;
 import commands.Selectionner;
 import commands.SupprimerTexte;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.MoteurImplementation;
 import engine.Selection;
 
@@ -21,7 +21,7 @@ import engine.Selection;
 @PrepareForTest({MoteurImplementation.class})
 public class TestsUnitairesCommandesv1 {
 
-	private static MoteurEdition moteur;
+	private static EditionEngine moteur;
 
 	public TestsUnitairesCommandesv1() {
 		

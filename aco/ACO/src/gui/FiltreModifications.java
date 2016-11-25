@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package gui;
 
 import javax.swing.text.AttributeSet;
@@ -19,8 +25,7 @@ import engine.EditionEngine;
  * Observer) et ce classe autorisera la modifications demandée sur la JTextArea
  */
 public final class FiltreModifications extends DocumentFilter {
-	private static final Logger	LOGGER	= LogManager
-			.getLogger(FiltreModifications.class.getName());
+	private static final Logger	LOGGER	= LogManager.getLogger(FiltreModifications.class.getName());
 	private final EditionEngine	moteur;
 	private boolean				reagir;
 
@@ -47,8 +52,8 @@ public final class FiltreModifications extends DocumentFilter {
 	 * @param string
 	 *            La chaîne à insérer
 	 */
-	public void insertString(DocumentFilter.FilterBypass fb, int offset,
-			String string, AttributeSet attr) throws BadLocationException {
+	public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+			throws BadLocationException {
 		LOGGER.trace("Entrée dans insertString");
 		LOGGER.debug("Insertion de la chaîne : " + string);
 		if (reagir)
@@ -62,11 +67,9 @@ public final class FiltreModifications extends DocumentFilter {
 	/**
 	 * Cette méthode est invoquée lorsqu'on supprime du texte dans la JTextArea
 	 */
-	public void remove(DocumentFilter.FilterBypass fb, int offset, int length)
-			throws BadLocationException {
+	public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
 		LOGGER.trace("Entrée dans remove");
-		LOGGER.debug("Supression de la chaîne en position " + offset
-				+ " de longueur " + length);
+		LOGGER.debug("Supression de la chaîne en position " + offset + " de longueur " + length);
 		if (reagir)
 			new DeleteText(moteur).execute();
 		else
@@ -79,11 +82,10 @@ public final class FiltreModifications extends DocumentFilter {
 	 * la JTextArea
 	 */
 	@Override
-	public void replace(DocumentFilter.FilterBypass fb, int offset, int length,
-			String string, AttributeSet attrs) throws BadLocationException {
+	public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String string, AttributeSet attrs)
+			throws BadLocationException {
 		LOGGER.trace("Entrée dans replace");
-		LOGGER.debug("Remplacement de la chaîne en position " + offset
-				+ " de longueur " + length + " par : " + string);
+		LOGGER.debug("Remplacement de la chaîne en position " + offset + " de longueur " + length + " par : " + string);
 		if (reagir)
 			new InsertText(moteur, string).execute();
 		else

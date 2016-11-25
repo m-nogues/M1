@@ -13,4 +13,6 @@
 <fullyQualifiedTypeName name="engine.SBuffer"/>
 <fullyQualifiedTypeName name="editor.Observer"/>
 <fullyQualifiedTypeName name="editor.Observable"/>
+<fullyQualifiedTypeName name="mementos.MementoPaste"/>
+<fullyQualifiedTypeName name="engine.EditionEngine"/>
 </qualifiedTypeNameHistroy>

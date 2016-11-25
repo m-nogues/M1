@@ -1,0 +1,149 @@
+package editor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mementos.MementoPaste;
+import mementos.MementoCommande;
+import mementos.MementoCopy;
+import mementos.MementoCut;
+import mementos.MementoInsText;
+import mementos.MementoSelect;
+import mementos.MementoDelText;
+import recordables.PasteRecordable;
+import recordables.CommandRecordable;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.InsTextRecordable;
+import recordables.SelectRecordable;
+import recordables.DelTextRecordable;
+
+/**
+ * Cette classe est chargée d'enregsitrer les mementos des commandes
+ * enregsitrables de façon à pouvoir rejouer les commandes à la demande de
+ * l'utilisateur
+ *
+ * @see CommandRecordable
+ * @see MementoCommande
+ */
+public final class Recorder implements Observable {
+
+	private static final Logger LOGGER = LogManager.getLogger(Recorder.class.getName());
+
+	private List<MementoCommande>	listMementos;
+	private List<Observer>			listObservers;
+	private boolean					record;
+
+	public Recorder() {
+		listMementos = new ArrayList<MementoCommande>();
+		listObservers = new ArrayList<Observer>();
+		record = false;
+	}
+
+	/**
+	 * Vide la liste des mementos enregistrés par l'objet et active
+	 * l'enregsitrement
+	 */
+	public final void activate() {
+
+		LOGGER.trace("Activation de l'enregistrement");
+
+		listMementos.clear();
+		record = true;
+		notifierObservateurs();
+	}
+
+	@Override
+	public void addObserver(Observer o) {
+		if (o == null)
+			throw new IllegalArgumentException("o est à null");
+
+		if (listObservers.contains(o))
+			throw new IllegalArgumentException("o est déjà dans la liste des observateurs");
+
+		listObservers.add(o);
+	}
+
+	/**
+	 * Désactive l'enregistrement des commandes
+	 */
+	public final void deactivate() {
+
+		LOGGER.trace("Désactivation de l'enregistrement");
+
+		record = false;
+		notifierObservateurs();
+	}
+
+	/**
+	 * Enregistre le memento d'une commande
+	 *
+	 * @param commande
+	 *            La commande enregistrable dont on souhaite sauvegarder l'état
+	 *            (non null)
+	 */
+	public final void enregistrer(CommandRecordable commande) {
+
+		if (commande == null)
+			throw new IllegalArgumentException("commande est à null");
+
+		if (record) {
+
+			LOGGER.trace("Enregistrement d'une commande");
+			listMementos.add(commande.getMemento());
+		}
+	}
+
+	/**
+	 * @return Le statut de l'recorder :
+	 *         -True : enregistre
+	 *         -False : N'enregistre pas
+	 */
+	public boolean getEnregistrer() {
+
+		return record;
+	}
+
+	@Override
+	public void notifyObservers() {
+		for (Observer o : listObservers)
+			o.update(this);
+	}
+
+	@Override
+	public void removeObserver(Observer o) {
+		if (o == null)
+			throw new IllegalArgumentException("o est à null");
+
+		if (!listObservers.contains(o))
+			throw new IllegalArgumentException("o n'est pas dans la liste des observateurs");
+
+		listObservers.remove(o);
+	}
+
+	/**
+	 * Rejoue l'ensemble des commandes précédemment enregistrées en les
+	 * restaurant à partir de leurs Memento
+	 */
+	public final void replayCommands() {
+
+		LOGGER.trace("Rejeu des commandes précedemment enregsitrées");
+
+		for (MementoCommande m : listMementos)
+			if (m instanceof MementoPaste)
+				new PasteRecordable(m);
+			else if (m instanceof MementoCopy)
+				new CopyRecordable(m);
+			else if (m instanceof MementoCut)
+				new CutRecordable(m);
+			else if (m instanceof MementoSelect)
+				new SelectRecordable(m);
+			else if (m instanceof MementoInsText)
+				new InsTextRecordable(m);
+			else if (m instanceof MementoDelText)
+				new DelTextRecordable(m);
+	}
+}

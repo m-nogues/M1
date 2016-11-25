@@ -2,7 +2,7 @@ package commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 
 /**
  * La commande supprimerTexteordonne au moteur d'édition d'effectuer une action de suppression
@@ -15,13 +15,13 @@ public final class SupprimerTexte implements Commande
 	/**
 	 * Moteur d'édition qui exécutera la commande
 	 */
-	private final MoteurEdition moteur ;
+	private final EditionEngine moteur ;
 	
 	/**
 	 * Le constructeur a besoin de savoir à quel moteur d'édition envoyer la commande
 	 * @param moteur	Le Moteur d'édition auquel envoyer la commande (non null)
 	 */
-	public SupprimerTexte(MoteurEdition moteur){
+	public SupprimerTexte(EditionEngine moteur){
 		
 		/* Préconditions */
 		

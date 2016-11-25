@@ -31,7 +31,7 @@ public class TestsUnitairesCommandesv1 {
 	@Test
 	public void testInsererTexte() {
 		
-		new InsererTexte(moteur, "Test").executer();
+		new InsererTexte(moteur, "Test").execute();
 		Mockito.verify(moteur).insererTexte(Mockito.eq("Test"));
 	}
 
@@ -39,35 +39,35 @@ public class TestsUnitairesCommandesv1 {
 	public void testSelectionner() {
 		
 		final Selection sel = new Selection(0,4);
-		new Selectionner(moteur, sel).executer();
+		new Selectionner(moteur, sel).execute();
 		Mockito.verify(moteur).selectionner(Mockito.eq(sel));
 	}
 	
 	@Test
 	public void testSupprimerTexte() {
 		
-		new SupprimerTexte(moteur).executer();
+		new SupprimerTexte(moteur).execute();
 		Mockito.verify(moteur).supprimerTexte();
 	}
 	
 	@Test
 	public void testCopier() {
 		
-		new Copier(moteur).executer();
+		new Copier(moteur).execute();
 		Mockito.verify(moteur).copier();
 	}
 	
 	@Test
 	public void testCouper() {
 
-		new Couper(moteur).executer();
+		new Couper(moteur).execute();
 		Mockito.verify(moteur).couper();
 	}
 	
 	@Test
 	public void testColler() {
 		
-		new Coller(moteur).executer();
+		new Coller(moteur).execute();
 		Mockito.verify(moteur).coller();
 	}
 }

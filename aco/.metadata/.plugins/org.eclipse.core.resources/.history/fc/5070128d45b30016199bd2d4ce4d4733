@@ -1,0 +1,77 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import editor.Recorder;
+import engine.MoteurImplementation;
+import engine.Selection;
+import recordables.CollerEnregistrable;
+import recordables.CopierEnregistrable;
+import recordables.CouperEnregistrable;
+import recordables.InsTexteEnregistrable;
+import recordables.SelectionnerEnregistrable;
+import recordables.SupTexteEnregistrable;
+
+@RunWith(PowerMockRunner.class)
+public class TestsIntegrationv2 {
+
+	private MoteurImplementation moteur;
+	private IHMTest ihm;
+	private Recorder recorder;
+	
+	@Before
+	public void setUp() throws Exception {
+		
+		moteur = new MoteurImplementation();
+		recorder = new Recorder();
+		ihm = new IHMTest();
+		moteur.getBuffer().ajouterObservateur(ihm);
+	}
+
+	@Test
+	public void insertionSuppressionRejeu() {
+
+		//On réalise le premier jeu
+		//Insertion de "Test", sélection des 4 premiers car., on coupe, on ajoute "nouv" et on colle à la suite
+		new InsTexteEnregistrable(moteur, recorder, "Test").executer();
+		recorder.activer();
+		new SelectionnerEnregistrable(moteur, recorder, new Selection(0, 4)).executer();
+		new CouperEnregistrable(moteur, recorder).executer();
+		new InsTexteEnregistrable(moteur, recorder, "nouv").executer();
+		new CollerEnregistrable(moteur, recorder).executer();
+		recorder.deactivate();
+		assertEquals("nouvTest", ihm.getDerniereInsert());
+		
+		//RàZ et ajout d'un nouveau texte pour le rejeu
+		new SelectionnerEnregistrable(moteur, recorder, new Selection(0, 8)).executer();
+		new SupTexteEnregistrable(moteur, recorder).executer();
+		new InsTexteEnregistrable(moteur, recorder, "Youp").executer();
+		assertEquals("Youp", ihm.getDerniereInsert());
+		recorder.rejouerCommandes();
+		assertEquals("nouvYoup", ihm.getDerniereInsert());
+		
+		//Copie du texte actuel et suppression des 2 derniers car.
+		recorder.activer();
+		new SelectionnerEnregistrable(moteur, recorder, new Selection(0, 8)).executer();
+		new CopierEnregistrable(moteur, recorder).executer();
+		new SelectionnerEnregistrable(moteur, recorder, new Selection(8, 8)).executer();
+		new CollerEnregistrable(moteur, recorder).executer();
+		new SupTexteEnregistrable(moteur, recorder).executer();
+		new SupTexteEnregistrable(moteur, recorder).executer();
+		recorder.deactivate();
+		assertEquals("nouvYoupnouvYo", ihm.getDerniereInsert());
+		
+		//RàZ et ajout d'un nouveau texte pour le rejeu
+		new SelectionnerEnregistrable(moteur, recorder, new Selection(0, 14)).executer();
+		new SupTexteEnregistrable(moteur, recorder).executer();
+		assertEquals("", ihm.getDerniereInsert());
+		new InsTexteEnregistrable(moteur, recorder, "Hello").executer();
+		recorder.rejouerCommandes();
+		assertEquals("HelloHel", ihm.getDerniereInsert());
+	}
+}

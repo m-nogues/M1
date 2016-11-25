@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.Selection;
 import recordables.SelectionnerEnregistrable;
 
@@ -22,7 +22,7 @@ public final class ListenerSelection implements CaretListener
 	/**
 	 * Le moteur d'édition à renseigner pour les commandes
 	 */
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	/**
 	 * L'enregistreur pour les commandes enregistrables
@@ -33,7 +33,7 @@ public final class ListenerSelection implements CaretListener
 	 * Le constructeur a besoin de savoir quel moteur d'édition spécifier à la commande Selectionner
 	 * @param moteur	Le Moteur d'édition à renseigner pour la commande (non null)
 	 */
-	public ListenerSelection(MoteurEdition moteur, Enregistreur enregistreur){
+	public ListenerSelection(EditionEngine moteur, Enregistreur enregistreur){
 		
 		if(moteur == null){
 			

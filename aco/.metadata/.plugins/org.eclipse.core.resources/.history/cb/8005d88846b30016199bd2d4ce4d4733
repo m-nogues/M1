@@ -1,0 +1,24 @@
+package mementos;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import editor.Recorder;
+import engine.MoteurEdition;
+import recordables.CouperEnregistrable;
+
+/**
+ * Cette classe est chargée de stocker l'état d'une commande CouperEnregistrable
+ * @see CouperEnregistrable
+ * @see MementoCommande
+ */
+public final class MementoCouper extends MementoCommande{
+
+	private static final Logger LOGGER = LogManager.getLogger(MementoCouper.class.getName());	
+	
+	public MementoCouper(MoteurEdition moteur, Recorder recorder){
+		
+		super(moteur, recorder);
+		LOGGER.trace("Création d'un MementoCouper");
+	}
+}

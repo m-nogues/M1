@@ -3,7 +3,7 @@ package gui;
 import javax.swing.JTextArea;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.CollerEnregistrable;
 import recordables.CopierEnregistrable;
 import recordables.CouperEnregistrable;
@@ -15,7 +15,7 @@ public class ZoneTexte extends JTextArea {
 
 	static final long serialVersionUID = 8166387793964966707L;
 
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 	private Enregistreur enregistreur;
 	
 	/**
@@ -23,7 +23,7 @@ public class ZoneTexte extends JTextArea {
 	 * @param moteur Le moteur d'edition auquel adresser les commandes
 	 * @param enregistreur L'enregistreur auquel adresser les commandes enregsitrables
 	 */
-	public ZoneTexte(int hauteur, int largeur, MoteurEdition moteur, Enregistreur enregistreur){
+	public ZoneTexte(int hauteur, int largeur, EditionEngine moteur, Enregistreur enregistreur){
 		
 		super(hauteur, largeur);
 		

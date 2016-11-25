@@ -2,13 +2,13 @@ package gui;
 
 import javax.swing.JButton;
 
-import editor.Enregistreur;
+import editor.Recorder;
 import editor.Observable;
 import editor.Observateur;
 
 /**
- * Ce bouton est chargé de se mettre à jour (au niveau de son état cliquable ou non) à chaque modification de l'enregistreur
- * @see Enregistreur
+ * Ce bouton est chargé de se mettre à jour (au niveau de son état cliquable ou non) à chaque modification de l'recorder
+ * @see Recorder
  */
 public class BoutonEnregistrer extends JButton implements Observateur {
 
@@ -25,14 +25,14 @@ public class BoutonEnregistrer extends JButton implements Observateur {
 			throw new IllegalArgumentException("o est à null");
 		}
 		
-		if(!(o instanceof Enregistreur)){
+		if(!(o instanceof Recorder)){
 			
-			throw new IllegalArgumentException("o n'est pas du type Enregistreur");
+			throw new IllegalArgumentException("o n'est pas du type Recorder");
 		}
 		
-		Enregistreur enregistreur = (Enregistreur) o;
+		Recorder recorder = (Recorder) o;
 		
-		if(enregistreur.getEnregistrer()){
+		if(recorder.getEnregistrer()){
 			
 			setEnabled(false);
 		}

@@ -8,7 +8,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.MoteurImplementation;
 import engine.Selection;
 import recordables.CollerEnregistrable;
@@ -22,7 +22,7 @@ import recordables.SupTexteEnregistrable;
 @PrepareForTest({MoteurImplementation.class, Enregistreur.class})
 public class TestsUnitairesCommandesv2 {
 
-	private static MoteurEdition moteur;
+	private static EditionEngine moteur;
 	private static Enregistreur enregistreur;
 	
 	public TestsUnitairesCommandesv2() {

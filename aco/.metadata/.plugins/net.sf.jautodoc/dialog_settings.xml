@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ImportExportDialog-EXPORT">
+		<item value="false" key="OVERWRITEEXISTING"/>
+		<list key="DESTINATIONS">
+			<item value="D:\Applications\java-latest\eclipse\plugins\jautodoc_preferences_M1.xml"/>
+		</list>
+		<list key="PREFERENCETYPES">
+			<item value="OPTIONS"/>
+			<item value="REPLACEMENTS"/>
+			<item value="PROPERTIES"/>
+			<item value="HEADERTEXT"/>
+			<item value="PACKAGEDOCTEXT"/>
+			<item value="PACKAGEINFOTEXT"/>
+		</list>
+	</section>
+</section>

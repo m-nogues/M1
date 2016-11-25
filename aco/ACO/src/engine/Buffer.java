@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package engine;
 
 import java.util.ArrayList;
@@ -10,24 +16,19 @@ import editor.Observable;
 import editor.Observer;
 
 /**
- * Cette classe contient le texte entré par l'utilisateur suite à ses actions.
+ * The buffer contains the text to display and the offset of the selection made
+ * by the user. It changes with the action of the user.
  */
 public final class Buffer implements Observable {
-	/** Logger pour suivre le déroulement de l'application. */
-	private static final Logger		LOGGER	= LogManager
-			.getLogger(Buffer.class.getName());
-	/** Répertorie les observers de l'objet. */
+	/** The Constant LOGGER. */
+	private static final Logger		LOGGER	= LogManager.getLogger(Buffer.class.getName());
+	/** The list of observers on this buffer. */
 	private final List<Observer>	listObservers;
-	/**
-	 * Un objet de la classe StringBuffer est utilisé pour ses méthodes
-	 * d'insertions/suppressions pratiques.
-	 */
-	private StringBuffer			content;
-	/**
-	 * Cet entier décrit la nouvelle position du curseur suite à la
-	 * modification.
-	 */
-	private int						newOffset;
+
+	/** The content. */
+	private StringBuffer	content;
+	/** The new offset of the cursor after an action. */
+	private int				newOffset;
 
 	/**
 	 * Instantiates a new buffer.
@@ -38,17 +39,9 @@ public final class Buffer implements Observable {
 		newOffset = 0;
 	}
 
-	public Buffer(Buffer buffer) {
-		listObservers = buffer.getListObservers();
-		content = new StringBuffer(buffer.getContent());
-		newOffset = buffer.getNewOffset();
-	}
-
-	/**
-	 * Ajoute un observer à la liste des observers de l'objet.
-	 *
-	 * @param o
-	 *            L'observer à ajouter (ici l'GUI) (non null)
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observable#addObserver(editor.Observer)
 	 */
 	@Override
 	public final void addObserver(final Observer o) {
@@ -60,12 +53,12 @@ public final class Buffer implements Observable {
 	}
 
 	/**
-	 * Ajoute du texte à notre buffer à l'emplacement désigné par la sélection.
+	 * Add text to this buffer according to the given selection.
 	 *
 	 * @param s
-	 *            La chaîne à insérer au buffer (non null)
+	 *            the string to insert (not null)
 	 * @param select
-	 *            La selection actuelle (non null)
+	 *            the selection (not null)
 	 */
 	public final void addText(final String s, final Selection select) {
 		LOGGER.trace("Method addText");
@@ -86,11 +79,11 @@ public final class Buffer implements Observable {
 	}
 
 	/**
-	 * Supprime le content du buffer désigné par la sélection passée en
-	 * paramètre. Supprime le dernier caractère en cas de sélection vide.
+	 * Delete the text designated by the given selection. Delete the the
+	 * character before if the selection is null.
 	 *
 	 * @param select
-	 *            La sélection actuelle (non null)
+	 *            the selection (not null)
 	 */
 	public final void deleteText(final Selection select) {
 		LOGGER.trace("Method deleteText");
@@ -109,21 +102,20 @@ public final class Buffer implements Observable {
 	}
 
 	/**
-	 * Retourne l'ensemble du buffer sous forme de chaîne de caractère.
+	 * Get the content as a string.
 	 *
-	 * @return Le content du buffer
+	 * @return the buffers' content
 	 */
 	public final String getContent() {
 		return content.toString();
 	}
 
 	/**
-	 * Récupère le content du buffer spécifié par la sélection passée en
-	 * paramètre.
+	 * Get the content of this buffer designated by the given selection.
 	 *
 	 * @param select
-	 *            La sélection souhaitée (non null)
-	 * @return La chaîne du buffer représentée par la sélection
+	 *            the selection (not null)
+	 * @return the substring of the content designated by the selection
 	 */
 	public final String getContent(final Selection select) {
 		if (select == null)
@@ -131,31 +123,27 @@ public final class Buffer implements Observable {
 		return content.substring(select.getStart(), select.getEnd());
 	}
 
-	private List<Observer> getListObservers() {
-		return listObservers.subList(0, listObservers.size());
-	}
-
 	/**
-	 * Renseigne l'indice max. pour l'objet Selection
+	 * Gives the upper bound of the selection for this buffer.
 	 *
-	 * @return L'indice max. utilisable dans la sélection
+	 * @return the upper bound of the selection
 	 */
 	public int getMaxSelect() {
 		return content.length();
 	}
 
 	/**
-	 * Retourne la position du curseur suite à la dernière modification.
+	 * Get the new offset of the cursor after the last action.
 	 *
-	 * @return La nouvelle position du curseur
+	 * @return the new offset
 	 */
 	public final int getNewOffset() {
 		return newOffset;
 	}
 
-	/**
-	 * Indique à l'ensemble des observers qu'ils doivent se mettre à jour suite
-	 * à un changement du content du buffer.
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observable#notifyObservers()
 	 */
 	@Override
 	public final void notifyObservers() {
@@ -163,11 +151,9 @@ public final class Buffer implements Observable {
 			o.update(this);
 	}
 
-	/**
-	 * Retire un observer de la liste des observers de l'objet.
-	 *
-	 * @param o
-	 *            L'observer à retirer (non null)
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observable#removeObserver(editor.Observer)
 	 */
 	@Override
 	public final void removeObserver(final Observer o) {

@@ -1,0 +1,109 @@
+package recordables;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import commands.SupprimerTexte;
+import editor.Recorder;
+import engine.MoteurEdition;
+import mementos.MementoCommand;
+import mementos.MementoDelText;
+
+/**
+ * La classe DelTextRecordable execute une commande SupprimerTexte et enregistre son MementoCommand dans un Recorder
+ * @see Recorder
+ * @see SupprimerTexte
+ * @see CommandRecordable
+ */
+public final class DelTextRecordable implements CommandRecordable {
+
+
+	/**
+	 * Logger pour suivre le déroulement de l'application
+	 */
+	private static final Logger LOGGER = LogManager.getLogger(DelTextRecordable.class.getName());
+	
+	private Recorder recorder;
+	private MoteurEdition moteur;
+	
+	/**
+	 * Créé une commande DelTextRecordable
+	 * L'ensemble des paramètres doit être renseigné
+	 * @param moteur Le MoteurEdition auquel adresser la commande
+	 * @param recorder L'enregsitreur de commande
+	 */
+	public DelTextRecordable(MoteurEdition moteur, Recorder recorder){
+		
+		/* Préconditions */
+		if(recorder == null){
+			
+			throw new IllegalArgumentException("recorder est à null");
+		}
+		if(moteur == null){
+			
+			throw new IllegalArgumentException("moteur est à null");
+		}
+		
+		/*Traitement*/
+		
+		this.recorder = recorder;
+		this.moteur = moteur;
+	}
+	
+	/**
+	 * Créé une Command DelTextRecordable à partir d'un MementoDelText et execute une commande SupprimerTexte
+	 * @param memento Le memento duquel on restaure l'état de la commande enregistrable
+	 */
+	public DelTextRecordable(MementoCommand memento){
+		
+		restaurer(memento);	
+		new SupprimerTexte(moteur).executer();
+	}
+	
+	/**
+	 * Effectue l'enregistrement de la commande auprès de l'recorder et execute la commande auprès du moteur
+	 */
+	@Override
+	public final void executer() {
+		
+		recorder.enregistrer(this);
+		LOGGER.trace("Exécution d'une commande SupprimerTexte");
+		new SupprimerTexte(moteur).executer();
+	}
+
+	/**
+	 * Retour l'état de l'objet sous forme d'un objet MementoDelText
+	 * @see MementoDelText
+	 */
+	@Override
+	public final MementoCommand getMemento() {
+		
+		return new MementoDelText(moteur, recorder);
+	}
+
+	/**
+	 * Restaure l'état d'une commande à partir d'un memento
+	 * @param memento L'objet memento de la classe MementoDelText (non null)
+	 * @see MementoDelText
+	 */
+	@Override
+	public final void restaurer(MementoCommand memento) {
+		
+		/* Préconditions */
+		if(memento == null){
+			
+			throw new IllegalArgumentException("memento est à null");
+		}
+		
+		if(!(memento instanceof MementoDelText)){
+			
+			throw new IllegalArgumentException("Le memento n'est pas de la classe MementoDelText");
+		}
+		
+		LOGGER.trace("Restauration d'une commande DelTextRecordable à partir d'un memento");
+		
+		/*Traitement*/
+		this.moteur = memento.getMoteur();
+		this.recorder = memento.getEnregistreur();
+	}
+}

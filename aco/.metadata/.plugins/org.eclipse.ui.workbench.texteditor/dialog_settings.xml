@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Insert text" key="selection"/>
+		<item value="Paste" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="Insertion du texte"/>
-			<item value="Collage"/>
-			<item value="Coupe de la sélection"/>
-			<item value="selection est à null"/>
-			<item value="chaine est à null"/>
-			<item value="observateur"/>
-			<item value="selection[1]"/>
-			<item value="selection[0]"/>
+			<item value="Coller"/>
+			<item value="InsererTexte"/>
+			<item value="Le memento n&apos;est pas de la classe "/>
+			<item value="Préconditions"/>
+			<item value="Traitement"/>
+			<item value="engineEdition"/>
+			<item value="moteur"/>
+			<item value="est à"/>
 		</list>
 		<list key="replacehistory">
-			<item value="Insert text"/>
 			<item value="Paste"/>
-			<item value="Cut selection"/>
-			<item value="Selection is null"/>
-			<item value="String is null"/>
-			<item value="observer"/>
-			<item value="selectionEnd"/>
-			<item value="selectionStart"/>
+			<item value="InsertText"/>
+			<item value="Not a "/>
+			<item value="Preconditions"/>
+			<item value="Treatment"/>
+			<item value="EditionEngine"/>
+			<item value="engine"/>
+			<item value="is"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

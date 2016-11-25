@@ -3,7 +3,7 @@ package commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 
 /**
  * La commande défaire sert à indiquer au moteur d'édition qu'on souhaite rétablir l'éditeur à l'état précédent (si possible)
@@ -12,13 +12,13 @@ public class Defaire implements Commande {
 
 	private static final Logger LOGGER = LogManager.getLogger(Defaire.class.getName());	
 	
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	/**
 	 * Crée une commande Defaire
 	 * @param moteur Le moteur d'édition auquel adresser la commande (non-null)
 	 */
-	public Defaire(MoteurEdition moteur){
+	public Defaire(EditionEngine moteur){
 		
 		if(moteur == null){
 			

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import recordables.CouperEnregistrable;
 
 /**
@@ -16,7 +16,7 @@ public final class MementoCouper extends MementoCommande{
 
 	private static final Logger LOGGER = LogManager.getLogger(MementoCouper.class.getName());	
 	
-	public MementoCouper(MoteurEdition moteur, Enregistreur enregistreur){
+	public MementoCouper(EditionEngine moteur, Enregistreur enregistreur){
 		
 		super(moteur, enregistreur);
 		LOGGER.trace("Création d'un MementoCouper");

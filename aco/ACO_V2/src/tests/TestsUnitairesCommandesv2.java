@@ -7,77 +7,77 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import editor.Enregistreur;
+import editor.Recorder;
 import engine.MoteurEdition;
 import engine.MoteurImplementation;
 import engine.Selection;
-import recordables.CollerEnregistrable;
-import recordables.CopierEnregistrable;
-import recordables.CouperEnregistrable;
-import recordables.InsTexteEnregistrable;
-import recordables.SelectionnerEnregistrable;
-import recordables.SupTexteEnregistrable;
+import recordables.PasteRecordable;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.InsTextRecordable;
+import recordables.SelectRecordable;
+import recordables.DelTextRecordable;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({MoteurImplementation.class, Enregistreur.class})
+@PrepareForTest({MoteurImplementation.class, Recorder.class})
 public class TestsUnitairesCommandesv2 {
 
 	private static MoteurEdition moteur;
-	private static Enregistreur enregistreur;
+	private static Recorder recorder;
 	
 	public TestsUnitairesCommandesv2() {
 		
 		moteur = PowerMockito.mock(MoteurImplementation.class);
-		enregistreur = PowerMockito.mock(Enregistreur.class);
+		recorder = PowerMockito.mock(Recorder.class);
 	}
 	
 	@Test
 	public void testInsererTexteEnregistrable() {
 		
-		InsTexteEnregistrable cmd = new InsTexteEnregistrable(moteur, enregistreur, "Test");
-		cmd.executer();
+		InsTextRecordable cmd = new InsTextRecordable(moteur, recorder, "Test");
+		cmd.execute();
 		Mockito.verify(moteur).insererTexte(Mockito.eq("Test"));
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 
 	@Test
 	public void testSelectionnerEnregistrable() {
 		
-		SelectionnerEnregistrable cmd = new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 4));
-		cmd.executer();
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		SelectRecordable cmd = new SelectRecordable(moteur, recorder, new Selection(0, 4));
+		cmd.execute();
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 	
 	@Test
 	public void testSupprimerTexteEnregistrable() {
 		
-		SupTexteEnregistrable cmd = new SupTexteEnregistrable(moteur, enregistreur);
+		DelTextRecordable cmd = new DelTextRecordable(moteur, recorder);
 		cmd.executer();
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 	
 	@Test
 	public void testCopierEnregistrable() {
 		
-		CopierEnregistrable cmd = new CopierEnregistrable(moteur, enregistreur);
+		CopyRecordable cmd = new CopyRecordable(moteur, recorder);
 		cmd.executer();
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 	
 	@Test
 	public void testCouperEnregistrable() {
 
-		CouperEnregistrable cmd = new CouperEnregistrable(moteur, enregistreur);
+		CutRecordable cmd = new CutRecordable(moteur, recorder);
 		cmd.executer();
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 	
 	@Test
 	public void testCollerEnregistrable() {
 		
-		CollerEnregistrable cmd = new CollerEnregistrable(moteur, enregistreur);
-		cmd.executer();
-		Mockito.verify(enregistreur).enregistrer(Mockito.eq(cmd));
+		PasteRecordable cmd = new PasteRecordable(moteur, recorder);
+		cmd.execute();
+		Mockito.verify(recorder).enregistrer(Mockito.eq(cmd));
 	}
 
 }

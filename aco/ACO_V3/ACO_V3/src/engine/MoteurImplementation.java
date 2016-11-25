@@ -6,9 +6,9 @@ import mementos.MementoSysteme;
 
 /**
  * La classe MoteurImplementation représente une implémentation d'un moteur d'édition
- * @see MoteurEdition
+ * @see EditionEngine
  */
-public final class MoteurImplementation implements MoteurEdition
+public final class MoteurImplementation implements EditionEngine
 {
 	
 	private final Selection selection;

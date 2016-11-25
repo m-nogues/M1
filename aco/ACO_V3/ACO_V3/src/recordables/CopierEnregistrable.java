@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import commands.Copier;
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import mementos.MementoCommande;
 import mementos.MementoCopier;
 
@@ -24,15 +24,15 @@ public final class CopierEnregistrable implements CommandeEnregistrable {
 	private static final Logger LOGGER = LogManager.getLogger(CopierEnregistrable.class.getName());
 	
 	private Enregistreur enregistreur;
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 	
 	/**
 	 * Créé une commande CopierEnregistrable
 	 * L'ensemble des paramètres doit être renseigné
-	 * @param moteur Le MoteurEdition auquel adresser la commande
+	 * @param moteur Le EditionEngine auquel adresser la commande
 	 * @param enregistreur L'enregsitreur de commande
 	 */
-	public CopierEnregistrable(MoteurEdition moteur, Enregistreur enregistreur){
+	public CopierEnregistrable(EditionEngine moteur, Enregistreur enregistreur){
 		
 		/* Préconditions */
 		if(enregistreur == null){

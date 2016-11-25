@@ -3,7 +3,7 @@ package commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 
 /**
  * Cette commande est chargée d'annuler une commande Defaire précédemment exécutée
@@ -13,13 +13,13 @@ public class Refaire implements Commande {
 
 	private static final Logger LOGGER = LogManager.getLogger(Refaire.class.getName());	
 	
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	/**
 	 * Crée la commande
 	 * @param moteur Le moteur d'édition auquel adresser la commande (non-null)
 	 */
-	public Refaire(MoteurEdition moteur){
+	public Refaire(EditionEngine moteur){
 		
 		if(moteur == null){
 			

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import commands.Selectionner;
 import editor.Enregistreur;
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.Selection;
 import mementos.MementoCommande;
 import mementos.MementoSelectionner;
@@ -25,17 +25,17 @@ public final class SelectionnerEnregistrable implements CommandeEnregistrable {
 	private static final Logger LOGGER = LogManager.getLogger(SelectionnerEnregistrable.class.getName());
 	
 	private Enregistreur enregistreur;
-	private MoteurEdition moteur;
+	private EditionEngine moteur;
 	private Selection selection;
 	
 	/**
 	 * Créé une commande SelectionnerEnregistrable
 	 * L'ensemble des paramètres doit être renseigné
-	 * @param moteur Le MoteurEdition auquel adresser la commande
+	 * @param moteur Le EditionEngine auquel adresser la commande
 	 * @param enregistreur L'enregsitreur de commande
 	 * @param selection La selection à associer à la commande
 	 */
-	public SelectionnerEnregistrable(MoteurEdition moteur, Enregistreur enregistreur, Selection selection){
+	public SelectionnerEnregistrable(EditionEngine moteur, Enregistreur enregistreur, Selection selection){
 		
 		/* Préconditions */
 		if(enregistreur == null){

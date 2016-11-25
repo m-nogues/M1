@@ -1,28 +1,41 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package editor;
 
 /**
- * L'interface Observable décrit un objet qui notifie des objets Observateur lorsque la structure interne de ses données change
- * @see Observateur
+ * The Observable interface describes objects that notifies its observers when
+ * its content changes.
+ *
+ * @see Observer
  */
-public  interface Observable 
-{
+public interface Observable {
 	/**
-	 * Ajoute un observateur à la structure de donnée répertoriant les observateurs de l'objet. Celui-ci sera donc notifié des changements dans la structure interne de l'objet observable.
-	 * @param o	L'observateur à ajouter
+	 * Add an observer in the list of observers on this object. The newly added
+	 * observer will be notified of any future changes on the content of this
+	 * object.
+	 *
+	 * @param o
+	 *            the observer to add
 	 */
-	public void ajouterObservateur(Observateur o) ;
-	
-	/**
-	 * Notifie l'ensemble des observateurs de l'objet qu'il y a eu un changement dans les données de celui-ci.
-	 */
-	public void notifierObservateurs() ;
-	
-	/**
-	 * Retire un observateur àla structure de donnée répertoriant les observateurs de l'objet. Celui-ci ne sera donc plus notifié des changements dans la structure interne de l'objet observable.
-	 * @param o	L'observateur à retirer
-	 */
-	public void retirerObservateur(Observateur o) ;
-	
-	
-}
+	public void addObserver(Observer o);
 
+	/**
+	 * Notifies all the observers in the list that there have been a change in
+	 * the content of this object.
+	 */
+	public void notifyObservers();
+
+	/**
+	 * Remove an observer from the list of observers on this object. The removed
+	 * observer will not be notified of any future changes on the content of
+	 * this object.
+	 *
+	 * @param o
+	 *            the observer to remove
+	 */
+	public void removeObserver(Observer o);
+}

@@ -1,0 +1,25 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
+package editor;
+
+/**
+ * The Observer interface describes objects that want to listen to the changes
+ * in the content of an observable that it subscribed to.
+ *
+ * @see Observable
+ */
+public interface Observer {
+	/**
+	 * Cette méthode est executée lorsque l'objet Observable fait appel à sa
+	 * méthode notifierObservateurs().
+	 *
+	 * @param o
+	 *            L'objet Observable se passant lui même en paramètre,
+	 *            permettant à l'Observer de se mettre à jour
+	 */
+	public void update(Observable o);
+}

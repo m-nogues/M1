@@ -1,133 +1,113 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package engine;
 
 /**
- * La classe Selection représente la sélection de l'utilisateur.
+ * The class selection represents the selection that the user has done.
  */
-public final class Selection
-{
+public final class Selection {
+	/** Selection start index. */
+	private int	start;
+	/** Selection end index. */
+	private int	end;
+
 	/**
-	 * Indique l'indice de début de la sélection
+	 * Instantiate a new selection from the start index to the end index.
+	 *
+	 * @param start
+	 *            selection start (> 0)
+	 * @param end
+	 *            selection end (>= start)
 	 */
-	private int debut;
-	
-	/**
-	 * Indique l'indice de fin de la sélection
-	 */
-	private int fin;
-	
-	/**
-	 * Crée une sélection à partir du début et de la fin de celle-ci
-	 * @param debut 	Le début de la sélection (positif ou nul)
-	 * @param fin 		La fin de la sélection (supérieur ou égal à début)
-	 */
-	public Selection(final int debut, final int fin){
-		
-		/* Préconditions */
-		
-		if(debut<0){
-			
-			throw new IllegalArgumentException("Début est négatif");
-		}
-		if(fin < 0){
-		
-			throw new IllegalArgumentException("Fin est négatif");
-		}
-		if(fin < debut){
-			
-			throw new IllegalArgumentException("Fin est inférieur à début");
-		}
-		
-		/* Traitement */
-		this.debut = debut;
-		this.fin = fin;
+	public Selection(int start, int end) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Start < 0");
+		if (end < start)
+			throw new IllegalArgumentException("End < Start");
+		/* Treatment */
+		this.start = start;
+		this.end = end;
 	}
 
 	/**
-	 * Retourne le début de la sélection
-	 * @return Le début de la sélection
+	 * Flush the selection by making start and end equal.
 	 */
-	public final int getDebut() {
-		
-		return debut;
+	public final void flush() {
+		end = start;
 	}
-	
+
 	/**
-	 * Retourn la fin de la sélection
-	 * @return La fin de la sélection
+	 * Gets the end of the selection.
+	 *
+	 * @return the end
 	 */
-	public final int getFin() {
-		
-		return fin;	
+	public final int getEnd() {
+		return end;
 	}
-	
+
 	/**
-	 * Retourne la longueur de la sélection
-	 * @return La longueur de la sélection
+	 * Gets the length of the selection.
+	 *
+	 * @return the length
 	 */
-	public final int getLongueur() {
-		
-		return fin-debut;
+	public final int getLength() {
+		return end - start;
 	}
-	
+
 	/**
-	 * Rend la sélection vide en plaçant l'indice de fin au niveau de l'indice de début
+	 * Gets the start of the selection.
+	 *
+	 * @return the start
 	 */
-	public final void rendreVide(){
-		
-		fin = debut;
+	public final int getStart() {
+		return start;
 	}
-	
+
 	/**
-	 * Retourne vrai si l'indice du début de la sélection est égal à la celui de la fin
-	 * @return Vrai si la sélection est vide, faux sinon
+	 * Checks if the selection is empty.
+	 *
+	 * @return true, if is empty
 	 */
-	public final boolean estVide() {
-		
-		return (debut==fin);
+	public final boolean isEmpty() {
+		return start == end;
 	}
-	
+
 	/**
-	 * Permet de spécifier une nouvelle sélection à l'aide des indices de début et de fin
-	 * @param debut 	Le début de la sélection (positif ou nul)
-	 * @param fin 		La fin de la sélection (supérieur ou égal à début)
+	 * Sets the selection with start and end index.
+	 *
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
 	 */
-	public final void setSelection(final int debut, final int fin) {
-		
-		/* Préconditions */
-		
-		if(debut<0){
-			
-			throw new IllegalArgumentException("Début est négatif");
-		}
-		if(fin < 0){
-		
-			throw new IllegalArgumentException("Fin est négatif");
-		}
-		if(fin < debut){
-			
-			throw new IllegalArgumentException("Fin est inférieur à début");
-		}
-		
-		/* Traitement */
-		this.debut = debut;
-		this.fin = fin;
+	public final void setSelection(int start, int end) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Start < 0");
+		if (end < start)
+			throw new IllegalArgumentException("End < Start");
+		/* Treatment */
+		this.start = start;
+		this.end = end;
 	}
-	
+
 	/**
-	 * Permet de spécifier une nouvelle sélection à partir d'une autre sélection
-	 * @param selection	La nouvelle selection
+	 * Sets the selection with given selection.
+	 *
+	 * @param selection
+	 *            the new selection
 	 */
-	public final void setSelection(final Selection selection) {
-		
-		/* Préconditions */
-		
-		if(selection == null){
-			
-			throw new IllegalArgumentException("selection est négatif");
-		}
-	
-		/* Traitement */
-		this.debut = selection.getDebut();
-		this.fin = selection.getFin();
+	public final void setSelection(Selection selection) {
+		/* Preconditions */
+		if (selection == null)
+			throw new IllegalArgumentException("Selection is null");
+		/* Treatment */
+		start = selection.getStart();
+		end = selection.getEnd();
 	}
 }

@@ -3,7 +3,7 @@ package commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import engine.MoteurEdition;
+import engine.EditionEngine;
 import engine.Selection;
 
 /**
@@ -16,7 +16,7 @@ public final class Selectionner implements Commande
 	/**
 	 * Moteur d'édition qui exécutera la commande
 	 */
-	private final MoteurEdition moteur;
+	private final EditionEngine moteur;
 	
 	/**
 	 * Nouvelle sélection
@@ -28,7 +28,7 @@ public final class Selectionner implements Commande
 	 * @param moteur	Le Moteur d'édition auquel envoyer la commande (non null)
 	 * @param selection La nouvelle selection (non null)
 	 */
-	public Selectionner(MoteurEdition moteur, Selection selection){
+	public Selectionner(EditionEngine moteur, Selection selection){
 		
 		/* Préconditions */
 		

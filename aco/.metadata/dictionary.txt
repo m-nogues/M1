@@ -1,3 +1,9 @@
 multithread
 clipboard
 recordable
+maël
+nogues
+mathieu
+fr
+gui
+mementos
