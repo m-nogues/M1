@@ -1,0 +1,60 @@
+package commands;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import engine.MoteurEdition;
+import engine.Selection;
+
+/**
+ * La commande selectionner ordonne au engine d'édition d'effectuer une nouvelle
+ * sélection
+ */
+public final class Select implements Command {
+	private static final Logger LOGGER = LogManager.getLogger(Select.class.getName());
+
+	/**
+	 * Moteur d'édition qui exécutera la commande
+	 */
+	private final MoteurEdition moteur;
+
+	/**
+	 * Nouvelle sélection
+	 */
+	private final Selection selection;
+
+	/**
+	 * Le constructeur a besoin de savoir à quel engine d'édition envoyer la
+	 * commande et quelle sélection effectuer
+	 * 
+	 * @param engine
+	 *            Le Moteur d'édition auquel envoyer la commande (non null)
+	 * @param selection
+	 *            La nouvelle selection (non null)
+	 */
+	public Select(MoteurEdition moteur, Selection selection) {
+
+		/* Préconditions */
+
+		if (moteur == null)
+			throw new IllegalArgumentException("Moteur est à null");
+
+		if (selection == null)
+			throw new IllegalArgumentException("Selection est à null");
+
+		/* Traitement */
+
+		this.moteur = moteur;
+		this.selection = selection;
+	}
+
+	/**
+	 * Execute la commande
+	 */
+	@Override
+	public final void execute() {
+
+		LOGGER.trace("Exécution d'une commande Select");
+		moteur.selectionner(selection);
+	}
+}

@@ -1,0 +1,74 @@
+package tests;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import commands.Paste;
+import commands.Copy;
+import commands.Cut;
+import commands.InsertText;
+import commands.Select;
+import commands.DeleteText;
+import engine.MoteurEdition;
+import engine.ImplementedEngine;
+import engine.Selection;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ ImplementedEngine.class })
+public class TestsUnitairesCommandesv1 {
+
+	private static MoteurEdition moteur;
+
+	public TestsUnitairesCommandesv1() {
+
+		moteur = PowerMockito.mock(ImplementedEngine.class);
+	}
+
+	@Test
+	public void testColler() {
+
+		new Paste(moteur).execute();
+		Mockito.verify(moteur).coller();
+	}
+
+	@Test
+	public void testCopier() {
+
+		new Copy(moteur).execute();
+		Mockito.verify(moteur).copier();
+	}
+
+	@Test
+	public void testCouper() {
+
+		new Cut(moteur).execute();
+		Mockito.verify(moteur).couper();
+	}
+
+	@Test
+	public void testInsererTexte() {
+
+		new InsertText(moteur, "Test").execute();
+		Mockito.verify(moteur).insererTexte(Matchers.eq("Test"));
+	}
+
+	@Test
+	public void testSelectionner() {
+
+		final Selection sel = new Selection(0, 4);
+		new Select(moteur, sel).execute();
+		Mockito.verify(moteur).selectionner(Matchers.eq(sel));
+	}
+
+	@Test
+	public void testSupprimerTexte() {
+
+		new DeleteText(moteur).execute();
+		Mockito.verify(moteur).supprimerTexte();
+	}
+}

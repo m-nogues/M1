@@ -1,0 +1,78 @@
+package tests;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import commands.Copy;
+import commands.Cut;
+import commands.DeleteText;
+import commands.InsertText;
+import commands.Paste;
+import commands.Select;
+import engine.ImplementedEngine;
+import engine.Selection;
+
+@RunWith(PowerMockRunner.class)
+public class TestsIntegrationv1 {
+	private ImplementedEngine	moteur;
+	private GUITest				ihm;
+
+	@Test
+	public void copyPaste() {
+		// Insertion du texte
+		new InsertText(moteur, "Test").execute();
+		// S�lection dela chaine
+		new Select(moteur, new Selection(0, 4)).execute();
+		// Coupe de la sélection
+		new Copy(moteur).execute();
+		assertEquals("Test", ihm.getLastInsert());
+		// Collage de remplacement
+		new Paste(moteur).execute();
+		assertEquals("Test", ihm.getLastInsert());
+		// Collage additionnel
+		new Paste(moteur).execute();
+		assertEquals("TestTest", ihm.getLastInsert());
+	}
+
+	@Test
+	public void couperColler() {
+		// Insertion du texte
+		new InsertText(moteur, "Test").execute();
+		// S�lection des deux premier caractères
+		new Select(moteur, new Selection(2, 4)).execute();
+		// Coupe de la sélection
+		new Cut(moteur).execute();
+		assertEquals("Te", ihm.getLastInsert());
+		// Collage
+		new Select(moteur, new Selection(0, 0)).execute();
+		new Paste(moteur).execute();
+		assertEquals("stTe", ihm.getLastInsert());
+	}
+
+	@Test
+	public void insertionSuppression() {
+		// Insertion du texte
+		new InsertText(moteur, "Test").execute();
+		assertEquals("Test", ihm.getLastInsert());
+		// Suppression dees deux derniers caractères
+		new DeleteText(moteur).execute();
+		new DeleteText(moteur).execute();
+		assertEquals("Te", ihm.getLastInsert());
+		// S�lection des deux premier caractères
+		new Select(moteur, new Selection(0, 2)).execute();
+		// suppression de la sélection
+		new DeleteText(moteur).execute();
+		assertEquals("", ihm.getLastInsert());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		moteur = new ImplementedEngine();
+		ihm = new GUITest();
+		moteur.getBuffer().addObserver(ihm);
+	}
+}

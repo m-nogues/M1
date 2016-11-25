@@ -1,0 +1,68 @@
+package gui;
+
+import javax.swing.JTextArea;
+
+import commands.Coller;
+import commands.Copier;
+import commands.Couper;
+import engine.MoteurEdition;
+
+/**
+ * Cette classe hérite de JTextArea afin de traiter les actions de copie, coupe,
+ * collage
+ */
+public class ZoneTexte extends JTextArea {
+
+	static final long serialVersionUID = 8166387793964966707L;
+
+	private MoteurEdition moteur;
+
+	/**
+	 * Crée la zone de texte
+	 * 
+	 * @param engine
+	 *            Le engine d'edition auquel adresser les commands
+	 */
+	public ZoneTexte(int hauteur, int largeur, MoteurEdition moteur) {
+
+		super(hauteur, largeur);
+
+		if (moteur == null)
+			throw new IllegalAccessError("engine est à null");
+
+		this.moteur = moteur;
+	}
+
+	/**
+	 * Lance une commande CopierEnregsitrable
+	 * 
+	 * @see Copier
+	 */
+	@Override
+	public void copy() {
+
+		new Copier(moteur).executer();
+	}
+
+	/**
+	 * Lance une commande CouperEnregsitrable
+	 * 
+	 * @see Couper
+	 */
+	@Override
+	public void cut() {
+
+		new Couper(moteur).executer();
+	}
+
+	/**
+	 * Lance une commande CollerEnregsitrable
+	 * 
+	 * @see Coller
+	 */
+	@Override
+	public void paste() {
+
+		new Coller(moteur).executer();
+	}
+}

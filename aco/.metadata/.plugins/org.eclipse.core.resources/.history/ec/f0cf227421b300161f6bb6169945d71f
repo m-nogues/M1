@@ -1,0 +1,189 @@
+/*
+ * The GNU General Public License does not permit incorporating your program
+ * into proprietary programs. If your program is a subroutine library, you may
+ * consider it more useful to permit linking proprietary applications with the
+ * library. If this is what you want to do, use the GNU Lesser General Public
+ * License instead of this License. But first, please read
+ * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+ * @author Maël Nogues mael.nogues@outlook.com
+ */
+package engine;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import editor.Observable;
+import editor.Observer;
+
+/**
+ * Cette classe contient le texte entré par l'utilisateur suite à ses actions.
+ */
+public final class Buffer implements Observable {
+	/** Logger pour suivre le déroulement de l'application. */
+	private static final Logger		LOGGER	= LogManager
+			.getLogger(Buffer.class.getName());
+	/** Répertorie les observers de l'objet. */
+	private final List<Observer>	listObservers;
+	/**
+	 * Un objet de la classe StringBuffer est utilisé pour ses méthodes
+	 * d'insertions/suppressions pratiques.
+	 */
+	private StringBuffer			content;
+	/**
+	 * Cet entier décrit la nouvelle position du curseur suite à la
+	 * modification.
+	 */
+	private int						newOffset;
+
+	/**
+	 * Instantiates a new buffer.
+	 */
+	public Buffer() {
+		listObservers = new ArrayList<Observer>();
+		content = new StringBuffer();
+		newOffset = 0;
+	}
+
+	public Buffer(Buffer buffer) {
+		listObservers = buffer.getListObservers();
+		content = new StringBuffer(buffer.getContent());
+		newOffset = buffer.getNewOffset();
+	}
+
+	/**
+	 * Ajoute un observer à la liste des observers de l'objet.
+	 *
+	 * @param o
+	 *            L'observer à ajouter (ici l'GUI) (non null)
+	 */
+	@Override
+	public final void addObserver(final Observer o) {
+		if (o == null)
+			throw new IllegalArgumentException("Selection is null");
+		if (listObservers.contains(o))
+			throw new IllegalArgumentException("Observer already in the list");
+		listObservers.add(o);
+	}
+
+	/**
+	 * Ajoute du texte à notre buffer à l'emplacement désigné par la sélection.
+	 *
+	 * @param s
+	 *            La chaîne à insérer au buffer (non null)
+	 * @param select
+	 *            La selection actuelle (non null)
+	 */
+	public final void addText(final String s, final Selection select) {
+		LOGGER.trace("Method addText");
+		/* Preconditions */
+		if (s == null)
+			throw new IllegalArgumentException("String is null");
+		if (select == null)
+			throw new IllegalArgumentException("Selection is null");
+		/* Treatment */
+		// If select is not empty, delete select before insertion
+		if (!select.isEmpty())
+			deleteText(select);
+		newOffset = select.getStart() + s.length();
+		content.insert(select.getStart(), s);
+		select.setSelection(newOffset, newOffset);
+		notifyObservers();
+		LOGGER.trace("End of addText");
+	}
+
+	/**
+	 * Supprime le content du buffer désigné par la sélection passée en
+	 * paramètre. Supprime le dernier caractère en cas de sélection vide.
+	 *
+	 * @param select
+	 *            La sélection actuelle (non null)
+	 */
+	public final void deleteText(final Selection select) {
+		LOGGER.trace("Method deleteText");
+		/* Preconditions */
+		if (select == null)
+			throw new IllegalArgumentException("Selection is null");
+		/* Treatment */
+		// If select is empty and we can delete the character before
+		if (select.isEmpty() && select.getStart() != 0)
+			select.setSelection(select.getStart() - 1, select.getStart());
+		content.delete(select.getStart(), select.getEnd());
+		select.flush();
+		newOffset = select.getStart();
+		notifyObservers();
+		LOGGER.trace("End of deleteText");
+	}
+
+	/**
+	 * Retourne l'ensemble du buffer sous forme de chaîne de caractère.
+	 *
+	 * @return Le content du buffer
+	 */
+	public final String getContent() {
+		return content.toString();
+	}
+
+	/**
+	 * Récupère le content du buffer spécifié par la sélection passée en
+	 * paramètre.
+	 *
+	 * @param select
+	 *            La sélection souhaitée (non null)
+	 * @return La chaîne du buffer représentée par la sélection
+	 */
+	public final String getContent(final Selection select) {
+		if (select == null)
+			throw new IllegalArgumentException("Selection is null");
+		return content.substring(select.getStart(), select.getEnd());
+	}
+
+	private List<Observer> getListObservers() {
+		return listObservers.subList(0, listObservers.size());
+	}
+
+	/**
+	 * Renseigne l'indice max. pour l'objet Selection
+	 *
+	 * @return L'indice max. utilisable dans la sélection
+	 */
+	public int getMaxSelect() {
+		return content.length();
+	}
+
+	/**
+	 * Retourne la position du curseur suite à la dernière modification.
+	 *
+	 * @return La nouvelle position du curseur
+	 */
+	public final int getNewOffset() {
+		return newOffset;
+	}
+
+	/**
+	 * Indique à l'ensemble des observers qu'ils doivent se mettre à jour suite
+	 * à un changement du content du buffer.
+	 */
+	@Override
+	public final void notifyObservers() {
+		for (Observer o : listObservers)
+			o.update(this);
+	}
+
+	/**
+	 * Retire un observer de la liste des observers de l'objet.
+	 *
+	 * @param o
+	 *            L'observer à retirer (non null)
+	 */
+	@Override
+	public final void removeObserver(final Observer o) {
+		if (o == null)
+			throw new IllegalArgumentException("Selection is null");
+		if (!listObservers.contains(o))
+			throw new IllegalArgumentException("o is not in  listObservers");
+		listObservers.remove(o);
+	}
+}

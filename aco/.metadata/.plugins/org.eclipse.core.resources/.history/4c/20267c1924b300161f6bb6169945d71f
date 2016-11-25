@@ -1,0 +1,78 @@
+package tests;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import commands.Copy;
+import commands.Cut;
+import commands.DeleteText;
+import commands.InsertText;
+import commands.Paste;
+import commands.Select;
+import engine.ImplementedEngine;
+import engine.Selection;
+
+@RunWith(PowerMockRunner.class)
+public class TestsIntegrationv1 {
+	private ImplementedEngine	engine;
+	private GUITest				gui;
+
+	@Test
+	public void copyPaste() {
+		// Insert text
+		new InsertText(engine, "Test").execute();
+		// Select string
+		new Select(engine, new Selection(0, 4)).execute();
+		// Coupe de la sélection
+		new Copy(engine).execute();
+		assertEquals("Test", gui.getLastInsert());
+		// Collage de remplacement
+		new Paste(engine).execute();
+		assertEquals("Test", gui.getLastInsert());
+		// Collage additionnel
+		new Paste(engine).execute();
+		assertEquals("TestTest", gui.getLastInsert());
+	}
+
+	@Test
+	public void cutPaste() {
+		// Insert text
+		new InsertText(engine, "Test").execute();
+		// S�lection des deux premier caractères
+		new Select(engine, new Selection(2, 4)).execute();
+		// Coupe de la sélection
+		new Cut(engine).execute();
+		assertEquals("Te", gui.getLastInsert());
+		// Collage
+		new Select(engine, new Selection(0, 0)).execute();
+		new Paste(engine).execute();
+		assertEquals("stTe", gui.getLastInsert());
+	}
+
+	@Test
+	public void insertionSuppression() {
+		// Insertion du texte
+		new InsertText(engine, "Test").execute();
+		assertEquals("Test", gui.getLastInsert());
+		// Suppression dees deux derniers caractères
+		new DeleteText(engine).execute();
+		new DeleteText(engine).execute();
+		assertEquals("Te", gui.getLastInsert());
+		// S�lection des deux premier caractères
+		new Select(engine, new Selection(0, 2)).execute();
+		// suppression de la sélection
+		new DeleteText(engine).execute();
+		assertEquals("", gui.getLastInsert());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		engine = new ImplementedEngine();
+		gui = new GUITest();
+		engine.getBuffer().addObserver(gui);
+	}
+}

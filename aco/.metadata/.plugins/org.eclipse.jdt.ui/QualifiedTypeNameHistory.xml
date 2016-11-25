@@ -11,4 +11,6 @@
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="org.junit.Before"/>
 <fullyQualifiedTypeName name="engine.SBuffer"/>
+<fullyQualifiedTypeName name="editor.Observer"/>
+<fullyQualifiedTypeName name="editor.Observable"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,47 @@
+package tests;
+
+import java.util.Observable;
+
+import fr.istic.noguesgranmontagne.aco.Observateur;
+import moteur.Buffer;
+
+/**
+ * Cette classe, crée exclusivement pour les tests sert à vérifier que les
+ * changements effectuées au niveau du moteur d'édition sont bien répercutés au
+ * niveau de l'IHM
+ *
+ */
+public final class IHMTest implements Observer {
+
+	private String derniereInsert;
+
+	IHMTest() {
+
+		derniereInsert = "";
+	}
+
+	/**
+	 * Retourne la dernière mise à jour effectuée par le Buffer
+	 * 
+	 * @return La dernière mise à jour effectuée par le Buffer
+	 */
+	public String getDerniereInsert() {
+
+		return new String(derniereInsert);
+	}
+
+	@Override
+	public void miseAJour(Observable o) {
+
+		/* Préconditions */
+		if (o == null)
+			throw new IllegalArgumentException("o est à null");
+
+		/* Traitement */
+		if (o instanceof Buffer) {
+
+			Buffer buffer = (Buffer) o;
+			derniereInsert = buffer.getContenu();
+		}
+	}
+}

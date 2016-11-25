@@ -1,0 +1,25 @@
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import engine.ImplementedEngine;
+import gui.GUI;
+
+/**
+ * Cette classe est chargée d'instancier les classes nécessaires à l'éditeur,
+ * les lier si nécessaire et de lancer l'interface graphique
+ */
+public final class EditorClient {
+	private static final Logger LOGGER = LogManager.getLogger(EditorClient.class.getName());
+
+	public static void main(String[] args) {
+
+		final ImplementedEngine engine = new ImplementedEngine();
+
+		final GUI gui = new GUI(engine);
+
+		engine.getBuffer().addObserver(gui);
+
+		LOGGER.trace("Mise en place des différents éléments de l'application effectué, prêt à l'utilisation !");
+	}
+}

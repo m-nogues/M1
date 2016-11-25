@@ -1,0 +1,124 @@
+/*
+ * The GNU General Public License does not permit incorporating your program
+ * into proprietary programs. If your program is a subroutine library, you may
+ * consider it more useful to permit linking proprietary applications with the
+ * library. If this is what you want to do, use the GNU Lesser General Public
+ * License instead of this License. But first, please read
+ * <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+ * @author Maël Nogues mael.nogues@outlook.com
+ */
+package engine;
+
+/**
+ * La classe Selection représente la sélection de l'utilisateur.
+ */
+public final class Selection {
+	/** Indique l'indice de début de la sélection. */
+	private int	start;
+	/** Indique l'indice de end de la sélection. */
+	private int	end;
+
+	/**
+	 * Crée une sélection à partir du début et de la end de celle-ci.
+	 *
+	 * @param start
+	 *            Le début de la sélection (positif ou nul)
+	 * @param end
+	 *            La end de la sélection (supérieur ou égal à début)
+	 */
+	public Selection(final int start, final int end) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Start < 0");
+		if (end < 0)
+			throw new IllegalArgumentException("End < 0");
+		if (end < start)
+			throw new IllegalArgumentException("End < Start");
+		/* Treatment */
+		this.start = start;
+		this.end = end;
+	}
+
+	/**
+	 * Rend la sélection vide en plaçant l'indice de end au niveau de l'indice
+	 * de début.
+	 */
+	public final void flush() {
+		end = start;
+	}
+
+	/**
+	 * Retourn la end de la sélection.
+	 *
+	 * @return La end de la sélection
+	 */
+	public final int getEnd() {
+		return end;
+	}
+
+	/**
+	 * Retourne la longueur de la sélection.
+	 *
+	 * @return La longueur de la sélection
+	 */
+	public final int getLongueur() {
+		return end - start;
+	}
+
+	/**
+	 * Retourne le début de la sélection.
+	 *
+	 * @return Le début de la sélection
+	 */
+	public final int getStart() {
+		return start;
+	}
+
+	/**
+	 * Retourne vrai si l'indice du début de la sélection est égal à la celui de
+	 * la end.
+	 *
+	 * @return Vrai si la sélection est vide, faux sinon
+	 */
+	public final boolean isEmpty() {
+		return start == end;
+	}
+
+	/**
+	 * Permet de spécifier une nouvelle sélection à l'aide des indices de début
+	 * et de end.
+	 *
+	 * @param start
+	 *            Le début de la sélection (positif ou nul)
+	 * @param end
+	 *            La end de la sélection (supérieur ou égal à début)
+	 */
+	public final void setSelection(final int start, final int fin) {
+		/* Preconditions */
+		if (start < 0)
+			throw new IllegalArgumentException("Début est négatif");
+		if (fin < 0)
+			throw new IllegalArgumentException("Fin est négatif");
+		if (fin < start)
+			throw new IllegalArgumentException("Fin est inférieur à début");
+		/* Treatment */
+		start = start;
+		end = fin;
+	}
+
+	/**
+	 * Permet de spécifier une nouvelle sélection à partir d'une autre
+	 * sélection.
+	 *
+	 * @param selection
+	 *            La nouvelle selection
+	 */
+	public final void setSelection(final Selection selection) {
+		/* Préconditions */
+		if (selection == null)
+			throw new IllegalArgumentException("selection est négatif");
+		/* Traitement */
+		start = selection.getStart();
+		end = selection.getEnd();
+	}
+}

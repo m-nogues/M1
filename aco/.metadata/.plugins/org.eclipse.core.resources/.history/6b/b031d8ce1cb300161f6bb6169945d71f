@@ -1,0 +1,16 @@
+package commands;
+
+import engine.MoteurEdition;
+
+/**
+ * On commande est chargée de transmettre un ordre à une classe implémentant
+ * l'interface MoteurEdition
+ * 
+ * @see MoteurEdition
+ */
+public interface Command {
+	/**
+	 * Execution de la commande auprès de l'implémentation du engine d'édition
+	 */
+	public void executer();
+}

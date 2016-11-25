@@ -1,0 +1,50 @@
+package gui;
+
+import javax.swing.JButton;
+
+import editor.GestionnaireHisto;
+import editor.Observable;
+import editor.Observateur;
+
+/**
+ * Ce bouton est chargé de se mettre à jour (au niveau de son état cliquable ou non) à chaque modification du gestionnaire d'historique
+ * @see GestionnaireHisto
+ */
+public class BoutonDefaire extends JButton implements Observateur {
+
+	private static final long serialVersionUID = -6273371891402818469L;
+
+	public BoutonDefaire(){
+		
+		setEnabled(false);
+	}
+
+	/**
+	 * @see Observateur
+	 */
+	@Override
+	public void miseAJour(Observable o) {
+		
+		if(o == null){
+			
+			throw new IllegalArgumentException("o est à null");
+		}
+		
+		if(!(o instanceof GestionnaireHisto)){
+			
+			throw new IllegalArgumentException("o n'est pas du type GestionnaireHisto");
+		}
+		
+		GestionnaireHisto gestionnaire = (GestionnaireHisto) o;
+		
+		if(gestionnaire.peutDefaire()){
+			
+			setEnabled(true);
+		}
+		else{
+			
+			setEnabled(false);
+		}
+	}
+}
+

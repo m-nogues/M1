@@ -1,0 +1,28 @@
+package tests;
+
+import java.util.Observable;
+
+import editor.Observer;
+import engine.Buffer;
+
+/**
+ * Cette classe, crée exclusivement pour les tests sert à vérifier que les
+ * changements effectuées au niveau du engine d'édition sont bien répercutés au
+ * niveau de l'GUI
+ */
+public final class GUITest implements Observer {
+	private String derniereInsert;
+
+	GUITest() {
+		derniereInsert = "";
+	}
+
+	/**
+	 * Retourne la dernière mise à jour effectuée par le Buffer
+	 *
+	 * @return La dernière mise à jour effectuée par le Buffer
+	 */
+	public String getDerniereInsert() {
+		return new String(derniereInsert);
+	}
+}
