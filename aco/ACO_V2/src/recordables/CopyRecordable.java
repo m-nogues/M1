@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package recordables;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,34 +16,34 @@ import mementos.MementoCommand;
 import mementos.MementoCopy;
 
 /**
- * La classe CopyRecordable execute une commande Copier et enregistre son
- * MementoCommand dans un Recorder
+ * CopyRecordable executes a copy command will saving its state in a
+ * recorder.
  *
  * @see Recorder
- * @see Copier
+ * @see Copy
  * @see CommandRecordable
  */
 public final class CopyRecordable implements CommandRecordable {
 
-	/**
-	 * Logger pour suivre le déroulement de l'application
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(CopyRecordable.class.getName());
 
-	private Recorder		recorder;
-	private EditionEngine	engine;
+	/** The recorder. */
+	private Recorder recorder;
+
+	/** The engine. */
+	private EditionEngine engine;
 
 	/**
-	 * Créé une commande CopyRecordable
-	 * L'ensemble des paramètres doit être renseigné
+	 * Instantiate a CopyRecordable from the given parameters (all shall be
+	 * not null).
 	 *
 	 * @param engine
-	 *            Le EditionEngine auquel adresser la commande
+	 *            the engine to ask to execute the command
 	 * @param recorder
-	 *            L'enregsitreur de commande
+	 *            the command recorder
 	 */
 	public CopyRecordable(EditionEngine engine, Recorder recorder) {
-
 		/* Preconditions */
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
@@ -51,51 +57,44 @@ public final class CopyRecordable implements CommandRecordable {
 	}
 
 	/**
-	 * Créé une Command CopyRecordable à partir d'un MementoCopy et execute une
-	 * commande Copier
+	 * Instantiate a CopyRecordable from a memento and executes a copy
+	 * command.
 	 *
 	 * @param memento
-	 *            Le memento duquel on restaure l'état de la commande
-	 *            enregistrable
+	 *            the memento from which we restore the state and execute the
+	 *            select command
 	 */
 	public CopyRecordable(MementoCommand memento) {
-
 		restore(memento);
 		new Copy(engine).execute();
 	}
 
-	/**
-	 * Effectue l'enregistrement de la commande auprès de l'recorder et execute
-	 * la commande auprès du engine
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public final void execute() {
 		recorder.enregistrer(this);
-		LOGGER.trace("Exécution d'une commande CopyRecordable");
+		LOGGER.trace("Executing command copy");
 		new Copy(engine).execute();
 	}
 
-	/**
-	 * Retour l'état de l'objet sous forme d'un objet MementoCopy
-	 *
-	 * @see MementoCopy
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#getMemento()
 	 */
 	@Override
 	public final MementoCommand getMemento() {
-
 		return new MementoCopy(engine, recorder);
 	}
 
-	/**
-	 * Restaure l'état d'une commande à partir d'un memento
-	 *
-	 * @param memento
-	 *            L'objet memento de la classe MementoCopy (non null)
-	 * @see MementoCopy
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#restore(mementos.MementoCommand)
 	 */
 	@Override
 	public final void restore(MementoCommand memento) {
-
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
@@ -103,7 +102,7 @@ public final class CopyRecordable implements CommandRecordable {
 		if (!(memento instanceof MementoCopy))
 			throw new IllegalArgumentException("Not a MementoCopy");
 
-		LOGGER.trace("Restauration d'une commande CopyRecordable à partir d'un memento");
+		LOGGER.trace("CopyRecordable from memento");
 
 		/* Treatment */
 		engine = memento.getEngine();

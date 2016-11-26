@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package mementos;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +14,7 @@ import engine.EditionEngine;
 import recordables.InsTextRecordable;
 
 /**
- * Cette classe est chargée de stocker l'état d'une commande InsTextRecordable.
+ * MementoInsText is to store the InsTextRecordable commands.
  *
  * @see InsTextRecordable
  * @see MementoCommand
@@ -22,7 +28,7 @@ public final class MementoInsText extends MementoCommand {
 	private String text;
 
 	/**
-	 * Crée le memento à partir des attributs de la commande enregsitrable.
+	 * Instantiates a new memento ins text.
 	 *
 	 * @param engine
 	 *            the engine
@@ -46,19 +52,19 @@ public final class MementoInsText extends MementoCommand {
 	}
 
 	/**
-	 * Retourne l'attribut text du memento.
+	 * Gets the stored text.
 	 *
-	 * @return L'attribut text du memento
+	 * @return the text
 	 */
 	public final String getText() {
 		return new String(text); // To retain integrity
 	}
 
 	/**
-	 * Setter de l'attribut text de cette classe.
+	 * Sets the stored text.
 	 *
 	 * @param text
-	 *            Le nouvel attribut text (non-null)
+	 *            the new text
 	 */
 	public final void setText(String text) {
 

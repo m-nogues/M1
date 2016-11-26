@@ -2,11 +2,12 @@
 <section name="Workbench">
 	<item value="8" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
 	<item value="false" key="org.eclipse.jdt.ui.formatter_page.show_invisible_characters"/>
+	<item value="D:\Applications\java-latest\eclipse\plugins" key="org.eclipse.jdt.ui.cleanup.loadpath"/>
 	<item value="504" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
 	<item value="14" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="0" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_y"/>
 	<item value="568" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_x"/>
-	<item value="18" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
+	<item value="-1" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="false" key="delegateUpdating"/>
 	<item value="530" key="clean_up_save_particpant_modify_dialog.preferred_x"/>
 	<item value="112" key="clean_up_save_particpant_modify_dialog.preferred_y"/>
@@ -20,7 +21,7 @@
 	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
 	<item value="759" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_height"/>
-	<item value="1" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
+	<item value="2" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.last_focus"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="renameSubpackages"/>
 		<item value="false" key="updateQualifiedNames"/>
@@ -85,8 +86,8 @@
 		<item value="false" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="530" key="width"/>
-		<item value="365" key="height"/>
+		<item value="540" key="width"/>
+		<item value="375" key="height"/>
 	</section>
 	<section name="javadoc">
 		<item value="private" key="access"/>

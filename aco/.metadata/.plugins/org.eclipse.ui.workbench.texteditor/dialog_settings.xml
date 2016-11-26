@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Paste" key="selection"/>
+		<item value="execute" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="Coller"/>
-			<item value="InsererTexte"/>
-			<item value="Le memento n&apos;est pas de la classe "/>
-			<item value="Préconditions"/>
-			<item value="Traitement"/>
-			<item value="engineEdition"/>
-			<item value="moteur"/>
-			<item value="est à"/>
+			<item value="executer"/>
+			<item value="Enregistrable"/>
+			<item value="MoteurEdition"/>
+			<item value="MoteurImplementation"/>
+			<item value="Youp"/>
+			<item value="nouv"/>
+			<item value="getDerniereInsert"/>
+			<item value="IHMTest"/>
 		</list>
 		<list key="replacehistory">
-			<item value="Paste"/>
-			<item value="InsertText"/>
-			<item value="Not a "/>
-			<item value="Preconditions"/>
-			<item value="Treatment"/>
+			<item value="execute"/>
+			<item value="Recordable"/>
 			<item value="EditionEngine"/>
-			<item value="engine"/>
-			<item value="is"/>
+			<item value="ImplementedEngine"/>
+			<item value="2ndTest"/>
+			<item value="new"/>
+			<item value="getLastInsert"/>
+			<item value="GUITest"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="284" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="391" key="DIALOG_HEIGHT"/>
-		<item value="1257" key="DIALOG_X_ORIGIN"/>
-		<item value="184" key="DIALOG_Y_ORIGIN"/>
+		<item value="948" key="DIALOG_X_ORIGIN"/>
+		<item value="172" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

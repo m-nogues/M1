@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package mementos;
 
 import editor.Recorder;
@@ -5,10 +11,9 @@ import engine.EditionEngine;
 import recordables.CommandRecordable;
 
 /**
- * La classe MementoCommand sert à stocker l'état des commandes enregistrables.
- * Comme toutes les commandes enregsitrables ont un attribut engine et recorder,
- * ceux-ci ainsi que les getters/setters qui leurs sont associés sont définis au
- * sein de cette classe abstraite
+ * MementoCommand is used to store the state of recordable commands. It defines
+ * stores the engine and the recorder of recordable commands and define their
+ * getter and setter.
  *
  * @see CommandRecordable
  * @see Recorder
@@ -16,74 +21,78 @@ import recordables.CommandRecordable;
 public abstract class MementoCommand {
 
 	/** The engine. */
-	protected EditionEngine	engine;
-	
+	protected EditionEngine engine;
+
 	/** The recorder. */
-	protected Recorder		recorder;
+	protected Recorder recorder;
 
 	/**
-	 * Permet de sauvegarder l'attribut engine d'une commande enregistrable.
+	 * Instantiate a MementoCommand that will store the state of a command
+	 * (given engine and recorder).
 	 *
 	 * @param engine
-	 *            L'attribut engine de la commande enregistrable (non null)
+	 *            the engine to store
 	 * @param recorder
-	 *            the recorder
+	 *            the recorder to store
 	 */
 	public MementoCommand(EditionEngine engine, Recorder recorder) {
+		/* Precondition */
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
 
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
 
+		/* Treatment */
 		this.engine = engine;
 		this.recorder = recorder;
 	}
 
 	/**
-	 * Getter de l'attribut engine.
+	 * Gets the stored engine.
 	 *
-	 * @return L'attribut engine de l'objet
+	 * @return the stored engine
 	 */
 	public final EditionEngine getEngine() {
-
 		return engine;
 	}
 
 	/**
-	 * Le getter de l'attribut recorder.
+	 * Gets the stored recorder.
 	 *
-	 * @return L'attribut recorder de l'objet
+	 * @return the stored recorder
 	 */
 	public final Recorder getRecorder() {
 		return recorder;
 	}
 
 	/**
-	 * Setter de l'attribut engine de l'objet.
+	 * Sets the stored engine.
 	 *
 	 * @param engine
-	 *            Le nouveau engine (non null)
+	 *            the new engine (not null)
 	 */
 	public final void setEngine(EditionEngine engine) {
-
+		/* Precondition */
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
 
+		/* Treatment */
 		this.engine = engine;
 	}
 
 	/**
-	 * Setter de l'attribut recorder de l'objet.
+	 * Sets the stored recorder.
 	 *
 	 * @param recorder
-	 *            Le nouvel recorder (non null)
+	 *            the new recorder (not null)
 	 */
 	public final void setRecorder(Recorder recorder) {
-
+		/* Precondition */
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
 
+		/* Treatment */
 		this.recorder = recorder;
 	}
 }

@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package recordables;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,34 +17,37 @@ import mementos.MementoCommand;
 import mementos.MementoSelect;
 
 /**
- * La classe SelectRecordable execute une commande Selectionner et enregistre
- * son MementoCommand dans un Recorder
+ * SelectRecordable executes a select command will saving its state in a
+ * recorder.
  *
  * @see Recorder
- * @see Selectionner
+ * @see Select
  * @see CommandRecordable
  */
 public final class SelectRecordable implements CommandRecordable {
 
-	/**
-	 * Logger pour suivre le déroulement de l'application
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(SelectRecordable.class.getName());
 
-	private Recorder		recorder;
-	private EditionEngine	engine;
-	private Selection		selection;
+	/** The recorder. */
+	private Recorder recorder;
+
+	/** The engine. */
+	private EditionEngine engine;
+
+	/** The selection. */
+	private Selection selection;
 
 	/**
-	 * Créé une commande SelectRecordable
-	 * L'ensemble des paramètres doit être renseigné
+	 * Instantiate a SelectRecordable from the given parameters (all shall be
+	 * not null).
 	 *
 	 * @param engine
-	 *            Le EditionEngine auquel adresser la commande
+	 *            the engine to ask to execute the command
 	 * @param recorder
-	 *            L'enregsitreur de commande
+	 *            the command recorder
 	 * @param selection
-	 *            La selection à associer à la commande
+	 *            the selection to do
 	 */
 	public SelectRecordable(EditionEngine engine, Recorder recorder, Selection selection) {
 		/* Preconditions */
@@ -56,16 +65,16 @@ public final class SelectRecordable implements CommandRecordable {
 	}
 
 	/**
-	 * Créé une Command SelectRecordable à partir d'un MementoSelect et execute
-	 * une commande Selectionner
+	 * Instantiate a SelectRecordable from a memento and executes a select
+	 * command.
 	 *
 	 * @param memento
-	 *            Le memento duquel on restaure l'état de la commande
-	 *            enregistrable
+	 *            the memento from which we restore the state and execute the
+	 *            select command
 	 */
 	public SelectRecordable(MementoCommand memento) {
 		restore(memento);
-		LOGGER.trace("Exécution d'une commande Selectionner");
+		LOGGER.trace("Executing command select");
 		new Select(engine, selection).execute();
 	}
 
@@ -76,7 +85,7 @@ public final class SelectRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.enregistrer(this);
-		LOGGER.trace("Exécution d'une commande Selectionner");
+		LOGGER.trace("Executing command select");
 		new Select(engine, selection).execute();
 	}
 
@@ -89,12 +98,9 @@ public final class SelectRecordable implements CommandRecordable {
 		return new MementoSelect(engine, recorder, selection);
 	}
 
-	/**
-	 * Restaure l'état d'une commande à partir d'un memento
-	 *
-	 * @param memento
-	 *            L'objet memento de la classe MementoSelect (non null)
-	 * @see MementoSelect
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#restore(mementos.MementoCommand)
 	 */
 	@Override
 	public final void restore(MementoCommand memento) {

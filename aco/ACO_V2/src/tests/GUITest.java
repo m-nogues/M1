@@ -10,9 +10,8 @@ import editor.Observer;
 import engine.Buffer;
 
 /**
- * Cette classe, crée exclusivement pour les tests sert à vérifier que les
- * changements effectuées au niveau du engine d'édition sont bien répercutés au
- * niveau de l'GUI.
+ * GUITest is to test if the changes that are tested elsewhere are made on the
+ * GUI.
  */
 public final class GUITest implements Observer {
 	/** The last insert. */
@@ -26,9 +25,9 @@ public final class GUITest implements Observer {
 	}
 
 	/**
-	 * Retourne la dernière mise à jour effectuée par le Buffer.
+	 * Gets the last update from the Buffer.
 	 *
-	 * @return La dernière mise à jour effectuée par le Buffer
+	 * @return the last update from the Buffer
 	 */
 	public String getLastInsert() {
 		return new String(lastInsert);
@@ -42,7 +41,7 @@ public final class GUITest implements Observer {
 	public void update(editor.Observable o) {
 		/* Preconditions */
 		if (o == null)
-			throw new IllegalArgumentException("o est à null");
+			throw new IllegalArgumentException("o is null");
 		/* Treatment */
 		if (o instanceof Buffer) {
 			Buffer buffer = (Buffer) o;

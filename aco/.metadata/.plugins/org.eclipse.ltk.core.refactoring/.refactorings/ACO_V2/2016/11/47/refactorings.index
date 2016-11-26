@@ -56,3 +56,12 @@
 1480104606804	Rename method 'restaurer'
 1480104941096	Rename method 'executer'
 1480104963235	Rename method 'executer'
+1480170127073	Rename local variable 'chaine'
+1480170154940	Rename field 'chaine'
+1480172542930	Delete element
+1480172555989	Delete element
+1480172734948	Rename field 'moteur'
+1480172742295	Rename field 'ihm'
+1480172753604	Rename method 'insertionSuppressionRejeu'
+1480173837395	Rename type 'TestsUnitairesCommandesv2'
+1480173886041	Rename field 'moteur'

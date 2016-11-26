@@ -1,13 +1,21 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package gui;
 
 import javax.swing.JButton;
 
-import editor.Recorder;
 import editor.Observable;
 import editor.Observateur;
+import editor.Recorder;
 
 /**
- * Ce bouton est chargé de se mettre à jour (au niveau de son état cliquable ou non) à chaque modification de l'recorder
+ * Ce bouton est chargé de se mettre à jour (au niveau de son état cliquable ou
+ * non) à chaque modification de l'recorder
+ * 
  * @see Recorder
  */
 public class BoutonEnregistrer extends JButton implements Observateur {
@@ -19,26 +27,18 @@ public class BoutonEnregistrer extends JButton implements Observateur {
 	 */
 	@Override
 	public void miseAJour(Observable o) {
-		
-		if(o == null){
-			
+
+		if (o == null)
 			throw new IllegalArgumentException("o est à null");
-		}
-		
-		if(!(o instanceof Recorder)){
-			
+
+		if (!(o instanceof Recorder))
 			throw new IllegalArgumentException("o n'est pas du type Recorder");
-		}
-		
+
 		Recorder recorder = (Recorder) o;
-		
-		if(recorder.getEnregistrer()){
-			
+
+		if (recorder.getEnregistrer())
 			setEnabled(false);
-		}
-		else{
-			
+		else
 			setEnabled(true);
-		}
 	}
 }

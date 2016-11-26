@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package recordables;
 
 import commands.Command;
@@ -5,28 +11,27 @@ import editor.Recorder;
 import mementos.MementoCommand;
 
 /**
- * Cette interface est implémenté par les commandes enregistrables. De façon à
- * sauvegarder et restaurer leurs état, le pattern MementoCommand est utilisé.
+ * CommandRecordable is implemented by the recordable commands. It allows to
+ * save and restore their state when asked to.
  *
- * @author Antoine
  * @see Recorder
  * @see MementoCommand
  */
 public interface CommandRecordable extends Command {
 
 	/**
-	 * Founit un memento enregistrant l'état de l'objet
+	 * Get a memento saving the state of the object.
 	 *
-	 * @return L'état de l'objet stocké sous forme de MementoCommand
+	 * @return the memento containing the state of this object
 	 * @see MementoCommand
 	 */
 	public MementoCommand getMemento();
 
 	/**
-	 * Restaure l'état à partir du memento passé en paramètre
+	 * Restore the state from the given memento.
 	 *
 	 * @param memento
-	 *            L'état de l'objet stocké sous forme de mémento
+	 *            the memento containing the state to restore
 	 */
 	public void restore(MementoCommand memento);
 }

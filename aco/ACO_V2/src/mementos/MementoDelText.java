@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package mementos;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +14,7 @@ import engine.EditionEngine;
 import recordables.DelTextRecordable;
 
 /**
- * Cette classe est chargée de stocker l'état d'une commande DelTextRecordable.
+ * MementoDelText is to store the DelTextRecordable command.
  *
  * @see DelTextRecordable
  * @see MementoCommand
@@ -19,7 +25,7 @@ public final class MementoDelText extends MementoCommand {
 	private static final Logger LOGGER = LogManager.getLogger(MementoDelText.class.getName());
 
 	/**
-	 * Instantiates a new memento del text.
+	 * Instantiates a new memento text deletion.
 	 *
 	 * @param engine
 	 *            the engine

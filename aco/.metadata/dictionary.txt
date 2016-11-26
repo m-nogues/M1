@@ -7,3 +7,5 @@ mathieu
 fr
 gui
 mementos
+memento
+javadoc

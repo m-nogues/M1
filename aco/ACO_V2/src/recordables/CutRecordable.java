@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package recordables;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,34 +16,34 @@ import mementos.MementoCommand;
 import mementos.MementoCut;
 
 /**
- * La classe CutRecordable execute une commande Couper et enregistre son
- * MementoCommand dans un Recorder
+ * CutRecordable executes a cut command will saving its state in a
+ * recorder.
  *
  * @see Recorder
- * @see Couper
+ * @see Cut
  * @see CommandRecordable
  */
 public final class CutRecordable implements CommandRecordable {
 
-	/**
-	 * Logger pour suivre le déroulement de l'application
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(CutRecordable.class.getName());
 
-	private Recorder		recorder;
-	private EditionEngine	engine;
+	/** The recorder. */
+	private Recorder recorder;
+
+	/** The engine. */
+	private EditionEngine engine;
 
 	/**
-	 * Créé une commande CutRecordable
-	 * L'ensemble des paramètres doit être renseigné
+	 * Instantiate a CutRecordable from the given parameters (all shall be
+	 * not null).
 	 *
 	 * @param engine
-	 *            Le EditionEngine auquel adresser la commande
+	 *            the engine to ask to execute the command
 	 * @param recorder
-	 *            L'enregsitreur de commande
+	 *            the command recorder
 	 */
 	public CutRecordable(EditionEngine engine, Recorder recorder) {
-
 		/* Preconditions */
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
@@ -51,51 +57,44 @@ public final class CutRecordable implements CommandRecordable {
 	}
 
 	/**
-	 * Créé une Command CutRecordable à partir d'un MementoCut et execute une
-	 * commande Couper
+	 * Instantiate a CutRecordable from a memento and executes a cut
+	 * command.
 	 *
 	 * @param memento
-	 *            Le memento duquel on restaure l'état de la commande
-	 *            enregistrable
+	 *            the memento from which we restore the state and execute the
+	 *            select command
 	 */
 	public CutRecordable(MementoCommand memento) {
-
 		restore(memento);
 		new Cut(engine).execute();
 	}
 
-	/**
-	 * Effectue l'enregistrement de la commande auprès de l'recorder et execute
-	 * la commande auprès du engine
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public final void execute() {
 		recorder.enregistrer(this);
-		LOGGER.trace("Exécution d'une commande CutRecordable");
+		LOGGER.trace("Executing command cut");
 		new Cut(engine).execute();
 	}
 
-	/**
-	 * Retour l'état de l'objet sous forme d'un objet MementoCut
-	 *
-	 * @see MementoCut
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#getMemento()
 	 */
 	@Override
 	public final MementoCommand getMemento() {
-
 		return new MementoCut(engine, recorder);
 	}
 
-	/**
-	 * Restaure l'état d'une commande à partir d'un memento
-	 *
-	 * @param memento
-	 *            L'objet memento de la classe MementoCut (non null)
-	 * @see MementoCut
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#restore(mementos.MementoCommand)
 	 */
 	@Override
 	public final void restore(MementoCommand memento) {
-
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
@@ -103,7 +102,7 @@ public final class CutRecordable implements CommandRecordable {
 		if (!(memento instanceof MementoCut))
 			throw new IllegalArgumentException("Not a MementoCut");
 
-		LOGGER.trace("Restauration d'une commande CutRecordable à partir d'un memento");
+		LOGGER.trace("CutRecordable from memento");
 
 		/* Treatment */
 		engine = memento.getEngine();

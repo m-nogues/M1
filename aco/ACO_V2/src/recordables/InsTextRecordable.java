@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package recordables;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +16,8 @@ import mementos.MementoCommand;
 import mementos.MementoInsText;
 
 /**
- * La classe InsTextRecordable execute une commande InsertText et enregistre
- * son MementoCommand dans un Recorder
+ * InsTextRecordable executes a text insertion command will saving its state in
+ * a recorder.
  *
  * @see Recorder
  * @see InsertText
@@ -19,90 +25,84 @@ import mementos.MementoInsText;
  */
 public final class InsTextRecordable implements CommandRecordable {
 
-	/**
-	 * Logger pour suivre le déroulement de l'application
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(InsTextRecordable.class.getName());
 
-	private Recorder		recorder;
-	private EditionEngine	engine;
-	private String			chaine;
+	/** The recorder. */
+	private Recorder recorder;
+
+	/** The engine. */
+	private EditionEngine engine;
+
+	/** The string. */
+	private String string;
 
 	/**
-	 * Créé une commande InsTextRecordable
-	 * L'ensemble des paramètres doit être renseigné
+	 * Instantiate a InsTextRecordable from the given parameters (all shall be
+	 * not null).
 	 *
 	 * @param engine
-	 *            Le EditionEngine auquel adresser la commande
+	 *            the engine to ask to execute the command
 	 * @param recorder
-	 *            L'enregsitreur de commande
-	 * @param chaine
-	 *            La chaîne associer à la commande
+	 *            the command recorder
+	 * @param s
+	 *            the string to insert
 	 */
-	public InsTextRecordable(EditionEngine engine, Recorder recorder, String chaine) {
-
+	public InsTextRecordable(EditionEngine engine, Recorder recorder, String s) {
 		/* Preconditions */
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
-		if (chaine == null)
-			throw new IllegalArgumentException("chaine is null");
+		if (s == null)
+			throw new IllegalArgumentException("string is null");
 
 		/* Treatment */
 
 		this.recorder = recorder;
 		this.engine = engine;
-		this.chaine = chaine;
+		string = s;
 	}
 
 	/**
-	 * Créé une Command InsTextRecordable à partir d'un MementoInsText et
-	 * execute une commande InsertText
+	 * Instantiate a InsTextRecordable from a memento and executes a text
+	 * insertion command.
 	 *
 	 * @param memento
-	 *            Le memento duquel on restaure l'état de la commande
-	 *            enregistrable
+	 *            the memento from which we restore the state and execute the
+	 *            select command
 	 */
 	public InsTextRecordable(MementoCommand memento) {
-
 		restore(memento);
-		new InsertText(engine, chaine).execute();
+		new InsertText(engine, string).execute();
 	}
 
-	/**
-	 * Effectue l'enregistrement de la commande auprès de l'recorder et execute
-	 * la commande auprès du engine
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public final void execute() {
-
 		recorder.enregistrer(this);
 		LOGGER.trace("Exécution d'une commande InsertText");
-		new InsertText(engine, chaine).execute();
+		new InsertText(engine, string).execute();
 	}
 
-	/**
-	 * Retour l'état de l'objet sous forme d'un objet MementoInTexte
-	 *
-	 * @see MementoInsText
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#getMemento()
 	 */
 	@Override
 	public final MementoCommand getMemento() {
-
-		return new MementoInsText(engine, recorder, chaine);
+		return new MementoInsText(engine, recorder, string);
 	}
 
-	/**
-	 * Restaure l'état d'une commande à partir d'un memento
-	 *
-	 * @param memento
-	 *            L'objet memento de la classe MementoInsText (non null)
-	 * @see MementoInsText
+	/*
+	 * (non-Javadoc)
+	 * @see recordables.CommandRecordable#restore(mementos.MementoCommand)
 	 */
 	@Override
 	public final void restore(MementoCommand memento) {
-
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
@@ -110,11 +110,11 @@ public final class InsTextRecordable implements CommandRecordable {
 		if (!(memento instanceof MementoInsText))
 			throw new IllegalArgumentException("Not a MementoInsText");
 
-		LOGGER.trace("Restauration d'une commande InsTextRecordable à partir d'un memento");
+		LOGGER.trace("InsTextRecordable from memento");
 
 		/* Treatment */
 		engine = memento.getEngine();
 		recorder = memento.getRecorder();
-		chaine = ((MementoInsText) memento).getText();
+		string = ((MementoInsText) memento).getText();
 	}
 }

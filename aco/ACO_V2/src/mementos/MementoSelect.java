@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package mementos;
 
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +15,7 @@ import engine.Selection;
 import recordables.SelectRecordable;
 
 /**
- * Cette classe est chargée de stocker l'état d'une commande SelectRecordable.
+ * MementoSelect is to store the SelectRecordable commands.
  *
  * @see SelectRecordable
  * @see MementoCommand
@@ -44,19 +50,19 @@ public final class MementoSelect extends MementoCommand {
 	}
 
 	/**
-	 * Getter de l'attribut selection.
+	 * Gets the selection.
 	 *
-	 * @return L'attribut selection du memento
+	 * @return the selection
 	 */
 	public final Selection getSelection() {
 		return selection;
 	}
 
 	/**
-	 * Setter de l'attribut selection.
+	 * Sets the selection.
 	 *
 	 * @param selection
-	 *            La nouvelle selection (non null)
+	 *            the new selection (not null)
 	 */
 	public final void setSelection(Selection selection) {
 

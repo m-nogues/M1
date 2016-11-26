@@ -28,12 +28,13 @@ import engine.Selection;
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv1 {
 	/** The engine. */
-	private ImplementedEngine	engine;
+	private ImplementedEngine engine;
+
 	/** The graphical user interface. */
-	private GUITest				gui;
+	private GUITest gui;
 
 	/**
-	 * Copy paste.
+	 * Copy paste test.
 	 */
 	@Test
 	public void copyPaste() {
@@ -53,7 +54,7 @@ public class TestsIntegrationv1 {
 	}
 
 	/**
-	 * Cut paste.
+	 * Cut paste test.
 	 */
 	@Test
 	public void cutPaste() {
@@ -71,7 +72,7 @@ public class TestsIntegrationv1 {
 	}
 
 	/**
-	 * Insert delete.
+	 * Insert delete test.
 	 */
 	@Test
 	public void insertDelete() {
@@ -90,7 +91,7 @@ public class TestsIntegrationv1 {
 	}
 
 	/**
-	 * Sets the up.
+	 * Sets up the test environment.
 	 *
 	 * @throws Exception
 	 *             the exception
