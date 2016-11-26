@@ -1,0 +1,74 @@
+package tests;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import editor.Recorder;
+import engine.ImplementedEngine;
+import engine.Selection;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.DelTextRecordable;
+import recordables.InsTextRecordable;
+import recordables.PasteRecordable;
+import recordables.SelectRecordable;
+
+@RunWith(PowerMockRunner.class)
+public class TestsIntegrationv2 {
+
+	private ImplementedEngine	moteur;
+	private GUITest				ihm;
+	private Recorder			recorder;
+
+	@Test
+	public void insertionSuppressionRejeu() {
+		new InsTextRecordable(moteur, recorder, "Test").execute();
+		recorder.activate();
+		new SelectRecordable(moteur, recorder, new Selection(0, 4)).execute();
+		new CutRecordable(moteur, recorder).execute();
+		new InsTextRecordable(moteur, recorder, "nouv").execute();
+		new PasteRecordable(moteur, recorder).execute();
+		recorder.deactivate();
+		assertEquals("nouvTest", ihm.getLastInsert());
+
+		// RàZ et ajout d'un nouveau texte pour le rejeu
+		new SelectRecordable(moteur, recorder, new Selection(0, 8)).execute();
+		new DelTextRecordable(moteur, recorder).execute();
+		new InsTextRecordable(moteur, recorder, "Youp").execute();
+		assertEquals("Youp", ihm.getLastInsert());
+		recorder.replayCommands();
+		assertEquals("nouvYoup", ihm.getLastInsert());
+
+		// Copie du texte actuel et suppression des 2 derniers car.
+		recorder.activate();
+		new SelectRecordable(moteur, recorder, new Selection(0, 8)).execute();
+		new CopyRecordable(moteur, recorder).execute();
+		new SelectRecordable(moteur, recorder, new Selection(8, 8)).execute();
+		new PasteRecordable(moteur, recorder).execute();
+		new DelTextRecordable(moteur, recorder).execute();
+		new DelTextRecordable(moteur, recorder).execute();
+		recorder.deactivate();
+		assertEquals("nouvYoupnouvYo", ihm.getLastInsert());
+
+		// RàZ et ajout d'un nouveau texte pour le rejeu
+		new SelectRecordable(moteur, recorder, new Selection(0, 14)).execute();
+		new DelTextRecordable(moteur, recorder).execute();
+		assertEquals("", ihm.getLastInsert());
+		new InsTextRecordable(moteur, recorder, "Hello").execute();
+		recorder.replayCommands();
+		assertEquals("HelloHel", ihm.getLastInsert());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+
+		moteur = new ImplementedEngine();
+		recorder = new Recorder();
+		ihm = new GUITest();
+		moteur.getBuffer().addObserver(ihm);
+	}
+}

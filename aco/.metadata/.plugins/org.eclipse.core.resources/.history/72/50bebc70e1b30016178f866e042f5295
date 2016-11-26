@@ -1,0 +1,31 @@
+package recordables;
+
+import commands.Command;
+import editor.Recorder;
+import mementos.MementoCommand;
+
+/**
+ * CommandRecordable is implemented by the recordable commands. It allows to
+ * save and restore their state when asked to.
+ *
+ * @see Recorder
+ * @see MementoCommand
+ */
+public interface CommandRecordable extends Command {
+
+	/**
+	 * Get a memento saving the state of the object.
+	 *
+	 * @return the memento containing the state of this object
+	 * @see MementoCommand
+	 */
+	public MementoCommand getMemento();
+
+	/**
+	 * Restore the state from the given memento
+	 *
+	 * @param memento
+	 *            the memento containing the state to restore
+	 */
+	public void restore(MementoCommand memento);
+}
