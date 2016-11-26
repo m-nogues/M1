@@ -14,53 +14,58 @@ import commands.Paste;
 import engine.EditionEngine;
 
 /**
- * Cette classe hérite de JTextArea afin de traiter les actions de copie, coupe,
- * collage
+ * this class inherit of swing JtextArea to implement copy, paste and cut
+ * actions
  */
-public class ZoneTexte extends JTextArea {
+public class TextAreaCustom extends JTextArea {
+
 	static final long		serialVersionUID	= 8166387793964966707L;
-	private EditionEngine	moteur;
+	private EditionEngine	engine;
 
 	/**
-	 * Crée la zone de texte
+	 * Constructor for text area
 	 *
+	 * @param height
+	 *            height of text area
+	 * @param width
+	 *            width of text area
 	 * @param engine
-	 *            Le engine d'edition auquel adresser les commands
+	 *            engine to send commands
 	 */
-	public ZoneTexte(int hauteur, int largeur, EditionEngine moteur) {
-		super(hauteur, largeur);
-		if (moteur == null)
+	public TextAreaCustom(int height, int width, EditionEngine engine) {
+		super(height, width);
+		if (engine == null)
 			throw new IllegalAccessError("engine est à null");
-		this.moteur = moteur;
+		this.engine = engine;
 	}
 
 	/**
-	 * Lance une commande CopierEnregsitrable
+	 * launch a copy command
 	 *
 	 * @see Copy
 	 */
 	@Override
 	public void copy() {
-		new Copy(moteur).execute();
+		new Copy(engine).execute();
 	}
 
 	/**
-	 * Lance une commande CouperEnregsitrable
+	 * launch a cut command
 	 *
 	 * @see Cut
 	 */
 	@Override
 	public void cut() {
-		new Cut(moteur).execute();
+		new Cut(engine).execute();
 	}
 
 	/**
-	 * Lance une commande CollerEnregsitrable
+	 * launch a paste command
 	 *
 	 * @see Paste
 	 */
 	@Override
 	public void paste() {
-		new Paste(moteur).execute();
+		new Paste(engine).execute();
 	}
 }
