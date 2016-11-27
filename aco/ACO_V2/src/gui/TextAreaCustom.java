@@ -14,26 +14,23 @@ import commands.Paste;
 import engine.EditionEngine;
 
 /**
- * This class inherits of the Swings' JtextArea to implement copy, paste and cut
- * actions.
+ * this class inherit of swing JtextArea to implement copy, paste and cut
+ * actions
  */
 public class TextAreaCustom extends JTextArea {
 
-	/** The Constant serialVersionUID. */
-	static final long serialVersionUID = 8166387793964966707L;
-
-	/** The engine. */
-	private EditionEngine engine;
+	static final long		serialVersionUID	= 8166387793964966707L;
+	private EditionEngine	engine;
 
 	/**
-	 * Constructor for the text area.
+	 * Constructor for text area
 	 *
 	 * @param height
-	 *            height of the text area
+	 *            height of text area
 	 * @param width
-	 *            width of the text area
+	 *            width of text area
 	 * @param engine
-	 *            engine to send the commands
+	 *            engine to send commands
 	 */
 	public TextAreaCustom(int height, int width, EditionEngine engine) {
 		super(height, width);
@@ -43,7 +40,7 @@ public class TextAreaCustom extends JTextArea {
 	}
 
 	/**
-	 * Executes a command copy.
+	 * launch a copy command
 	 *
 	 * @see Copy
 	 */
@@ -53,7 +50,7 @@ public class TextAreaCustom extends JTextArea {
 	}
 
 	/**
-	 * Executes a command cut.
+	 * launch a cut command
 	 *
 	 * @see Cut
 	 */
@@ -63,7 +60,7 @@ public class TextAreaCustom extends JTextArea {
 	}
 
 	/**
-	 * Executes a command paste.
+	 * launch a paste command
 	 *
 	 * @see Paste
 	 */

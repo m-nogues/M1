@@ -6,58 +6,49 @@
  */
 package gui;
 
+import java.util.logging.LogManager;
+
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import commands.Select;
 import engine.EditionEngine;
 import engine.Selection;
 
 /**
- * This class monitors the selection in the TextArea and ensures the
- * synchronization with the engine selection.
- *
- * @see Selection
+ * This class monitors the selection in TextArea and ensures a synchronization
+ * with the engine selection.
  */
 public final class SelectionListener implements CaretListener {
-
-	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LogManager.getLogger(SelectionListener.class.getName());
-
-	/** The active. */
-	private boolean active;
-
-	/** Engine to perform commands. */
-	private final EditionEngine engine;
+	private static final Logger	LOGGER	= LogManager.getLogger(SelectionListener.class.getName());
+	private boolean				active;
+	/**
+	 * Engine to perform commands
+	 */
+	private final EditionEngine	engine;
 
 	/**
-	 * Constructor needs to know the edition engine to perform commands.
+	 * Constructor need to know the edition engine to perform commands
 	 *
 	 * @param engine
-	 *            the engine (not null)
+	 *            Edition engine (not null)
 	 */
 	public SelectionListener(EditionEngine engine) {
-		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("Engine is null");
-
-		/* Treatment */
+			throw new IllegalArgumentException("Null engine");
 		this.engine = engine;
 		active = true;
 	}
 
 	/**
-	 * Invoked when the selection changes in TextArea.
+	 * Invok when the selection changes in TextArea
 	 *
 	 * @param e
 	 *            CaretEvent
 	 */
 	@Override
 	public final void caretUpdate(CaretEvent e) {
-		LOGGER.trace("Detected new selection");
+		LOGGER.trace("Selection change detect");
 		final int min = Math.min(e.getDot(), e.getMark());
 		final int max = Math.max(e.getDot(), e.getMark());
 		LOGGER.debug("New selection is : [" + min + ", " + max + "]");
@@ -66,10 +57,10 @@ public final class SelectionListener implements CaretListener {
 	}
 
 	/**
-	 * Tells Filter if it needs to ask the engine to execute a command or not.
+	 * Notice Filter if it must launch a command to the engine or not
 	 *
 	 * @param active
-	 *            ask if true
+	 *            Boolean to notice
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

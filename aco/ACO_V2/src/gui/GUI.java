@@ -26,72 +26,67 @@ import commands.Cut;
 import commands.DeleteText;
 import commands.Paste;
 import editor.Observer;
+import editor.Recorder;
 import engine.Buffer;
 import engine.EditionEngine;
 
 /**
- * GUI based on the Swings' JtextArea.
+ * GUI base on Swing JtextArea
  */
 public final class GUI extends JFrame implements Observer, ActionListener {
-
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	// button declarations
-	/** The paste. */
-	private final JButton paste;
+	// buttons declaration
+	private final JButton	paste;
+	private final JButton	copy;
+	private final JButton	cut;
+	private final JButton	delete;
+	private final JButton	start;
+	private final JButton	replay;
+	private final JButton	stop;
 
-	/** The copy. */
-	private final JButton copy;
-
-	/** The cut. */
-	private final JButton cut;
-
-	/** The delete. */
-	private final JButton delete;
-
-	/** The text area. */
-	//
 	private final JTextArea textArea;
-
 	// Edition Engine declaration
-	/** The engine. */
 	private final EditionEngine engine;
 
 	// Listener on textArea
-	/** The modification filter. */
-	private final ModificationFilter modifFilter;
+	private final ModificationFilter	modifFilter;
+	private final SelectionListener		selectionListener;
 
-	/** The selection listener. */
-	private final SelectionListener selectionListener;
+	private final Recorder recorder;
 
 	/**
-	 * Instantiates a new gui.
-	 *
 	 * @param engine
-	 *            the engine
+	 *            the edition engine
+	 * @param recorder
+	 *            the recorder
 	 */
-	public GUI(final EditionEngine engine) {
+	public GUI(final EditionEngine engine, final Recorder recorder) {
 
 		if (engine == null)
 			throw new IllegalArgumentException("Null engine");
+		if (recorder == null)
+			throw new IllegalArgumentException("Null recorder");
 
 		this.engine = engine;
+		this.recorder = recorder;
 
-		// sets textArea and listeners on this
 		modifFilter = new ModificationFilter(engine);
 		selectionListener = new SelectionListener(engine);
+
+		// set textArea and listener on it
 		textArea = new TextAreaCustom(15, 80, engine);
 		textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		textArea.setFont(new Font("monospaced", Font.PLAIN, 14));
 		textArea.addCaretListener(selectionListener);
 		((AbstractDocument) textArea.getDocument()).setDocumentFilter(modifFilter);
 		JScrollPane scrollingText = new JScrollPane(textArea);
+
+		// the Jpanel
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
-
 		content.add(scrollingText, BorderLayout.CENTER);
-
+		// the menuBar
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 0));
 
@@ -100,50 +95,69 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		cut = new JButton();
 		delete = new JButton();
 
-		// Sets the icons
-		paste.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
-		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copier.png")));
-		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
-		delete.setIcon(new ImageIcon(getClass().getResource("/icones/supprimer.png")));
+		start = new StartButton();
+		replay = new ReplayButton();
+		stop = new StopButton();
 
-		// Sets the tips bubble
+		recorder.addObserver((Observer) start);
+		recorder.addObserver((Observer) replay);
+		recorder.addObserver((Observer) stop);
+
+		// Icon set
+		paste.setIcon(new ImageIcon(getClass().getResource("/icones/paste.png")));
+		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copy.png")));
+		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
+		delete.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
+		start.setIcon(new ImageIcon(getClass().getResource("/icones/rec.png")));
+		replay.setIcon(new ImageIcon(getClass().getResource("/icones/play.png")));
+		stop.setIcon(new ImageIcon(getClass().getResource("/icones/stop.png")));
+
+		// Set bubble tips
 		paste.setToolTipText("Paste");
 		copy.setToolTipText("Copy");
 		cut.setToolTipText("Cut");
 		delete.setToolTipText("delete");
+		start.setToolTipText("Rec");
+		replay.setToolTipText("Replay");
+		stop.setToolTipText("Stop");
 
 		// Set listener on button
 		paste.addActionListener(this);
 		copy.addActionListener(this);
 		cut.addActionListener(this);
 		delete.addActionListener(this);
+		start.addActionListener(this);
+		replay.addActionListener(this);
+		stop.addActionListener(this);
+
 		paste.setFocusable(false);
 		copy.setFocusable(false);
 		cut.setFocusable(false);
 		delete.setFocusable(false);
+		start.setFocusable(false);
+		replay.setFocusable(false);
+		stop.setFocusable(false);
 
 		// Add all buttons on menuBar
 		menuBar.add(copy);
 		menuBar.add(cut);
 		menuBar.add(paste);
 		menuBar.add(delete);
+		menuBar.add(start);
+		menuBar.add(replay);
+		menuBar.add(stop);
 
-		// Sets the main window
+		// Set Main window
 		setContentPane(content);
 		setJMenuBar(menuBar);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Editeur de texte v3 [BERTIER - FOUCAULT]");
+		setTitle("Text Editor v2");
 		setLocationRelativeTo(null);
 		setVisible(true);
 		pack();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public final void actionPerformed(ActionEvent e) {
 		if (e.getSource() == paste)
@@ -156,10 +170,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 			new DeleteText(engine).execute();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see editor.Observer#update(editor.Observable)
-	 */
 	@Override
 	public void update(editor.Observable o) {
 

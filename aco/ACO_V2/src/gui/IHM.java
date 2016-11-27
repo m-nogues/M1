@@ -58,8 +58,8 @@ public final class IHM extends JFrame implements Observateur, ActionListener {
 	private final MoteurEdition moteur;
 
 	// Listener d'insertions
-	private final FiltreModifications	filtreModifs;
-	private final ListenerSelection		listenerSelection;
+	private final ModificationFilter	filtreModifs;
+	private final SelectionListener		selectionListener;
 
 	// Recorder des mementos des commandes enregistrables
 	private final Recorder recorder;
@@ -77,13 +77,13 @@ public final class IHM extends JFrame implements Observateur, ActionListener {
 		this.moteur = moteur;
 		this.recorder = recorder;
 
-		filtreModifs = new FiltreModifications(moteur, recorder);
-		listenerSelection = new ListenerSelection(moteur, recorder);
+		filtreModifs = new ModificationFilter(moteur, recorder);
+		selectionListener = new SelectionListener(moteur, recorder);
 
-		zoneTexte = new ZoneTexte(15, 80, moteur, recorder);
+		zoneTexte = new TextAreaCustom(15, 80, moteur, recorder);
 		zoneTexte.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		zoneTexte.setFont(new Font("monospaced", Font.PLAIN, 14));
-		zoneTexte.addCaretListener(listenerSelection);
+		zoneTexte.addCaretListener(selectionListener);
 		((AbstractDocument) zoneTexte.getDocument()).setDocumentFilter(filtreModifs);
 		JScrollPane scrollingText = new JScrollPane(zoneTexte);
 
@@ -103,9 +103,9 @@ public final class IHM extends JFrame implements Observateur, ActionListener {
 		couper = new JButton();
 		supprimer = new JButton();
 
-		enregistrer = new BoutonEnregistrer();
-		jouer = new BoutonJouer();
-		stop = new BoutonStop();
+		enregistrer = new StartButton();
+		jouer = new ReplayButton();
+		stop = new StopButton();
 
 		recorder.ajouterObservateur((Observateur) enregistrer);
 		recorder.ajouterObservateur((Observateur) jouer);
@@ -208,12 +208,12 @@ public final class IHM extends JFrame implements Observateur, ActionListener {
 
 			// On désactive le filtre pour éviter de renvoyer une commande
 			filtreModifs.setReagir(false);
-			listenerSelection.setReagir(false);
+			selectionListener.setReagir(false);
 
 			zoneTexte.setText(buffer.getContenu());
 			zoneTexte.setCaretPosition(buffer.getOffsetModif());
 
-			listenerSelection.setReagir(true);
+			selectionListener.setReagir(true);
 			filtreModifs.setReagir(true);
 		}
 	}
