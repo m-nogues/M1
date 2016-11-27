@@ -26,85 +26,112 @@ import commands.Cut;
 import commands.DeleteText;
 import commands.Paste;
 import editor.Observer;
-import editor.Recorder;
 import engine.Buffer;
 import engine.EditionEngine;
-import engine.ImplementedEngine;
 
 /**
- * Interface graphique de notre éditeur Utilise une JTextArea pour l'affichage
- * du buffer
+ * GUI based on the Swings' JtextArea.
  */
 public final class GUI extends JFrame implements Observer, ActionListener {
-	private static final long serialVersionUID = 1L;
-	// Boutons
-	private final JButton	coller;
-	private final JButton	copier;
-	private final JButton	couper;
-	private final JButton	supprimer;
-	// Zone de texte
-	private final JTextArea zoneTexte;
-	// Moteur d'édition
-	private final EditionEngine moteur;
-	// Listener d'insertions
-	private final FiltreModifications	filtreModifs;
-	private final ListenerSelection		listenerSelection;
 
-	public GUI(final EditionEngine moteur) {
-		/* Préconditions */
-		if (moteur == null)
-			throw new IllegalArgumentException("engine est à null");
-		/* Traitement */
-		this.moteur = moteur;
-		filtreModifs = new FiltreModifications(moteur);
-		listenerSelection = new ListenerSelection(moteur);
-		zoneTexte = new ZoneTexte(15, 80, moteur);
-		zoneTexte.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		zoneTexte.setFont(new Font("monospaced", Font.PLAIN, 14));
-		zoneTexte.addCaretListener(listenerSelection);
-		((AbstractDocument) zoneTexte.getDocument()).setDocumentFilter(filtreModifs);
-		JScrollPane scrollingText = new JScrollPane(zoneTexte);
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
+	// button declarations
+	/** The paste. */
+	private final JButton paste;
+
+	/** The copy. */
+	private final JButton copy;
+
+	/** The cut. */
+	private final JButton cut;
+
+	/** The delete. */
+	private final JButton delete;
+
+	/** The text area. */
+	//
+	private final JTextArea textArea;
+
+	// Edition Engine declaration
+	/** The engine. */
+	private final EditionEngine engine;
+
+	// Listener on textArea
+	/** The modification filter. */
+	private final ModificationFilter modifFilter;
+
+	/** The selection listener. */
+	private final SelectionListener selectionListener;
+
+	/**
+	 * Instantiates a new gui.
+	 *
+	 * @param engine
+	 *            the engine
+	 */
+	public GUI(final EditionEngine engine) {
+
+		if (engine == null)
+			throw new IllegalArgumentException("Null engine");
+
+		this.engine = engine;
+
+		// sets textArea and listeners on this
+		modifFilter = new ModificationFilter(engine);
+		selectionListener = new SelectionListener(engine);
+		textArea = new TextAreaCustom(15, 80, engine);
+		textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+		textArea.setFont(new Font("monospaced", Font.PLAIN, 14));
+		textArea.addCaretListener(selectionListener);
+		((AbstractDocument) textArea.getDocument()).setDocumentFilter(modifFilter);
+		JScrollPane scrollingText = new JScrollPane(textArea);
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
-		// Ajout de la barre de défilement
+
 		content.add(scrollingText, BorderLayout.CENTER);
-		// Création de la barre d'outils
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 0));
-		// Instanciation des boutons
-		coller = new JButton();
-		copier = new JButton();
-		couper = new JButton();
-		supprimer = new JButton();
-		// Association des icones aux boutons
-		coller.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
-		copier.setIcon(new ImageIcon(getClass().getResource("/icones/copier.png")));
-		couper.setIcon(new ImageIcon(getClass().getResource("/icones/couper.png")));
-		supprimer.setIcon(new ImageIcon(getClass().getResource("/icones/supprimer.png")));
-		// Association des bulles d'aide
-		coller.setToolTipText("Paste");
-		copier.setToolTipText("Copy");
-		couper.setToolTipText("Cut");
-		supprimer.setToolTipText("Supprimer");
-		// Spécification des listeners
-		coller.addActionListener(this);
-		copier.addActionListener(this);
-		couper.addActionListener(this);
-		supprimer.addActionListener(this);
-		coller.setFocusable(false);
-		copier.setFocusable(false);
-		couper.setFocusable(false);
-		supprimer.setFocusable(false);
-		// Ajout des boutons à la barre d'outils
-		menuBar.add(copier);
-		menuBar.add(couper);
-		menuBar.add(coller);
-		menuBar.add(supprimer);
-		// Mise en place des éléments dans la fenêtre
+
+		paste = new JButton();
+		copy = new JButton();
+		cut = new JButton();
+		delete = new JButton();
+
+		// Sets the icons
+		paste.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
+		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copier.png")));
+		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
+		delete.setIcon(new ImageIcon(getClass().getResource("/icones/supprimer.png")));
+
+		// Sets the tips bubble
+		paste.setToolTipText("Paste");
+		copy.setToolTipText("Copy");
+		cut.setToolTipText("Cut");
+		delete.setToolTipText("delete");
+
+		// Set listener on button
+		paste.addActionListener(this);
+		copy.addActionListener(this);
+		cut.addActionListener(this);
+		delete.addActionListener(this);
+		paste.setFocusable(false);
+		copy.setFocusable(false);
+		cut.setFocusable(false);
+		delete.setFocusable(false);
+
+		// Add all buttons on menuBar
+		menuBar.add(copy);
+		menuBar.add(cut);
+		menuBar.add(paste);
+		menuBar.add(delete);
+
+		// Sets the main window
 		setContentPane(content);
 		setJMenuBar(menuBar);
-		// Ajout des comportements par défaut et des propriété propres à notre
-		// éditeur + Affichage
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Editeur de texte v3 [BERTIER - FOUCAULT]");
 		setLocationRelativeTo(null);
@@ -112,36 +139,41 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		pack();
 	}
 
-	public GUI(ImplementedEngine engine, Recorder recorder) {
-		// TODO Auto-generated constructor stub
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public final void actionPerformed(ActionEvent e) {
-		if (e.getSource() == coller)
-			new Paste(moteur).execute();
-		else if (e.getSource() == copier)
-			new Copy(moteur).execute();
-		else if (e.getSource() == couper)
-			new Cut(moteur).execute();
-		else if (e.getSource() == supprimer)
-			new DeleteText(moteur).execute();
+		if (e.getSource() == paste)
+			new Paste(engine).execute();
+		else if (e.getSource() == copy)
+			new Copy(engine).execute();
+		else if (e.getSource() == cut)
+			new Cut(engine).execute();
+		else if (e.getSource() == delete)
+			new DeleteText(engine).execute();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observer#update(editor.Observable)
+	 */
 	@Override
 	public void update(editor.Observable o) {
-		/* Preconditions */
+
 		if (o == null)
-			throw new IllegalArgumentException("o est à null");
-		/* Treatment */
+			throw new IllegalArgumentException("Null o");
+
 		if (o instanceof Buffer) {
 			Buffer buffer = (Buffer) o;
-			filtreModifs.setReagir(false);
-			listenerSelection.setReagir(false);
-			zoneTexte.setText(buffer.getContent());
-			zoneTexte.setCaretPosition(buffer.getNewOffset());
-			listenerSelection.setReagir(true);
-			filtreModifs.setReagir(true);
+			modifFilter.setActive(false);
+			selectionListener.setActive(false);
+			textArea.setText(buffer.getContent());
+			textArea.setCaretPosition(buffer.getNewOffset());
+			selectionListener.setActive(true);
+			modifFilter.setActive(true);
 		}
 	}
 }

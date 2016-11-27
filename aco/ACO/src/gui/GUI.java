@@ -30,28 +30,46 @@ import engine.Buffer;
 import engine.EditionEngine;
 
 /**
- * GUI base on Swing JtextArea
+ * GUI based on the Swings' JtextArea.
  */
 public final class GUI extends JFrame implements Observer, ActionListener {
+
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	// buttons declaration
+	// button declarations
+	/** The paste. */
+	private final JButton paste;
 
-	private final JButton	paste;
-	private final JButton	copy;
-	private final JButton	cut;
-	private final JButton	delete;
+	/** The copy. */
+	private final JButton copy;
+
+	/** The cut. */
+	private final JButton cut;
+
+	/** The delete. */
+	private final JButton delete;
+
+	/** The text area. */
 	//
 	private final JTextArea textArea;
+
 	// Edition Engine declaration
+	/** The engine. */
 	private final EditionEngine engine;
 
 	// Listener on textArea
-	private final ModificationFilter	modifFilter;
-	private final SelectionListener		selectionListener;
+	/** The modification filter. */
+	private final ModificationFilter modifFilter;
+
+	/** The selection listener. */
+	private final SelectionListener selectionListener;
 
 	/**
+	 * Instantiates a new gui.
+	 *
 	 * @param engine
+	 *            the engine
 	 */
 	public GUI(final EditionEngine engine) {
 
@@ -60,7 +78,7 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 
 		this.engine = engine;
 
-		// set textArea and listener on it
+		// sets textArea and listeners on this
 		modifFilter = new ModificationFilter(engine);
 		selectionListener = new SelectionListener(engine);
 		textArea = new TextAreaCustom(15, 80, engine);
@@ -81,12 +99,14 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		copy = new JButton();
 		cut = new JButton();
 		delete = new JButton();
-		// Icon set
+
+		// Sets the icons
 		paste.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
 		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copier.png")));
 		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
 		delete.setIcon(new ImageIcon(getClass().getResource("/icones/supprimer.png")));
-		// bubble tips set
+
+		// Sets the tips bubble
 		paste.setToolTipText("Paste");
 		copy.setToolTipText("Copy");
 		cut.setToolTipText("Cut");
@@ -108,7 +128,7 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		menuBar.add(paste);
 		menuBar.add(delete);
 
-		// Main window set
+		// Sets the main window
 		setContentPane(content);
 		setJMenuBar(menuBar);
 
@@ -119,6 +139,11 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		pack();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public final void actionPerformed(ActionEvent e) {
 		if (e.getSource() == paste)
@@ -131,6 +156,10 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 			new DeleteText(engine).execute();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observer#update(editor.Observable)
+	 */
 	@Override
 	public void update(editor.Observable o) {
 

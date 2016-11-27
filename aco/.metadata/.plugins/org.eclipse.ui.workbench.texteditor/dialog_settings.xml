@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="execute" key="selection"/>
+		<item value="Executes" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="launch"/>
 			<item value="executer"/>
 			<item value="Enregistrable"/>
 			<item value="MoteurEdition"/>
@@ -15,9 +16,9 @@
 			<item value="Youp"/>
 			<item value="nouv"/>
 			<item value="getDerniereInsert"/>
-			<item value="IHMTest"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Executes"/>
 			<item value="execute"/>
 			<item value="Recordable"/>
 			<item value="EditionEngine"/>
@@ -25,7 +26,6 @@
 			<item value="2ndTest"/>
 			<item value="new"/>
 			<item value="getLastInsert"/>
-			<item value="GUITest"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
