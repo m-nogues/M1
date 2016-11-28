@@ -2,5 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="ACO_V3/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Maël/.m2/repository/org/apache/logging/log4j/log4j-api/2.1/log4j-api-2.1.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.apache.logging.log4j"/>
+			<attribute name="maven.artifactId" value="log4j-api"/>
+			<attribute name="maven.version" value="2.1"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

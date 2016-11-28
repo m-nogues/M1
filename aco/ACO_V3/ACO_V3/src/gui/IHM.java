@@ -16,9 +16,9 @@ import javax.swing.JTextArea;
 import javax.swing.text.AbstractDocument;
 
 import commands.Arreter;
-import commands.Defaire;
+import commands.Undo;
 import commands.Demarrer;
-import commands.Refaire;
+import commands.Redo;
 import commands.Rejouer;
 import editor.Enregistreur;
 import editor.GestionnaireHisto;
@@ -147,8 +147,8 @@ public final class IHM extends JFrame implements Observateur, ActionListener
         enregistrer.setToolTipText("Enregistrer");
         jouer.setToolTipText("Jouer");
         stop.setToolTipText("Stop");
-        defaire.setToolTipText("Defaire");
-        refaire.setToolTipText("Refaire");
+        defaire.setToolTipText("Undo");
+        refaire.setToolTipText("Redo");
 
         //Spécification des listeners
         coller.addActionListener(this);
@@ -260,11 +260,11 @@ public final class IHM extends JFrame implements Observateur, ActionListener
 		}
 		else if(e.getSource()==defaire){
 			
-			new Defaire(moteur).executer();
+			new Undo(moteur).executer();
 		}
 		else if(e.getSource()==refaire){
 			
-			new Refaire(moteur).executer();
+			new Redo(moteur).executer();
 		}
 	}
 }

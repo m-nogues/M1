@@ -1,77 +1,97 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import editor.Enregistreur;
-import engine.MoteurImplementation;
+import editor.Recorder;
+import engine.ImplementedEngine;
 import engine.Selection;
-import recordables.CollerEnregistrable;
-import recordables.CopierEnregistrable;
-import recordables.CouperEnregistrable;
-import recordables.InsTexteEnregistrable;
-import recordables.SelectionnerEnregistrable;
-import recordables.SupTexteEnregistrable;
+import recordables.CopyRecordable;
+import recordables.CutRecordable;
+import recordables.DelTextRecordable;
+import recordables.InsTextRecordable;
+import recordables.PasteRecordable;
+import recordables.SelectRecordable;
 
+/**
+ * The Class TestsIntegrationv2.
+ */
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv2 {
+	/** The engine. */
+	private ImplementedEngine engine;
 
-	private MoteurImplementation moteur;
-	private IHMTest ihm;
-	private Enregistreur enregistreur;
-	
-	@Before
-	public void setUp() throws Exception {
-		
-		moteur = new MoteurImplementation();
-		enregistreur = new Enregistreur();
-		ihm = new IHMTest();
-		moteur.getBuffer().ajouterObservateur(ihm);
+	/** The graphical user interface. */
+	private GUITest gui;
+
+	/** The recorder. */
+	private Recorder recorder;
+
+	/**
+	 * Insert delete replay test.
+	 */
+	@Test
+	public void insertDeleteReplay() {
+
+		// Insert "Test", select 4 first char, cut, add "new" and paste
+		new InsTextRecordable(engine, recorder, "Test").execute();
+		recorder.activate();
+		new SelectRecordable(engine, recorder, new Selection(0, 4)).execute();
+		new CutRecordable(engine, recorder).execute();
+		new InsTextRecordable(engine, recorder, "new").execute();
+		new PasteRecordable(engine, recorder).execute();
+		recorder.deactivate();
+		assertEquals("newTest", gui.getLastInsert());
+
+		// Reset and add a new text for replay
+		new SelectRecordable(engine, recorder, new Selection(0, 8)).execute();
+		new DelTextRecordable(engine, recorder).execute();
+		new InsTextRecordable(engine, recorder, "2ndTest").execute();
+		assertEquals("2ndTest", gui.getLastInsert());
+		recorder.replayCommands();
+		assertEquals("new2ndTest", gui.getLastInsert());
+
+		// Copy of text and deletion of 2 last char
+		recorder.activate();
+		new SelectRecordable(engine, recorder, new Selection(0, 8)).execute();
+		new CopyRecordable(engine, recorder).execute();
+		new SelectRecordable(engine, recorder, new Selection(8, 8)).execute();
+		new PasteRecordable(engine, recorder).execute();
+		new DelTextRecordable(engine, recorder).execute();
+		new DelTextRecordable(engine, recorder).execute();
+		recorder.deactivate();
+		assertEquals("new2ndTestnew2ndTe", gui.getLastInsert());
+
+		// Reset and add a new text for replay
+		new SelectRecordable(engine, recorder, new Selection(0, 14)).execute();
+		new DelTextRecordable(engine, recorder).execute();
+		assertEquals("", gui.getLastInsert());
+		new InsTextRecordable(engine, recorder, "Hello").execute();
+		recorder.replayCommands();
+		assertEquals("HelloHel", gui.getLastInsert());
 	}
 
-	@Test
-	public void insertionSuppressionRejeu() {
-
-		//On réalise le premier jeu
-		//Insertion de "Test", sélection des 4 premiers car., on coupe, on ajoute "nouv" et on colle à la suite
-		new InsTexteEnregistrable(moteur, enregistreur, "Test").executer();
-		enregistreur.activer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 4)).executer();
-		new CouperEnregistrable(moteur, enregistreur).executer();
-		new InsTexteEnregistrable(moteur, enregistreur, "nouv").executer();
-		new CollerEnregistrable(moteur, enregistreur).executer();
-		enregistreur.desactiver();
-		assertEquals("nouvTest", ihm.getDerniereInsert());
-		
-		//RàZ et ajout d'un nouveau texte pour le rejeu
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 8)).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		new InsTexteEnregistrable(moteur, enregistreur, "Youp").executer();
-		assertEquals("Youp", ihm.getDerniereInsert());
-		enregistreur.rejouerCommandes();
-		assertEquals("nouvYoup", ihm.getDerniereInsert());
-		
-		//Copie du texte actuel et suppression des 2 derniers car.
-		enregistreur.activer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 8)).executer();
-		new CopierEnregistrable(moteur, enregistreur).executer();
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(8, 8)).executer();
-		new CollerEnregistrable(moteur, enregistreur).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		enregistreur.desactiver();
-		assertEquals("nouvYoupnouvYo", ihm.getDerniereInsert());
-		
-		//RàZ et ajout d'un nouveau texte pour le rejeu
-		new SelectionnerEnregistrable(moteur, enregistreur, new Selection(0, 14)).executer();
-		new SupTexteEnregistrable(moteur, enregistreur).executer();
-		assertEquals("", ihm.getDerniereInsert());
-		new InsTexteEnregistrable(moteur, enregistreur, "Hello").executer();
-		enregistreur.rejouerCommandes();
-		assertEquals("HelloHel", ihm.getDerniereInsert());
+	/**
+	 * Sets up the test environment.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		engine = new ImplementedEngine();
+		recorder = new Recorder();
+		gui = new GUITest();
+		engine.getBuffer().addObserver(gui);
 	}
 }

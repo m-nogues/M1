@@ -1,68 +1,62 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package engine;
 
 /**
- * Un moteur d'édition fournit un ensemble d'opérations permettant de manipuler du texte.
- * Ces opérations sont les suivantes :
- * 
- * - Copier
- * - Couper
- * - Coller
- * - Selectionner
- * - Supprimer du texte
- * - Insérer du texte
- * 
- * Un moteur d'édition est composé :
- * 
- * - D'un buffer, permettant de stocker et modifier le texte manipulé.
- * - D'un presse-papier, permettant d'effectuer les opérations de copier/coupe/collage
- * - D'une sélection, permettant de manipuler des parties du texte entré par l'utilisateur
- * 
+ * An edition engine allows for a variety of actions to edit a text. These
+ * actions are:
+ * Copy, Cut, Paste, Select, Delete text, Insert text.
+ * An edition engine is composed of :
+ * - A buffer, allowing modification and storage of a text.
+ * - A clipboard, allowing the copy/cut/paste actions.
+ * - a selection, allowing the edition of parts of the text in the buffer
+ *
  * @see Buffer
- * @see PressePapier
+ * @see Clipboard
  * @see Selection
  */
-public  interface EditionEngine 
-{
+public interface EditionEngine {
 	/**
-	 * Effectue une opération de collage du contenu du presse-papier vers le buffer
+	 * Copy of the selection to the clipboard.
 	 */
-	public void coller() ;
-	
-	/**
-	 * Effectue une opération de copie du contenu du buffer vers le presse-papier
-	 */
-	public void copier() ;
-	
-	/**
-	 * Effectue une opération de copie du contenu du buffer vers le presse-papier avec supression du contenu copié dans le buffer
-	 */
-	public void couper() ;
-	
-	/**
-	 * Effectue une insertion de texte dans le buffer
-	 * @param s La chaîne à insérer
-	 */
-	public void insererTexte(String s) ;
-	
-	/**
-	 * Modifie la sélection du moteur d'édition
-	 * @param s La nouvelle sélection
-	 */
-	public void selectionner(Selection s) ;
-	
-	/**
-	 * Effectue une suppression de texte dans le buffer
-	 */
-	public void supprimerTexte();
-	
-	/**
-	 * Remet les élements du moteur dans l'état précédant la dernière action effectuée
-	 */
-	public void defaire();
-	
-	/**
-	 * Remet les élements du moteur dans l'état précédemment atteind
-	 */
-	public void refaire();
-}
+	public void copy();
 
+	/**
+	 * Cut the selection to the clipboard.
+	 */
+	public void cut();
+
+	/**
+	 * Delete the selection from the buffer.
+	 */
+	public void deleteText();
+
+	/**
+	 * Insert the given string in the buffer.
+	 *
+	 * @param s
+	 *            the string to insert
+	 */
+	public void insertText(String s);
+
+	/**
+	 * Paste the clipboard to the buffer.
+	 */
+	public void paste();
+
+	public void redo();
+
+	/**
+	 * Set the selection to the given selection.
+	 *
+	 * @param s
+	 *            the new selection
+	 */
+	public void select(Selection s);
+
+	public void undo();
+}

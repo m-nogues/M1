@@ -8,8 +8,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import commands.Defaire;
-import commands.Refaire;
+import commands.Undo;
+import commands.Redo;
 import engine.EditionEngine;
 import engine.MoteurImplementation;
 
@@ -29,7 +29,7 @@ public class TestsUnitairesCommandesv3 {
 	@Test
 	public void testDefaire() {
 		
-		Defaire cmd = new Defaire(moteur);
+		Undo cmd = new Undo(moteur);
 		cmd.executer();
 		Mockito.verify(moteur).defaire();
 	}
@@ -37,7 +37,7 @@ public class TestsUnitairesCommandesv3 {
 	@Test
 	public void testRefaire() {
 		
-		Refaire cmd = new Refaire(moteur);
+		Redo cmd = new Redo(moteur);
 		cmd.executer();
 		Mockito.verify(moteur).refaire();
 	}

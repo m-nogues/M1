@@ -7,14 +7,14 @@ import java.util.Stack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import commands.Defaire;
-import commands.Refaire;
+import commands.Undo;
+import commands.Redo;
 import mementos.MementoSysteme;
 
 /**
  * Cette classe est chargée de gérer les actions défaire/refaire lorsque l'utilisateur les demandent au travers des commandes portant le même nom
- * @see Defaire
- * @see Refaire
+ * @see Undo
+ * @see Redo
  */
 public class GestionnaireHisto implements Observable{
 

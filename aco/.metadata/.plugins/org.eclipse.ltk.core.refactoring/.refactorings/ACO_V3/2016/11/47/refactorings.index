@@ -6,3 +6,12 @@
 1480088254994	Rename package 'fr.istic.foucaultbertier.aco.moteur'
 1480088259257	Rename package 'fr.istic.foucaultbertier.aco.tests'
 1480103993747	Rename type 'MoteurEdition'
+1480252282959	Delete element
+1480252299404	Delete element
+1480252325162	Delete elements
+1480252380455	Rename type 'Defaire'
+1480252387433	Rename type 'Refaire'
+1480252413149	Rename field 'moteur'
+1480252475079	Rename local variable 'moteur'
+1480252510134	Rename field 'moteur'
+1480252566756	Rename local variable 'moteur'

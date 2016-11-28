@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import commands.Defaire;
-import commands.Refaire;
+import commands.Undo;
+import commands.Redo;
 import editor.Enregistreur;
 import editor.GestionnaireHisto;
 import engine.MoteurImplementation;
@@ -38,17 +38,17 @@ public class TestsIntegrationv3 {
 
 		//On ajoute du texte et on revient en arrière
 		new InsTexteEnregistrable(moteur, enregistreur, "Test").executer();
-		new Defaire(moteur).executer();
+		new Undo(moteur).executer();
 		assertEquals("", ihm.getDerniereInsert());
 		
 		//On revient à l'insertion
-		new Refaire(moteur).executer();
+		new Redo(moteur).executer();
 		assertEquals("Test", ihm.getDerniereInsert());
 		
-		//On tente de faire un Refaire après une insertion, ce qui est impossible
-		new Defaire(moteur).executer();
+		//On tente de faire un Redo après une insertion, ce qui est impossible
+		new Undo(moteur).executer();
 		new InsTexteEnregistrable(moteur, enregistreur, "a").executer();
-		new Refaire(moteur).executer();
+		new Redo(moteur).executer();
 		assertEquals("a", ihm.getDerniereInsert());
 	}
 }
