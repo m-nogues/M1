@@ -15,5 +15,14 @@
 <fullyQualifiedTypeName name="mementos.MementoPaste"/>
 <fullyQualifiedTypeName name="engine.EditionEngine"/>
 <fullyQualifiedTypeName name="recordables.SelectRecordable"/>
+<fullyQualifiedTypeName name="org.apache.logging.log4j.core.Logger"/>
+<fullyQualifiedTypeName name="org.apache.logging.log4j.Logger"/>
+<fullyQualifiedTypeName name="org.apache.logging.log4j.LogManager"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="mementos.MementoSelection"/>
+<fullyQualifiedTypeName name="gui.UndoButton"/>
+<fullyQualifiedTypeName name="gui.RedoButton"/>
+<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+<fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
 <fullyQualifiedTypeName name="editor.Observer"/>
 </qualifiedTypeNameHistroy>

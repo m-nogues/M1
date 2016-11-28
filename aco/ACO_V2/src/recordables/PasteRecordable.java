@@ -65,7 +65,7 @@ public final class PasteRecordable implements CommandRecordable {
 	 */
 	public PasteRecordable(MementoCommand memento) {
 		restore(memento);
-		LOGGER.trace("Executing command paste");
+		LOGGER.trace("Executing paste command");
 		new Paste(engine).execute();
 	}
 
@@ -75,8 +75,8 @@ public final class PasteRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
-		LOGGER.trace("Executing command paste");
+		recorder.record(this);
+		LOGGER.trace("Executing paste command");
 		new Paste(engine).execute();
 	}
 

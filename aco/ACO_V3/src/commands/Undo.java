@@ -7,19 +7,21 @@ import engine.EditionEngine;
 
 /**
  * La commande défaire sert à indiquer au engine d'édition qu'on souhaite
- * rétablir l'éditeur à l'état précédent (si possible)
+ * rétablir l'éditeur à l'état précédent (si possible).
  */
-public class Undo implements Commande {
+public class Undo implements Command {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(Undo.class.getName());
 
+	/** The engine. */
 	private final EditionEngine engine;
 
 	/**
-	 * Crée une commande Undo
+	 * Instantiates a new undo.
 	 *
 	 * @param engine
-	 *            Le engine d'édition auquel adresser la commande (non-null)
+	 *            the engine
 	 */
 	public Undo(EditionEngine engine) {
 		/* Precondition */
@@ -30,8 +32,12 @@ public class Undo implements Commande {
 		this.engine = engine;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Commande#executer()
+	 */
 	@Override
-	public void executer() {
+	public void execute() {
 		LOGGER.trace("Exécution d'une commande Défaire");
 		engine.undo();
 	}

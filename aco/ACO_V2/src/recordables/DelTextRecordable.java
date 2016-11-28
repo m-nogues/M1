@@ -51,7 +51,6 @@ public final class DelTextRecordable implements CommandRecordable {
 			throw new IllegalArgumentException("engine is null");
 
 		/* Treatment */
-
 		this.recorder = recorder;
 		this.engine = engine;
 	}
@@ -75,7 +74,7 @@ public final class DelTextRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
+		recorder.record(this);
 		LOGGER.trace("Executing text deletion command");
 		new DeleteText(engine).execute();
 	}

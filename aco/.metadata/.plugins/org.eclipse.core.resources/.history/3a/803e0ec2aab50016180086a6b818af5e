@@ -1,0 +1,85 @@
+package gui;
+
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import editor.Recorder;
+import engine.EditionEngine;
+import engine.Selection;
+import recordables.SelectRecordable;
+
+/**
+ * Cette classe est chargée de surveiller les changements de sélection
+ * intervenant dans notre JTextArea, afin de s'assurer que notre l'objet
+ * Selection de notre Moteur d'édition est synchronisé avec la sélection de la
+ * JTextArea.
+ *
+ * @see SelectionEvent
+ */
+public final class SelectionListener implements CaretListener {
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LogManager.getLogger(SelectionListener.class.getName());
+
+	/** The active. */
+	private boolean active;
+
+	/** Le moteur d'édition à renseigner pour les commandes. */
+	private final EditionEngine engine;
+
+	/** The recorder. */
+	private final Recorder recorder;
+
+	/**
+	 * Constructor needs to know the edition engine to perform commands.
+	 *
+	 * @param engine
+	 *            the engine (not null)
+	 * @param recorder
+	 *            the recorder (not null)
+	 */
+	public SelectionListener(EditionEngine engine, Recorder recorder) {
+
+		if (engine == null)
+			throw new IllegalArgumentException("Null engine");
+		if (recorder == null)
+			throw new IllegalArgumentException("Null recorder");
+
+		this.engine = engine;
+		this.recorder = recorder;
+		active = true;
+	}
+
+	/**
+	 * Invoked when the selection changes in TextArea.
+	 *
+	 * @param e
+	 *            CaretEvent
+	 */
+	@Override
+	public final void caretUpdate(CaretEvent e) {
+
+		LOGGER.trace("Detected new selection");
+
+		final int min = Math.min(e.getDot(), e.getMark());
+		final int max = Math.max(e.getDot(), e.getMark());
+
+		LOGGER.debug("New selection is : [" + min + ", " + max + "]");
+
+		if (active)
+			new SelectRecordable(engine, recorder, new Selection(min, max)).execute();
+	}
+
+	/**
+	 * Tells Filter if it needs to ask the engine to execute a command or not.
+	 *
+	 * @param active
+	 *            ask if true
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+}

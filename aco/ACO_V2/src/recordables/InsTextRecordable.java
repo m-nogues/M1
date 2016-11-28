@@ -58,7 +58,6 @@ public final class InsTextRecordable implements CommandRecordable {
 			throw new IllegalArgumentException("string is null");
 
 		/* Treatment */
-
 		this.recorder = recorder;
 		this.engine = engine;
 		string = s;
@@ -83,8 +82,8 @@ public final class InsTextRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
-		LOGGER.trace("Exécution d'une commande InsertText");
+		recorder.record(this);
+		LOGGER.trace("Executing insert text command");
 		new InsertText(engine, string).execute();
 	}
 

@@ -74,7 +74,7 @@ public final class SelectRecordable implements CommandRecordable {
 	 */
 	public SelectRecordable(MementoCommand memento) {
 		restore(memento);
-		LOGGER.trace("Executing command select");
+		LOGGER.trace("Executing select command");
 		new Select(engine, selection).execute();
 	}
 
@@ -84,8 +84,8 @@ public final class SelectRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
-		LOGGER.trace("Executing command select");
+		recorder.record(this);
+		LOGGER.trace("Executing select command");
 		new Select(engine, selection).execute();
 	}
 

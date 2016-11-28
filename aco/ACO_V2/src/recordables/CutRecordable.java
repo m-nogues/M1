@@ -51,7 +51,6 @@ public final class CutRecordable implements CommandRecordable {
 			throw new IllegalArgumentException("engine is null");
 
 		/* Treatment */
-
 		this.recorder = recorder;
 		this.engine = engine;
 	}
@@ -75,8 +74,8 @@ public final class CutRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
-		LOGGER.trace("Executing command cut");
+		recorder.record(this);
+		LOGGER.trace("Executing cut command");
 		new Cut(engine).execute();
 	}
 

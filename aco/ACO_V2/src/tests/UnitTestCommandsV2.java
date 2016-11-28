@@ -53,7 +53,7 @@ public class UnitTestCommandsV2 {
 	public void testCopyRecordable() {
 		CopyRecordable cmd = new CopyRecordable(engine, recorder);
 		cmd.execute();
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 	/**
@@ -63,28 +63,28 @@ public class UnitTestCommandsV2 {
 	public void testCutRecordable() {
 		CutRecordable cmd = new CutRecordable(engine, recorder);
 		cmd.execute();
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 	/**
-	 * Test del text recordable.
+	 * Test text deletion recordable.
 	 */
 	@Test
 	public void testDelTextRecordable() {
 		DelTextRecordable cmd = new DelTextRecordable(engine, recorder);
 		cmd.execute();
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 	/**
-	 * Test ins text recordable.
+	 * Test text insertion recordable.
 	 */
 	@Test
 	public void testInsTextRecordable() {
 		InsTextRecordable cmd = new InsTextRecordable(engine, recorder, "Test");
 		cmd.execute();
 		Mockito.verify(engine).insertText(Matchers.eq("Test"));
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class UnitTestCommandsV2 {
 	public void testPasteRecordable() {
 		PasteRecordable cmd = new PasteRecordable(engine, recorder);
 		cmd.execute();
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class UnitTestCommandsV2 {
 	public void testSelectRecordable() {
 		SelectRecordable cmd = new SelectRecordable(engine, recorder, new Selection(0, 4));
 		cmd.execute();
-		Mockito.verify(recorder).enregistrer(Matchers.eq(cmd));
+		Mockito.verify(recorder).record(Matchers.eq(cmd));
 	}
 
 }

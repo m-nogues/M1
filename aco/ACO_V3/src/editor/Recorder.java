@@ -28,15 +28,13 @@ import recordables.PasteRecordable;
 import recordables.SelectRecordable;
 
 /**
- * Cette classe est chargée d'enregsitrer les mementos des commandes
- * enregsitrables de façon à pouvoir rejouer les commandes à la demande de
- * l'utilisateur.
+ * Recorder is to record the memento of commands as to replay them on the users'
+ * demand.
  *
  * @see CommandRecordable
  * @see MementoCommand
  */
 public final class Recorder implements Observable {
-
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(Recorder.class.getName());
 
@@ -53,14 +51,14 @@ public final class Recorder implements Observable {
 	 * Instantiates a new recorder.
 	 */
 	public Recorder() {
-		listMementos = new ArrayList<MementoCommand>();
-		listObservers = new ArrayList<Observer>();
+		listMementos = new ArrayList<>();
+		listObservers = new ArrayList<>();
 		record = false;
 	}
 
 	/**
-	 * Vide la liste des mementos enregistrés par l'objet et active
-	 * l'enregsitrement.
+	 * Clears the list of recorded memento (if there was any) and activate the
+	 * record mode.
 	 */
 	public final void activate() {
 		if (!record) {
@@ -79,17 +77,18 @@ public final class Recorder implements Observable {
 	 */
 	@Override
 	public void addObserver(Observer o) {
+		/* Precondition */
 		if (o == null)
 			throw new IllegalArgumentException("o is null");
-
 		if (listObservers.contains(o))
 			throw new IllegalArgumentException("o is already subscribed");
 
+		/* Treatment */
 		listObservers.add(o);
 	}
 
 	/**
-	 * Désactive l'enregistrement des commandes.
+	 * Deactivates the record mode.
 	 */
 	public final void deactivate() {
 		if (record) {
@@ -102,30 +101,11 @@ public final class Recorder implements Observable {
 	}
 
 	/**
-	 * Enregistre le memento d'une commande.
+	 * Gets the record.
 	 *
-	 * @param command
-	 *            La commande enregistrable dont on souhaite sauvegarder l'état
-	 *            (non null)
+	 * @return true if it records
 	 */
-	public final void enregistrer(CommandRecordable command) {
-		if (command == null)
-			throw new IllegalArgumentException("Command is null");
-
-		if (record) {
-			LOGGER.trace("Command Record");
-			listMementos.add(command.getMemento());
-		}
-	}
-
-	/**
-	 * Gets the enregistrer.
-	 *
-	 * @return Le statut de l'recorder :
-	 *         -True : enregistre
-	 *         -False : N'enregistre pas
-	 */
-	public boolean getEnregistrer() {
+	public boolean getRecord() {
 		return record;
 	}
 
@@ -139,27 +119,44 @@ public final class Recorder implements Observable {
 			o.update(this);
 	}
 
+	/**
+	 * Records the memento of a command.
+	 *
+	 * @param command
+	 *            the recordable command that we want to save the state of
+	 */
+	public final void record(CommandRecordable command) {
+		/* Precondition */
+		if (command == null)
+			throw new IllegalArgumentException("Command is null");
+
+		/* Treatment */
+		if (record) {
+			LOGGER.trace("Command Record");
+			listMementos.add(command.getMemento());
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see editor.Observable#removeObserver(editor.Observer)
 	 */
 	@Override
 	public void removeObserver(Observer o) {
+		/* Precondition */
 		if (o == null)
 			throw new IllegalArgumentException("o is null");
-
 		if (!listObservers.contains(o))
 			throw new IllegalArgumentException("o is not subscribed");
 
+		/* Treatment */
 		listObservers.remove(o);
 	}
 
 	/**
-	 * Rejoue l'ensemble des commandes précédemment enregistrées en les
-	 * restaurant à partir de leurs Memento.
+	 * Replay all the recorded commands from the corresponding recorded memento.
 	 */
 	public final void replayCommands() {
-
 		LOGGER.trace("Replay of recorded commands");
 
 		for (MementoCommand m : listMementos)

@@ -7,94 +7,83 @@ import engine.Selection;
 
 /**
  * Ce memento est chargé de sauvegarder/restaurer l'état d'un objet Selection
+ *
  * @see Selection
  */
 public class MementoSelection {
 
-	private static final Logger LOGGER = LogManager.getLogger(MementoSelection.class.getName());	
-	
-	private int debut;
-	private int fin;
-	
+	private static final Logger LOGGER = LogManager.getLogger(MementoSelection.class.getName());
+
+	private int	start;
+	private int	end;
+
 	/**
 	 * Crée le memento à partir de l'état de la selection
-	 * Le début doit être inférieur ou égal à la fin
-	 * @param debut Le début de la sélection (positif)
-	 * @param fin La fin de la sélection (positif)
+	 * Le début doit être inférieur ou égal à la end
+	 *
+	 * @param start
+	 *            Le début de la sélection (positif)
+	 * @param end
+	 *            La end de la sélection (positif)
 	 */
-	public MementoSelection(int debut, int fin){
-		
-		if(debut < 0){
-			
-			throw new IllegalArgumentException("debut est négatif");
-		}
-		if(fin < 0){
-			
-			throw new IllegalArgumentException("fin est négatif");
-		}
-		if(debut > fin){
-			
-			throw new IllegalArgumentException("debut est supérieur à fin");
-		}
-		
-		this.debut = debut;
-		this.fin = fin;
-		
+	public MementoSelection(int start, int end) {
+		/* Precondition */
+		if (start < 0)
+			throw new IllegalArgumentException("start < 0");
+		if (start > end)
+			throw new IllegalArgumentException("start > end");
+
+		/* Treatment */
+		this.start = start;
+		this.end = end;
+
 		LOGGER.trace("Création d'un MementoSelection");
 	}
-	
+
+	/**
+	 * @return La end de la sélection précédemment sauvegardée
+	 */
+	public int getEnd() {
+		return end;
+	}
+
 	/**
 	 * @return Le début de la sélection précédemment sauvegardé
 	 */
-	public int getDebut(){
-		
-		return debut;
+	public int getStart() {
+		return start;
 	}
 
 	/**
-	 * @return La fin de la sélection précédemment sauvegardée
+	 * Change l'attribut end de l'objet recevant le message.
+	 * La nouvelle end doit être supérieur ou égale à l'attribut début actuel
 	 */
-	public int getFin(){
-		
-		return fin;
+	public void setEnd(int end) {
+		/* Precondition */
+		if (end < 0)
+			throw new IllegalArgumentException("end < 0");
+		if (start > end)
+			throw new IllegalArgumentException("start > end");
+
+		/* Treatment */
+		this.end = end;
 	}
-	
+
 	/**
-	 * Change l'attribut debut de l'objet recevant le message.
-	 * Le nouveau debut doit être inférieur ou égal à l'attribut fin actuel
-	 * @param debut Le debut qui sera sauvegardé dans le memento (positif)
+	 * Change l'attribut start de l'objet recevant le message.
+	 * Le nouveau start doit être inférieur ou égal à l'attribut end actuel
+	 *
+	 * @param start
+	 *            Le start qui sera sauvegardé dans le memento (positif)
 	 */
-	public void setDebut(int debut){
-		
-		if(debut < 0){
-			
-			throw new IllegalArgumentException("debut est négatif");
-		}
+	public void setStart(int start) {
+		/* Precondition */
+		if (start < 0)
+			throw new IllegalArgumentException("start < 0");
+		if (start > end)
+			throw new IllegalArgumentException("start > end");
 
-		if(debut > fin){
-			
-			throw new IllegalArgumentException("debut est supérieur à fin");
-		}
-		
-		this.debut = debut;
-	}
-
-	/**
-	 * Change l'attribut fin de l'objet recevant le message.
-	 * La nouvelle fin doit être supérieur ou égale à l'attribut début actuel
-	*/
-	public void setFin(int fin){
-		
-		if(fin < 0){
-			
-			throw new IllegalArgumentException("debut est négatif");
-		}
-		
-		if(debut > fin){
-			
-			throw new IllegalArgumentException("debut est supérieur à fin");
-		}
-		
-		this.fin = fin;
+		/* Treatment */
+		this.start = start;
 	}
 }

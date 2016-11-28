@@ -6,6 +6,9 @@
  */
 package engine;
 
+import editor.HistoryManager;
+import mementos.MementoSystem;
+
 /**
  * This class is an Implementation of the edition engine.
  *
@@ -18,6 +21,9 @@ public final class ImplementedEngine implements EditionEngine {
 	private final Buffer	buffer;
 	/** The clipboard. */
 	private final Clipboard	clipboard;
+
+	/** The history. */
+	private HistoryManager history;
 
 	/**
 	 * Instantiates a new implemented engine and initialize it.
@@ -48,6 +54,8 @@ public final class ImplementedEngine implements EditionEngine {
 			clipboard.setContent(buffer.getContent(selection));
 			deleteText();
 		}
+		if (history != null)
+			saveState();
 	}
 
 	/*
@@ -57,6 +65,8 @@ public final class ImplementedEngine implements EditionEngine {
 	@Override
 	public final void deleteText() {
 		buffer.deleteText(selection);
+		if (history != null)
+			saveState();
 	}
 
 	/**
@@ -77,6 +87,8 @@ public final class ImplementedEngine implements EditionEngine {
 		if (s == null)
 			throw new IllegalArgumentException("String is null");
 		buffer.addText(s, selection);
+		if (history != null)
+			saveState();
 	}
 
 	/*
@@ -87,6 +99,29 @@ public final class ImplementedEngine implements EditionEngine {
 	public final void paste() {
 		if (!clipboard.isEmpty())
 			buffer.addText(clipboard.getContent(), selection);
+		if (history != null)
+			saveState();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see engine.EditionEngine#redo()
+	 */
+	@Override
+	public void redo() {
+		if (history != null && history.canRedo()) {
+			MementoSystem memSystem = history.redo();
+			buffer.restore(memSystem.getMemBuffer());
+			selection.restore(memSystem.getMemSelection());
+		}
+	}
+
+	/**
+	 * Saves the state.
+	 */
+	private void saveState() {
+		if (history != null)
+			history.addElement(new MementoSystem(buffer.getMemento(), selection.getMemento()));
 	}
 
 	/*
@@ -105,5 +140,34 @@ public final class ImplementedEngine implements EditionEngine {
 		if (start > end)
 			start = end;
 		this.selection.setSelection(new Selection(start, end));
+	}
+
+	/**
+	 * Sets the history.
+	 *
+	 * @param historyManager
+	 *            the new history
+	 */
+	public void setHistory(HistoryManager historyManager) {
+		/* Precondition */
+		if (historyManager == null)
+			throw new IllegalArgumentException("History manager is null");
+
+		/* Treatment */
+		history = historyManager;
+		saveState();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see engine.EditionEngine#undo()
+	 */
+	@Override
+	public void undo() {
+		if (history != null && history.canUndo()) {
+			MementoSystem memSystem = history.undo();
+			buffer.restore(memSystem.getMemBuffer());
+			selection.restore(memSystem.getMemSelection());
+		}
 	}
 }

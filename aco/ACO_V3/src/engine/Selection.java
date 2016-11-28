@@ -6,6 +6,8 @@
  */
 package engine;
 
+import mementos.MementoSelection;
+
 /**
  * The class selection represents the selection that the user has done.
  */
@@ -60,6 +62,15 @@ public final class Selection {
 	}
 
 	/**
+	 * Gets the memento.
+	 *
+	 * @return the memento
+	 */
+	public MementoSelection getMemento() {
+		return new MementoSelection(start, end);
+	}
+
+	/**
 	 * Gets the start of the selection.
 	 *
 	 * @return the start
@@ -75,6 +86,20 @@ public final class Selection {
 	 */
 	public final boolean isEmpty() {
 		return start == end;
+	}
+
+	/**
+	 * Restore.
+	 *
+	 * @param memento
+	 *            the memento
+	 */
+	public final void restore(MementoSelection memento) {
+		if (memento == null)
+			throw new IllegalArgumentException("memento is null");
+
+		start = memento.getStart();
+		end = memento.getEnd();
 	}
 
 	/**

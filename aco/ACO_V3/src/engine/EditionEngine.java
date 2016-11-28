@@ -48,6 +48,9 @@ public interface EditionEngine {
 	 */
 	public void paste();
 
+	/**
+	 * Redo the last command on the stack.
+	 */
 	public void redo();
 
 	/**
@@ -58,5 +61,8 @@ public interface EditionEngine {
 	 */
 	public void select(Selection s);
 
+	/**
+	 * Undo the last command on the stack.
+	 */
 	public void undo();
 }

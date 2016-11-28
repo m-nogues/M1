@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import editor.Observable;
 import editor.Observer;
+import mementos.MementoBuffer;
 
 /**
  * The buffer contains the text to display and the offset of the selection made
@@ -34,7 +35,7 @@ public final class Buffer implements Observable {
 	 * Instantiates a new buffer.
 	 */
 	public Buffer() {
-		listObservers = new ArrayList<Observer>();
+		listObservers = new ArrayList<>();
 		content = new StringBuffer();
 		newOffset = 0;
 	}
@@ -133,6 +134,15 @@ public final class Buffer implements Observable {
 	}
 
 	/**
+	 * Gets the memento.
+	 *
+	 * @return the memento
+	 */
+	public MementoBuffer getMemento() {
+		return new MementoBuffer(new StringBuffer(content), newOffset);
+	}
+
+	/**
 	 * Get the new offset of the cursor after the last action.
 	 *
 	 * @return the new offset
@@ -162,5 +172,23 @@ public final class Buffer implements Observable {
 		if (!listObservers.contains(o))
 			throw new IllegalArgumentException("o is not in  listObservers");
 		listObservers.remove(o);
+	}
+
+	/**
+	 * Restore.
+	 *
+	 * @param memento
+	 *            the memento
+	 */
+	public void restore(MementoBuffer memento) {
+		/* Precondition */
+		if (memento == null)
+			throw new IllegalArgumentException("Content is null");
+
+		/* Treatment */
+		content = memento.getContenu();
+		newOffset = memento.getOffModif();
+
+		notifyObservers();
 	}
 }

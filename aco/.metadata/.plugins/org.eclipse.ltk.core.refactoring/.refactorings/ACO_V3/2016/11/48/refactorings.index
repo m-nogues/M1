@@ -1,0 +1,38 @@
+1480368630926	Delete element
+1480368708000	Delete element
+1480369281067	Rename method 'getDebut'
+1480369288567	Rename method 'getFin'
+1480369318236	Delete elements
+1480369344507	Delete elements
+1480369371480	Rename method 'setDebut'
+1480369393593	Rename field 'debut'
+1480369399313	Rename field 'fin'
+1480369407602	Rename local variable 'debut'
+1480369410609	Rename local variable 'fin'
+1480369466679	Rename local variable 'fin'
+1480369473552	Rename method 'setFin'
+1480369532025	Rename local variable 'debut'
+1480369623689	Delete element
+1480369756204	Rename field 'historique'
+1480369764575	Rename method 'ajouterElement'
+1480369781472	Rename type 'GestionnaireHisto'
+1480369907238	Delete element
+1480369958607	Rename method 'getEnregistrer'
+1480370012380	Delete element
+1480370064838	Delete element
+1480370108992	Delete element
+1480370130991	Delete element
+1480370182234	Rename field 'listeObservateurs'
+1480370195819	Delete element
+1480370236427	Rename method 'defaire'
+1480370252806	Rename method 'peutDefaire'
+1480370261260	Rename method 'peutRefaire'
+1480370265806	Rename method 'refaire'
+1480370275194	Rename field 'refaire'
+1480370279746	Rename field 'defaire'
+1480370365135	Rename local variable 'memSysteme'
+1480370375250	Rename type 'MementoSysteme'
+1480370824640	Delete element
+1480371229389	Delete element
+1480371371980	Rename local variable 'memSysteme'
+1480371375993	Rename local variable 'memSysteme'

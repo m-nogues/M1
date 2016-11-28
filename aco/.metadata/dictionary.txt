@@ -9,3 +9,5 @@ gui
 mementos
 memento
 javadoc
+jpanel
+redo

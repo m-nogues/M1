@@ -1,0 +1,100 @@
+package mementos;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import engine.Selection;
+
+/**
+ * Ce memento est chargé de sauvegarder/restaurer l'état d'un objet Selection
+ * @see Selection
+ */
+public class MementoSelection {
+
+	private static final Logger LOGGER = LogManager.getLogger(MementoSelection.class.getName());	
+	
+	private int start;
+	private int fin;
+	
+	/**
+	 * Crée le memento à partir de l'état de la selection
+	 * Le début doit être inférieur ou égal à la fin
+	 * @param start Le début de la sélection (positif)
+	 * @param fin La fin de la sélection (positif)
+	 */
+	public MementoSelection(int debut, int fin){
+		
+		if(debut < 0){
+			
+			throw new IllegalArgumentException("start est négatif");
+		}
+		if(fin < 0){
+			
+			throw new IllegalArgumentException("fin est négatif");
+		}
+		if(debut > fin){
+			
+			throw new IllegalArgumentException("start est supérieur à fin");
+		}
+		
+		this.start = debut;
+		this.fin = fin;
+		
+		LOGGER.trace("Création d'un MementoSelection");
+	}
+	
+	/**
+	 * @return Le début de la sélection précédemment sauvegardé
+	 */
+	public int getStart(){
+		
+		return start;
+	}
+
+	/**
+	 * @return La fin de la sélection précédemment sauvegardée
+	 */
+	public int getEnd(){
+		
+		return fin;
+	}
+	
+	/**
+	 * Change l'attribut start de l'objet recevant le message.
+	 * Le nouveau start doit être inférieur ou égal à l'attribut fin actuel
+	 * @param start Le start qui sera sauvegardé dans le memento (positif)
+	 */
+	public void setStart(int debut){
+		
+		if(debut < 0){
+			
+			throw new IllegalArgumentException("start est négatif");
+		}
+
+		if(debut > fin){
+			
+			throw new IllegalArgumentException("start est supérieur à fin");
+		}
+		
+		this.start = debut;
+	}
+
+	/**
+	 * Change l'attribut fin de l'objet recevant le message.
+	 * La nouvelle fin doit être supérieur ou égale à l'attribut début actuel
+	*/
+	public void setFin(int fin){
+		
+		if(fin < 0){
+			
+			throw new IllegalArgumentException("start est négatif");
+		}
+		
+		if(start > fin){
+			
+			throw new IllegalArgumentException("start est supérieur à fin");
+		}
+		
+		this.fin = fin;
+	}
+}

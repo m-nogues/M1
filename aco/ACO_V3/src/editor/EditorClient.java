@@ -28,9 +28,11 @@ public final class EditorClient {
 	 */
 	public static void main(String[] args) {
 		final ImplementedEngine engine = new ImplementedEngine();
+		final HistoryManager historyManager = new HistoryManager();
 		final Recorder recorder = new Recorder();
-		final GUI gui = new GUI(engine, recorder);
+		final GUI gui = new GUI(engine, recorder, historyManager);
 		engine.getBuffer().addObserver(gui);
+		engine.setHistory(historyManager);
 		LOGGER.trace("Application launched and ready to use");
 	}
 }

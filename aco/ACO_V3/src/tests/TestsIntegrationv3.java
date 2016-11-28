@@ -10,7 +10,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import commands.Undo;
 import commands.Redo;
 import editor.Enregistreur;
-import editor.GestionnaireHisto;
+import editor.HistoryManager;
 import engine.MoteurImplementation;
 import recordables.InsTexteEnregistrable;
 
@@ -20,14 +20,14 @@ public class TestsIntegrationv3 {
 	private MoteurImplementation moteur;
 	private IHMTest ihm;
 	private Enregistreur enregistreur;
-	private GestionnaireHisto gestionnaire;
+	private HistoryManager gestionnaire;
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		moteur = new MoteurImplementation();
 		enregistreur = new Enregistreur();
-		gestionnaire = new GestionnaireHisto();
+		gestionnaire = new HistoryManager();
 		moteur.setHistorique(gestionnaire);
 		ihm = new IHMTest();
 		moteur.getBuffer().ajouterObservateur(ihm);

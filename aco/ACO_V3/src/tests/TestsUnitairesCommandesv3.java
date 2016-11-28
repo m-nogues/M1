@@ -31,7 +31,7 @@ public class TestsUnitairesCommandesv3 {
 		
 		Undo cmd = new Undo(moteur);
 		cmd.executer();
-		Mockito.verify(moteur).defaire();
+		Mockito.verify(moteur).undo();
 	}
 	
 	@Test
@@ -39,6 +39,6 @@ public class TestsUnitairesCommandesv3 {
 		
 		Redo cmd = new Redo(moteur);
 		cmd.executer();
-		Mockito.verify(moteur).refaire();
+		Mockito.verify(moteur).redo();
 	}
 }

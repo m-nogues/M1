@@ -75,8 +75,8 @@ public final class CopyRecordable implements CommandRecordable {
 	 */
 	@Override
 	public final void execute() {
-		recorder.enregistrer(this);
-		LOGGER.trace("Executing command copy");
+		recorder.record(this);
+		LOGGER.trace("Executing copy command");
 		new Copy(engine).execute();
 	}
 

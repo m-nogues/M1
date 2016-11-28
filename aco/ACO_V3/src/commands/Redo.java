@@ -11,7 +11,7 @@ import engine.EditionEngine;
  *
  * @see Undo
  */
-public class Redo implements Commande {
+public class Redo implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(Redo.class.getName());
 
@@ -33,7 +33,7 @@ public class Redo implements Commande {
 	}
 
 	@Override
-	public void executer() {
+	public void execute() {
 		LOGGER.trace("Exécution d'une commande Redo");
 		engine.redo();
 	}

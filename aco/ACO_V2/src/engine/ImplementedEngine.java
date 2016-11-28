@@ -95,10 +95,14 @@ public final class ImplementedEngine implements EditionEngine {
 	 */
 	@Override
 	public final void select(final Selection selection) {
+		/* Precondition */
 		if (selection == null)
 			throw new IllegalArgumentException("Selection is null");
+
+		/* Treatment */
 		int start = selection.getStart();
 		int end = selection.getEnd();
+
 		// Added for recordable commands
 		if (end > buffer.getMaxSelect())
 			end = buffer.getMaxSelect();
