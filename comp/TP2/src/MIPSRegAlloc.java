@@ -162,7 +162,7 @@ public class MIPSRegAlloc implements MIPSCGConstants {
 				destReg = op2Reg;
 				break;
 			case S_eq_S_op_R:
-				op1Reg = this.allocateOneRegister(op2Reg.getRegNumber());
+				op1Reg = this.allocateObrneRegister(op2Reg.getRegNumber());
 				this.loadRegisterMIPS(op1Reg, op1);
 				destReg = op1Reg;
 				break;

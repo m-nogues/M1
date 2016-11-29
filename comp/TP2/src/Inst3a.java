@@ -120,7 +120,6 @@ public class Inst3a {
 		op_a = a;
 		op_b = b;
 		op_c = c;
-
 	}
 
 	/**

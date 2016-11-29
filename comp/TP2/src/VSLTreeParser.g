@@ -298,8 +298,8 @@ print_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
 
 print_item [SymbolTable ts] returns [Code3a code]
 	: TEXT {$code = Code3aGenerator.genPrintText(new Data3a($TEXT.text.substring(1,$TEXT.text.length() - 1)));}
-    | expression[ts] {$code = Code3aGenerator.genPrintExpression($expression.expAtt);}
-    ;
+  | expression[ts] {$code = Code3aGenerator.genPrintExpression($expression.expAtt);}
+  ;
 
 read_list [SymbolTable ts] returns [Code3a code] @init {$code = new Code3a();}
 	: (read_item[ts] {$code.append($read_item.code);} )*
