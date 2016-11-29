@@ -39,5 +39,4 @@ clean:
 	rm -f $(SRC_DIR)/*.class $(SRC_DIR)/VSLTreeParser.java $(SRC_DIR)/VSLParser.java $(SRC_DIR)/VSLLexer.java *.tokens tmp.vsl_code
 
 clean_test:
-	cd test/
-	find . -type f  ! -name "*.vsl" -and ! -name "*.mips_out" -and ! -name "*.test_in" -and ! -name "*.comp_out" -and ! -name "*.TODO" -delete
+	cd test/; find . -type f  ! -name "*.vsl" -and ! -name "*.mips_out" -and ! -name "*.test_in" -and ! -name "*.comp_out" -and ! -name "*.TODO" -delete
