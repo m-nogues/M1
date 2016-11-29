@@ -315,11 +315,8 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 				break;
 
 			case BEGINFUNC:
-				functionStackSize = 0;
+				functionStackSize = nbMaxArgFunctionCaller = nbArgFunctionCallee = 0;
 				beginCurrentFunction = false;
-
-				nbMaxArgFunctionCaller = 0;
-				nbArgFunctionCallee = 0;
 				break;
 
 			case ENDFUNC:
@@ -342,7 +339,6 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 				if (nbArgFunctionCallee > nbMaxArgFunctionCaller)
 					nbMaxArgFunctionCaller = nbArgFunctionCallee;
 				nbArgFunctionCallee = 0;
-
 				break;
 			default:
 				// Nothing to do here
@@ -376,7 +372,6 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 		out.println("$LC0:");
 		out.println(R_INDENT + ".ascii\t\"%d\\000\"");
 		cg_constMIPS(c.the_data);
-
 		out.println(".text");
 
 		for (Inst3a inst : cc) {
@@ -483,19 +478,16 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 				break;
 
 			case CALL:
-
 				nextArgCallMIPS = 0;
 				regalloc.flushAll();
 				String slabel = inst.getB().getName3a();
 				Operand3a res = inst.getA();
-				if (slabel.equals("L4")) {// print string
-
+				if (slabel.equals("L4")) // print string
 					if (nachos)
 						slabel = "n_printf";
 					else
 						slabel = "printf";
-
-				} else if (slabel.equals("L2")) {// print int
+				else if (slabel.equals("L2")) {// print int
 					out.println(R_INDENT + "move $" + R_ARG2 + ",$" + R_ARG1);
 					out.println(R_INDENT + "lui   $" + R_ARG1 + ",%hi($LC0)");
 					out.println(R_INDENT + "addiu   $" + R_ARG1 + ",$" + R_ARG1 + ",%lo($LC0)");
@@ -504,7 +496,6 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 					else
 						slabel = "printf";
 				} else if (slabel.equals("L8")) {// scanf int
-
 					if (res.isVarInteger())
 						out.println(R_INDENT + "addiu   $" + R_ARG2 + ",$" + R_STACK + "," + res.getOffset());
 					else
@@ -514,11 +505,8 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 					out.println(R_INDENT + "addiu   $" + R_ARG1 + ",$" + R_ARG1 + ",%lo($LC0)");
 
 					slabel = "n_read_int";
-					if (nachos)
-						slabel = "n_read_int";
-					else
+					if (!nachos)
 						slabel = "scanf";
-
 				}
 
 				if (nachos) {
@@ -539,7 +527,6 @@ public class MIPSCodeGenerator implements MIPSCGConstants {
 					else if (slabel.equals("n_read_int"))
 						out.println(R_INDENT + "sw   $" + R_RES + "," + res.getOffset() + "($" + R_STACK + ")");
 				}
-
 				break;
 
 			case RETURN:
