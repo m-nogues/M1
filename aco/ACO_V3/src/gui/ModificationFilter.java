@@ -130,7 +130,7 @@ public final class ModificationFilter extends DocumentFilter {
 	public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String string, AttributeSet attrs)
 			throws BadLocationException {
 		LOGGER.trace("Enter replace");
-		LOGGER.debug("replace the string in position : " + offset + "  length " + length + " with " + string);
+		LOGGER.debug("Replace the string in position : " + offset + "  length " + length + " with " + string);
 		if (active)
 			new InsTextRecordable(engine, recorder, string).execute();
 		else

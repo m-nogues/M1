@@ -17,4 +17,10 @@
 		<item value="600" key="dialogHeight"/>
 		<item value="500" key="dialogWidth"/>
 	</section>
+	<section name="OptInDialog">
+		<item value="Do you want to save your preferences on the Eclipse.org server so you can share them on other workstations?" key="DIALOG_MESSAGE"/>
+		<item value="404" key="DIALOG_WIDTH"/>
+		<item value="1|Sans|10.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="253" key="DIALOG_HEIGHT"/>
+	</section>
 </section>

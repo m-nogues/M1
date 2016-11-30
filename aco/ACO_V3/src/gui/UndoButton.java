@@ -2,40 +2,41 @@ package gui;
 
 import javax.swing.JButton;
 
-import editor.GestionnaireHisto;
+import editor.HistoryManager;
 import editor.Observable;
-import editor.Observateur;
+import editor.Observer;
 
 /**
- * this class implement the behavior of the UndoButton (enable/disable)
+ * UndoButton implements the behavior of the UndoButton (enable/disable)
  *
  * @see HistoryManager
  */
 public class UndoButton extends JButton implements Observer {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6273371891402818469L;
 
+	/**
+	 * Instantiates a new undo button.
+	 */
 	public UndoButton() {
-
 		setEnabled(false);
 	}
 
-	/**
-	 * @see Observateur
+	/*
+	 * (non-Javadoc)
+	 * @see editor.Observer#update(editor.Observable)
 	 */
 	@Override
 	public void update(Observable o) {
 
 		if(o == null){
 			throw new IllegalArgumentException("Null o");
-		if(!(o instanceof GestionnaireHisto))
+		if(!(o instanceof HistoryManager))
 			throw new IllegalArgumentException("o not type HistoryManager");
 
-		GestionnaireHisto gestionnaire = (GestionnaireHisto) o;
+		HistoryManager manager = (HistoryManager) o;
 
-		if(gestionnaire.peutDefaire())
-			setEnabled(true);
-		else
-			setEnabled(false);
+		setEnabled(manager.canUndo());
 	}
 }

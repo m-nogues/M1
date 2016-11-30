@@ -47,9 +47,9 @@ public final class SelectionListener implements CaretListener {
 	public SelectionListener(EditionEngine engine, Recorder recorder) {
 		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("Null engine");
+			throw new IllegalArgumentException("Engine is null");
 		if (recorder == null)
-			throw new IllegalArgumentException("Null recorder");
+			throw new IllegalArgumentException("Recorder is null");
 
 		/* Treatment */
 		this.engine = engine;
@@ -70,7 +70,7 @@ public final class SelectionListener implements CaretListener {
 	 *            CaretEvent
 	 */
 	public final void caretUpdate(CaretEvent e) {
-		LOGGER.trace("Detected new selection");
+		LOGGER.trace("Detected a new selection");
 
 		final int min = Math.min(e.getDot(), e.getMark());
 		final int max = Math.max(e.getDot(), e.getMark());

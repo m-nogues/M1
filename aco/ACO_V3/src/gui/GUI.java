@@ -88,7 +88,7 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	private RedoButton redo;
 
 	/**
-	 * Instantiates a new gui.
+	 * Instantiates a new graphical user interface.
 	 *
 	 * @param engine
 	 *            the engine
@@ -145,8 +145,8 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		undo = new UndoButton();
 		redo = new RedoButton();
 
-		historyManager.addObserver((Observer) undo);
-		historyManager.addObserver((Observer) redo);
+		historyManager.addObserver(undo);
+		historyManager.addObserver(redo);
 
 		// Sets the icons
 		paste.setIcon(new ImageIcon(getClass().getResource("/icons/paste.png")));

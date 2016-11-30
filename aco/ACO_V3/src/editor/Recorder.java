@@ -38,7 +38,7 @@ public final class Recorder implements Observable {
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(Recorder.class.getName());
 
-	/** The list mementos. */
+	/** The list of mementos. */
 	private List<MementoCommand> listMementos;
 
 	/** The list observers. */

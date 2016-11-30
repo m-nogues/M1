@@ -25,7 +25,6 @@ public class ReplayButton extends JButton implements Observer {
 	/**
 	 * Instantiates a new replay button.
 	 */
-	// the button is disable at the launch
 	public ReplayButton() {
 		setEnabled(false);
 	}
@@ -38,9 +37,9 @@ public class ReplayButton extends JButton implements Observer {
 	public void update(Observable o) {
 		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Null o ");
+			throw new IllegalArgumentException("o is null");
 		if (!(o instanceof Recorder))
-			throw new IllegalArgumentException("o not type Recorder");
+			throw new IllegalArgumentException("o not of type Recorder");
 
 		/* Treatment */
 		setEnabled(!((Recorder) o).getRecord());

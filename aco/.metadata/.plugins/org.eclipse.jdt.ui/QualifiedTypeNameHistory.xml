@@ -24,5 +24,6 @@
 <fullyQualifiedTypeName name="gui.RedoButton"/>
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
 <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
+<fullyQualifiedTypeName name="editor.HistoryManager"/>
 <fullyQualifiedTypeName name="editor.Observer"/>
 </qualifiedTypeNameHistroy>

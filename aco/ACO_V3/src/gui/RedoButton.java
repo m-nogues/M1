@@ -36,7 +36,7 @@ public class RedoButton extends JButton implements Observer {
 			throw new IllegalArgumentException("o is not an HistoryManager");
 
 		/* Treatment */
-		HistoryManager gestionnaire = (HistoryManager) o;
-		setEnabled(gestionnaire.canRedo());
+		HistoryManager manager = (HistoryManager) o;
+		setEnabled(manager.canRedo());
 	}
 }

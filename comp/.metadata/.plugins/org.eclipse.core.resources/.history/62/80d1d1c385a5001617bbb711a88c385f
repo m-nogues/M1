@@ -1,7 +1,0 @@
-
-public class Main {
-	private String[] params = new String[] {"test/example_fact", "-debug"};
-
-	public static void main(String[] args) {}
-
-}
