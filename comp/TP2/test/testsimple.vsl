@@ -4,5 +4,5 @@ FUNC VOID main()
 
   i := 3
 
-  PRINT i, "bla"
+  PRINT i, "\nbla"
 }

@@ -10,15 +10,18 @@ L11:
        .ascii	"\012\000"
        .align 2
 L14:
-       .ascii	"Test sample\012\000"
+       .ascii	"\012\000"
        .align 2
 L15:
-       .ascii	"\012\000"
+       .ascii	"Test sample\012\000"
        .align 2
 L16:
        .ascii	"\012\000"
        .align 2
 L17:
+       .ascii	"\012\000"
+       .align 2
+L18:
        .ascii	"\012Second test sample\012\000"
 .text
 # label test
@@ -27,8 +30,9 @@ L17:
 	.globl test
 	.ent test
 test:
-	 addiu	$sp,$sp,-24
+	 addiu	$sp,$sp,-28
 	 sw	$31,16($29)
+# var T_0
 # T_0 = tab [ 0 ]
        li   $8, 0
        li   $9,4
@@ -38,7 +42,7 @@ test:
        add   $8,$8,$9
        lw  $8,0($8)
 # arg T_0
-       sw  $8,0($29)
+       sw  $8,24($29)
 	 sw   $8,0($29)
 	move   $4,$8
 # call L2
@@ -58,12 +62,12 @@ test:
 # return 1
        li   $2, 1
 	 lw	$31,16($29)
-	 addiu	$sp,$sp,24
+	 addiu	$sp,$sp,28
 	 jr  $31
 	 nop
 # endfunc 
 	 lw	$31,16($29)
-	 addiu	$sp,$sp,24
+	 addiu	$sp,$sp,28
 	 jr  $31
 	 nop
 	.end test
@@ -105,7 +109,7 @@ test2:
 	.globl main
 	.ent main
 main:
-	 addiu	$sp,$sp,-88
+	 addiu	$sp,$sp,-96
 	 sw	$31,16($29)
 	 sw	$16,24($29)
 	 sw	$17,28($29)
@@ -123,27 +127,25 @@ main:
        li   $8, 0
 # var T_1
 # T_1 = 1 + y
-       li   $10, 1
-       lw  $9,60($29)
-	add $9, $10, $9
+       li   $9, 1
+	add $9, $9, $8
 # x = T_1
        sw  $9,76($29)
 # ifz x goto L12
-       sw  $8,0($29)
-       sw  $9,0($29)
-       lw  $11,56($29)
-	beq  $11,0,L12
+       sw  $8,60($29)
+       sw  $9,56($29)
+	beq  $9,0,L12
 # x = 5
-       li   $12, 5
+       li   $10, 5
 # goto L13
-       sw  $12,0($29)
+       sw  $10,56($29)
 	j  L13
 # label L12
 L12:
 # x = 6
        li   $8, 6
 # label L13
-       sw  $8,0($29)
+       sw  $8,56($29)
 L13:
 # a [ 0 ] = 1
        li   $8, 0
@@ -154,6 +156,7 @@ L13:
        add   $8,$8,$9
        li   $9, 1
        sw  $9,0($8)
+# var T_2
 # T_2 = a [ 0 ]
        li   $8, 0
        li   $10,4
@@ -163,13 +166,21 @@ L13:
        add   $8,$8,$10
        lw  $8,0($8)
 # arg T_2
-       sw  $8,0($29)
+       sw  $8,80($29)
 	 sw   $8,0($29)
 	move   $4,$8
 # call L2
        move $5,$4
        lui   $4,%hi($LC0)
        addiu   $4,$4,%lo($LC0)
+	 jal   n_printf
+	 nop
+# arg L14
+       lui   $8,%hi(L14)
+       addiu   $8,$8,%lo(L14)
+	 sw   $8,0($29)
+	move   $4,$8
+# call L4
 	 jal   n_printf
 	 nop
 # var T_3
@@ -195,8 +206,8 @@ L13:
 	 sw   $8,0($29)
 	move   $4,$8
 # T_4 =  call test
-       sw  $2,80($29)
-       sw  $9,80($29)
+       sw  $2,84($29)
+       sw  $9,84($29)
 	 jal   test
 	 nop
 # z = T_4
@@ -206,8 +217,8 @@ L13:
 	 sw   $9,0($29)
 	move   $4,$9
 # call test2
-       sw  $2,84($29)
-       sw  $8,0($29)
+       sw  $2,88($29)
+       sw  $8,64($29)
 	 jal   test2
 	 nop
 # arg 1
@@ -217,24 +228,6 @@ L13:
 # call test2
 	 jal   test2
 	 nop
-# arg L14
-       lui   $8,%hi(L14)
-       addiu   $8,$8,%lo(L14)
-	 sw   $8,0($29)
-	move   $4,$8
-# call L4
-	 jal   n_printf
-	 nop
-# arg x
-       lw  $8,56($29)
-	 sw   $8,0($29)
-	move   $4,$8
-# call L2
-       move $5,$4
-       lui   $4,%hi($LC0)
-       addiu   $4,$4,%lo($LC0)
-	 jal   n_printf
-	 nop
 # arg L15
        lui   $8,%hi(L15)
        addiu   $8,$8,%lo(L15)
@@ -243,16 +236,8 @@ L13:
 # call L4
 	 jal   n_printf
 	 nop
-# T_5 = a [ 1 ]
-       li   $8, 1
-       li   $9,4
-       mult   $8,$9
-       mflo   $8
-       add   $9,$29,68
-       add   $8,$8,$9
-       lw  $8,0($8)
-# arg T_5
-       sw  $8,0($29)
+# arg x
+       lw  $8,56($29)
 	 sw   $8,0($29)
 	move   $4,$8
 # call L2
@@ -269,8 +254,17 @@ L13:
 # call L4
 	 jal   n_printf
 	 nop
-# arg z
-       lw  $8,64($29)
+# var T_5
+# T_5 = a [ 1 ]
+       li   $8, 1
+       li   $9,4
+       mult   $8,$9
+       mflo   $8
+       add   $9,$29,68
+       add   $8,$8,$9
+       lw  $8,0($8)
+# arg T_5
+       sw  $8,92($29)
 	 sw   $8,0($29)
 	move   $4,$8
 # call L2
@@ -282,6 +276,24 @@ L13:
 # arg L17
        lui   $8,%hi(L17)
        addiu   $8,$8,%lo(L17)
+	 sw   $8,0($29)
+	move   $4,$8
+# call L4
+	 jal   n_printf
+	 nop
+# arg z
+       lw  $8,64($29)
+	 sw   $8,0($29)
+	move   $4,$8
+# call L2
+       move $5,$4
+       lui   $4,%hi($LC0)
+       addiu   $4,$4,%lo($LC0)
+	 jal   n_printf
+	 nop
+# arg L18
+       lui   $8,%hi(L18)
+       addiu   $8,$8,%lo(L18)
 	 sw   $8,0($29)
 	move   $4,$8
 # call L4
@@ -316,7 +328,7 @@ L13:
 	 lw	$22,44($29)
 	 lw	$23,48($29)
 	 lw	$31,16($29)
-	 addiu	$sp,$sp,88
+	 addiu	$sp,$sp,96
 	 jr  $31
 	 nop
 	.end main

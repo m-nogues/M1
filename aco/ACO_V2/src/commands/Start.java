@@ -34,19 +34,19 @@ public class Start implements Command {
 	public Start(Recorder recorder) {
 
 		if (recorder == null)
-			throw new IllegalArgumentException("recorder est à null");
+			throw new IllegalArgumentException("recorder is null");
 
 		this.recorder = recorder;
 	}
 
-	/**
-	 * Ordonne à l'recorder d'arrêter de commencer à enregistrer les commandes
-	 * qui lui sont adressées.
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public void execute() {
 
-		LOGGER.trace("Exécution d'une commande Start");
+		LOGGER.trace("Executing command start");
 		recorder.activate();
 	}
 }

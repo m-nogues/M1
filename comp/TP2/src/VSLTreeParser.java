@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 ./src/VSLTreeParser.g 2016-11-29 08:51:12
+// $ANTLR 3.5.2 ./src/VSLTreeParser.g 2016-12-01 14:22:00
 
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
@@ -844,7 +844,7 @@ public class VSLTreeParser extends TreeParser {
 										System.exit(1);
 									}
 
-									code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), new VarSymbol((IDENT17!=null?IDENT17.getText():null))));
+									code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), op));
 								} else {
 									Errors.unknownIdentifier(IDENT17, (IDENT17!=null?IDENT17.getText():null), null);
 									System.exit(1);
@@ -1708,9 +1708,9 @@ public class VSLTreeParser extends TreeParser {
 					}
 					break;
 				case 2 :
-					// ./src/VSLTreeParser.g:301:7: expression[ts]
+					// ./src/VSLTreeParser.g:301:5: expression[ts]
 					{
-					pushFollow(FOLLOW_expression_in_print_item897);
+					pushFollow(FOLLOW_expression_in_print_item895);
 					expression30=expression(ts);
 					state._fsp--;
 
@@ -1759,7 +1759,7 @@ public class VSLTreeParser extends TreeParser {
 				case 1 :
 					// ./src/VSLTreeParser.g:305:5: read_item[ts]
 					{
-					pushFollow(FOLLOW_read_item_in_read_list926);
+					pushFollow(FOLLOW_read_item_in_read_list922);
 					read_item31=read_item(ts);
 					state._fsp--;
 
@@ -1817,7 +1817,7 @@ public class VSLTreeParser extends TreeParser {
 				case 1 :
 					// ./src/VSLTreeParser.g:309:4: IDENT
 					{
-					IDENT32=(CommonTree)match(input,IDENT,FOLLOW_IDENT_in_read_item949); 
+					IDENT32=(CommonTree)match(input,IDENT,FOLLOW_IDENT_in_read_item945); 
 
 								VarSymbol v = (VarSymbol)ts.lookup((IDENT32!=null?IDENT32.getText():null));
 								if(v != null)
@@ -1832,7 +1832,7 @@ public class VSLTreeParser extends TreeParser {
 				case 2 :
 					// ./src/VSLTreeParser.g:319:4: array_elem[ts, null]
 					{
-					pushFollow(FOLLOW_array_elem_in_read_item958);
+					pushFollow(FOLLOW_array_elem_in_read_item954);
 					array_elem(ts, null);
 					state._fsp--;
 
@@ -1868,10 +1868,10 @@ public class VSLTreeParser extends TreeParser {
 			// ./src/VSLTreeParser.g:323:2: ( ^( ARELEM IDENT expression[ts] ) )
 			// ./src/VSLTreeParser.g:323:4: ^( ARELEM IDENT expression[ts] )
 			{
-			match(input,ARELEM,FOLLOW_ARELEM_in_array_elem981); 
+			match(input,ARELEM,FOLLOW_ARELEM_in_array_elem977); 
 			match(input, Token.DOWN, null); 
-			IDENT33=(CommonTree)match(input,IDENT,FOLLOW_IDENT_in_array_elem983); 
-			pushFollow(FOLLOW_expression_in_array_elem985);
+			IDENT33=(CommonTree)match(input,IDENT,FOLLOW_IDENT_in_array_elem979); 
+			pushFollow(FOLLOW_expression_in_array_elem981);
 			expression34=expression(ts);
 			state._fsp--;
 
@@ -1884,8 +1884,9 @@ public class VSLTreeParser extends TreeParser {
 							expAtt = new ExpAttribute(Type.INT, c, v);
 						} else {
 							VarSymbol tmp = SymbDistrib.newTemp();
+							Code3a c = Code3aGenerator.genVar(tmp);
 							Operand3a op = ts.lookup((IDENT33!=null?IDENT33.getText():null));
-							Code3a c = Code3aGenerator.genArrayAccess(tmp, op, expression34);
+							c.append(Code3aGenerator.genArrayAccess(tmp, op, expression34));
 							expAtt = new ExpAttribute(Type.INT, c, tmp);
 						}
 					
@@ -1989,11 +1990,11 @@ public class VSLTreeParser extends TreeParser {
 	public static final BitSet FOLLOW_expression_in_argument_list832 = new BitSet(new long[]{0x0000908002C14202L});
 	public static final BitSet FOLLOW_print_item_in_print_list864 = new BitSet(new long[]{0x0000908202C14202L});
 	public static final BitSet FOLLOW_TEXT_in_print_item887 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_expression_in_print_item897 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_read_item_in_read_list926 = new BitSet(new long[]{0x0000008000004002L});
-	public static final BitSet FOLLOW_IDENT_in_read_item949 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_array_elem_in_read_item958 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ARELEM_in_array_elem981 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_IDENT_in_array_elem983 = new BitSet(new long[]{0x0000908002C14200L});
-	public static final BitSet FOLLOW_expression_in_array_elem985 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_expression_in_print_item895 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_read_item_in_read_list922 = new BitSet(new long[]{0x0000008000004002L});
+	public static final BitSet FOLLOW_IDENT_in_read_item945 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_array_elem_in_read_item954 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ARELEM_in_array_elem977 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_IDENT_in_array_elem979 = new BitSet(new long[]{0x0000908002C14200L});
+	public static final BitSet FOLLOW_expression_in_array_elem981 = new BitSet(new long[]{0x0000000000000008L});
 }

@@ -34,18 +34,15 @@ public class Replay implements Command {
 	public Replay(Recorder recorder) {
 
 		if (recorder == null)
-			throw new IllegalArgumentException("recorder est à null");
+			throw new IllegalArgumentException("recorder is null");
 
 		this.recorder = recorder;
 	}
 
-	/**
-	 * Ordonne à l'recorder de rejouer les commandes qu'il a enregistré.
-	 */
 	@Override
 	public void execute() {
 
-		LOGGER.trace("Exécution d'une commande Replay");
+		LOGGER.trace("Executing command replay");
 		recorder.replayCommands();
 	}
 }

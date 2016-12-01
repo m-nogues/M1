@@ -33,18 +33,18 @@ public class Stop implements Command {
 	 */
 	public Stop(Recorder recorder) {
 		if (recorder == null)
-			throw new IllegalArgumentException("recorder est à null");
+			throw new IllegalArgumentException("recorder is null");
 
 		this.recorder = recorder;
 	}
 
-	/**
-	 * Ordonne à l'recorder d'arrêter d'enregistrer les commandes qui lui
-	 * sont adressées.
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public void execute() {
-		LOGGER.trace("On exécute une commande Arrêter");
+		LOGGER.trace("Executing command stop");
 		recorder.deactivate();
 	}
 }

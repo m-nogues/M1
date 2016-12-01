@@ -138,7 +138,7 @@ statement_lhs [SymbolTable ts, ExpAttribute exp] returns [Code3a code]
 					System.exit(1);
 				}
 
-				$code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), new VarSymbol($IDENT.text)));
+				$code = Code3aGenerator.genAssign(exp, new ExpAttribute(Type.INT, new Code3a(), op));
 			} else {
 				Errors.unknownIdentifier($IDENT, $IDENT.text, null);
 				System.exit(1);
@@ -328,8 +328,9 @@ array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 				$expAtt = new ExpAttribute(Type.INT, c, v);
 			} else {
 				VarSymbol tmp = SymbDistrib.newTemp();
+				Code3a c = Code3aGenerator.genVar(tmp);
 				Operand3a op = ts.lookup($IDENT.text);
-				Code3a c = Code3aGenerator.genArrayAccess(tmp, op, $expression.expAtt);
+				c.append(Code3aGenerator.genArrayAccess(tmp, op, $expression.expAtt));
 				$expAtt = new ExpAttribute(Type.INT, c, tmp);
 			}
 		}

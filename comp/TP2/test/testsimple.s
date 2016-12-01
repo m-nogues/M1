@@ -4,10 +4,10 @@ $LC0:
        .ascii	"%d\000"
        .align 2
 L10:
-       .ascii	"bla\000"
+       .ascii	"\012bla\000"
 .text
 # label main
-# beginfunc
+# beginfunc 
 	.align	2
 	.globl main
 	.ent main
@@ -26,11 +26,10 @@ main:
 # i = 3
        li   $8, 3
 # arg i
-       sw   $8,56($29)
-       sw   $8,0($29)
-       move   $4,$8
+       sw  $8,56($29)
+	 sw   $8,0($29)
+	move   $4,$8
 # call L2
-       sw  $8,0($29)
        move $5,$4
        lui   $4,%hi($LC0)
        addiu   $4,$4,%lo($LC0)
@@ -44,7 +43,7 @@ main:
 # call L4
 	 jal   n_printf
 	 nop
-# endfunc
+# endfunc 
 	 lw	$16,20($29)
 	 lw	$17,24($29)
 	 lw	$18,28($29)
