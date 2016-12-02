@@ -6,8 +6,7 @@ import org.apache.logging.log4j.Logger;
 import engine.EditionEngine;
 
 /**
- * La commande défaire sert à indiquer au engine d'édition qu'on souhaite
- * rétablir l'éditeur à l'état précédent (si possible).
+ * Undo is to ask the engine to undo the last command (if possible).
  */
 public class Undo implements Command {
 

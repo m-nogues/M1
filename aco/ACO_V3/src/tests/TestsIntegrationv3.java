@@ -1,54 +1,52 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import commands.Undo;
 import commands.Redo;
-import editor.Enregistreur;
+import commands.Undo;
 import editor.HistoryManager;
-import engine.MoteurImplementation;
-import recordables.InsTexteEnregistrable;
+import editor.Recorder;
+import engine.ImplementedEngine;
+import recordables.InsTextRecordable;
 
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv3 {
 
-	private MoteurImplementation moteur;
-	private IHMTest ihm;
-	private Enregistreur enregistreur;
-	private HistoryManager gestionnaire;
-	
+	private ImplementedEngine	engine;
+	private GUITest				gui;
+	private Recorder			recorder;
+	private HistoryManager		manager;
+
 	@Before
 	public void setUp() throws Exception {
-		
-		moteur = new MoteurImplementation();
-		enregistreur = new Enregistreur();
-		gestionnaire = new HistoryManager();
-		moteur.setHistorique(gestionnaire);
-		ihm = new IHMTest();
-		moteur.getBuffer().ajouterObservateur(ihm);
+		engine = new ImplementedEngine();
+		recorder = new Recorder();
+		manager = new HistoryManager();
+		engine.setHistory(manager);
+		gui = new GUITest();
+		engine.getBuffer().addObserver(gui);
 	}
 
 	@Test
 	public void test() {
+		// Add text and undo
+		new InsTextRecordable(engine, recorder, "Test").execute();
+		new Undo(engine).execute();
+		assertEquals("", gui.getLastInsert());
 
-		//On ajoute du texte et on revient en arrière
-		new InsTexteEnregistrable(moteur, enregistreur, "Test").executer();
-		new Undo(moteur).executer();
-		assertEquals("", ihm.getDerniereInsert());
-		
-		//On revient à l'insertion
-		new Redo(moteur).executer();
-		assertEquals("Test", ihm.getDerniereInsert());
-		
-		//On tente de faire un Redo après une insertion, ce qui est impossible
-		new Undo(moteur).executer();
-		new InsTexteEnregistrable(moteur, enregistreur, "a").executer();
-		new Redo(moteur).executer();
-		assertEquals("a", ihm.getDerniereInsert());
+		// Redo insertion
+		new Redo(engine).execute();
+		assertEquals("Test", gui.getLastInsert());
+
+		// Trying redo after insertion
+		new Undo(engine).execute();
+		new InsTextRecordable(engine, recorder, "a").execute();
+		new Redo(engine).execute();
+		assertEquals("a", gui.getLastInsert());
 	}
 }

@@ -30,10 +30,10 @@ public class UndoButton extends JButton implements Observer {
 	@Override
 	public void update(Observable o) {
 
-		if(o == null){
-			throw new IllegalArgumentException("Null o");
-		if(!(o instanceof HistoryManager))
-			throw new IllegalArgumentException("o not type HistoryManager");
+		if (o == null)
+			throw new IllegalArgumentException("o is null");
+		if (!(o instanceof HistoryManager))
+			throw new IllegalArgumentException("o not of type HistoryManager");
 
 		HistoryManager manager = (HistoryManager) o;
 

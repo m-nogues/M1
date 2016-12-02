@@ -12,8 +12,7 @@ import org.apache.logging.log4j.Logger;
 import editor.Recorder;
 
 /**
- * Cette commande est chargée d'ordonner à l'enregsitreur de commande de rejouer
- * les commandes qu'il a précédemment enregistré.
+ * Replay asks the recorder to replay the previously recorded commands.
  *
  * @see Recorder
  */
@@ -26,26 +25,27 @@ public class Replay implements Command {
 	private Recorder recorder;
 
 	/**
-	 * Crée la commande.
+	 * Instantiates a new replay.
 	 *
 	 * @param recorder
-	 *            L'recorder à qui adresser la commande (non null)
+	 *            the recorder
 	 */
 	public Replay(Recorder recorder) {
-
+		/* Precondition */
 		if (recorder == null)
-			throw new IllegalArgumentException("recorder est à null");
+			throw new IllegalArgumentException("recorder is null");
 
+		/* Treatment */
 		this.recorder = recorder;
 	}
 
-	/**
-	 * Ordonne à l'recorder de rejouer les commandes qu'il a enregistré.
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
 	 */
 	@Override
 	public void execute() {
-
-		LOGGER.trace("Exécution d'une commande Replay");
+		LOGGER.trace("Executing command replay");
 		recorder.replayCommands();
 	}
 }

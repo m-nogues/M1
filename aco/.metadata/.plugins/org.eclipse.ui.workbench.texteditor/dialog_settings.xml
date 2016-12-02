@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="HistoryManager" key="selection"/>
+		<item value="ImplementedEngine" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="MoteurImplementation"/>
+			<item value="ajouterObservateur"/>
+			<item value="EditionEngine"/>
+			<item value="Enregistreur"/>
+			<item value="ihm"/>
+			<item value="IHMTest"/>
+			<item value="moteur"/>
 			<item value="GestionnaireHisto"/>
-			<item value="notifierObservateurs"/>
-			<item value="notifyObservers"/>
-			<item value="est à"/>
-			<item value="launch"/>
-			<item value="executer"/>
-			<item value="Enregistrable"/>
-			<item value="MoteurEdition"/>
 		</list>
 		<list key="replacehistory">
-			<item value="HistoryManager"/>
-			<item value="notifyObservers"/>
-			<item value="is"/>
-			<item value="Executes"/>
-			<item value="execute"/>
-			<item value="Recordable"/>
-			<item value="EditionEngine"/>
 			<item value="ImplementedEngine"/>
+			<item value="addObservers"/>
+			<item value="Recorder"/>
+			<item value="gui"/>
+			<item value="GUITest"/>
+			<item value="engine"/>
+			<item value="EditionEngine"/>
+			<item value="HistoryManager"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

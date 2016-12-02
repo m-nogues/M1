@@ -12,8 +12,7 @@ import commands.Undo;
 import mementos.MementoSystem;
 
 /**
- * Cette classe est chargée de gérer les actions défaire/redo lorsque
- * l'utilisateur les demandent au travers des commandes portant le même nom.
+ * HistoryManager.
  *
  * @see Undo
  * @see Redo
@@ -41,10 +40,10 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Permet d'ajouter un état du système au gestionnaire d'historique.
+	 * Adds the element.
 	 *
 	 * @param memSystem
-	 *            Le MementoSystem contenant l'état du système
+	 *            the memento system
 	 * @see MementoSystem
 	 */
 	public void addElement(MementoSystem memSystem) {
@@ -76,21 +75,19 @@ public class HistoryManager implements Observable {
 	/**
 	 * Can redo.
 	 *
-	 * @return True si on peut effectuer une action redo, False sinon
+	 * @return true, if we can redo
 	 */
 	public boolean canRedo() {
-
 		return !redo.empty();
 	}
 
 	/**
 	 * Can undo.
 	 *
-	 * @return True si on peut effectuer une action undo, False sinon
+	 * @return true, if we can undo
 	 */
 	public boolean canUndo() {
-
-		return undo.size() > 1;
+		return !undo.empty();
 	}
 
 	/*
@@ -104,15 +101,14 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Permet d'annuler une action undo.
+	 * Redo an action by giving us the last memento system that have been
+	 * undone.
 	 *
-	 * @return Un MementoSystem permettant de rétablir le système à l'état T+1
-	 *         (précédemment T-1)
+	 * @return the memento system
 	 * @see MementoSystem
 	 */
 	public MementoSystem redo() {
-
-		LOGGER.trace("On effectue un redo");
+		LOGGER.trace("Executing command redo");
 
 		MementoSystem memSysteme = redo.pop();
 		undo.push(memSysteme);
@@ -138,21 +134,16 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Rétablit le système à l'état T-1 (T représentant le temps au moment de
-	 * l'exécution de cette méthode).
+	 * Undo the last command executed.
 	 *
-	 * @return Un MementoSystem permettant de rétablir le système à l'état T-1
+	 * @return the memento system
 	 * @see MementoSystem
 	 */
 	public MementoSystem undo() {
+		LOGGER.trace("Executing command undo");
 
-		LOGGER.trace("On effectue un undo");
-
-		if (undo.size() > 1) {
-
-			MementoSystem memSysteme = undo.pop();
-			redo.push(memSysteme);
-		}
+		MementoSystem memSysteme = undo.pop();
+		redo.push(memSysteme);
 
 		notifyObservers();
 		return undo.peek();

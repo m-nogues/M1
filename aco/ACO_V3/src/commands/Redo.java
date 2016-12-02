@@ -6,35 +6,40 @@ import org.apache.logging.log4j.Logger;
 import engine.EditionEngine;
 
 /**
- * Cette commande est chargée d'annuler une commande Undo précédemment
- * exécutée
+ * Redo is to ask the engine to undo the last undo done (if possible).
  *
  * @see Undo
  */
 public class Redo implements Command {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(Redo.class.getName());
 
+	/** The engine. */
 	private final EditionEngine engine;
 
 	/**
-	 * Crée la commande
+	 * Instantiates a new redo.
 	 *
 	 * @param engine
-	 *            Le engine d'édition auquel adresser la commande (non-null)
+	 *            the engine
 	 */
 	public Redo(EditionEngine engine) {
 		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("engine est à null");
+			throw new IllegalArgumentException("engine is null");
 
 		/* Treatment */
 		this.engine = engine;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see commands.Command#execute()
+	 */
 	@Override
 	public void execute() {
-		LOGGER.trace("Exécution d'une commande Redo");
+		LOGGER.trace("Executing command redo");
 		engine.redo();
 	}
 }

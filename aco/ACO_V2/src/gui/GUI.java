@@ -219,9 +219,9 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	public void update(editor.Observable o) {
 		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Null o");
+			throw new IllegalArgumentException("o is null");
 		if (!(o instanceof Buffer))
-			throw new IllegalArgumentException("Not a Buffer");
+			throw new IllegalArgumentException("o not of type Buffer");
 
 		/* Treatment */
 		Buffer buffer = (Buffer) o;

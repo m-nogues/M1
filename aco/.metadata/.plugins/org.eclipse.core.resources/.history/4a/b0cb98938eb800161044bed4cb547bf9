@@ -1,0 +1,54 @@
+package tests;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import commands.Redo;
+import commands.Undo;
+import editor.HistoryManager;
+import editor.Recorder;
+import engine.EditionEngine;
+import recordables.InsTexteEnregistrable;
+
+@RunWith(PowerMockRunner.class)
+public class TestsIntegrationv3 {
+
+	private EditionEngine	engine;
+	private GUITest			gui;
+	private Recorder		recorder;
+	private HistoryManager	gestionnaire;
+
+	@Before
+	public void setUp() throws Exception {
+
+		engine = new EditionEngine();
+		Recorder = new Recorder();
+		gestionnaire = new HistoryManager();
+		engine.setHistorique(gestionnaire);
+		gui = new GUITest();
+		engine.getBuffer().ajouterObservateur(gui);
+	}
+
+	@Test
+	public void test() {
+
+		// On ajoute du texte et on revient en arrière
+		new InsTexteEnregistrable(engine, Recorder, "Test").executer();
+		new Undo(engine).executer();
+		assertEquals("", gui.getDerniereInsert());
+
+		// On revient à l'insertion
+		new Redo(engine).executer();
+		assertEquals("Test", gui.getDerniereInsert());
+
+		// On tente de faire un Redo après une insertion, ce qui est impossible
+		new Undo(engine).executer();
+		new InsTexteEnregistrable(engine, Recorder, "a").executer();
+		new Redo(engine).executer();
+		assertEquals("a", gui.getDerniereInsert());
+	}
+}

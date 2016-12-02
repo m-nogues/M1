@@ -12,8 +12,7 @@ import org.apache.logging.log4j.Logger;
 import editor.Recorder;
 
 /**
- * Cette commande est chargée d'ordonner à l'recorder de commande de commencer à
- * enregistrer les commandes qui lui sont destinées.
+ * Start asks the recorder to start recording commands for future replay.
  *
  * @see Recorder
  */
@@ -26,16 +25,17 @@ public class Start implements Command {
 	private Recorder recorder;
 
 	/**
-	 * Crée la commande.
+	 * Instantiates a new start.
 	 *
 	 * @param recorder
-	 *            L'recorder à qui adresser la commande (non null)
+	 *            the recorder
 	 */
 	public Start(Recorder recorder) {
-
+		/* Precondition */
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
 
+		/* Treatment */
 		this.recorder = recorder;
 	}
 
@@ -45,7 +45,6 @@ public class Start implements Command {
 	 */
 	@Override
 	public void execute() {
-
 		LOGGER.trace("Executing command start");
 		recorder.activate();
 	}
