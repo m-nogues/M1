@@ -1,3 +1,9 @@
+/*
+ * This is a scholar project for the ACO course of the M1 System & Network of
+ * the ISTIC
+ * @author Maël Nogues mael.nogues@etudiant.univ-rennes1.fr
+ * @author Mathieu GrandMontagne mathieu.grandmontagne@etudiant.univ-rennes1.fr
+ */
 package tests;
 
 import static org.junit.Assert.assertEquals;
@@ -14,14 +20,30 @@ import editor.Recorder;
 import engine.ImplementedEngine;
 import recordables.InsTextRecordable;
 
+/**
+ * The Class TestsIntegrationv3.
+ */
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv3 {
 
-	private ImplementedEngine	engine;
-	private GUITest				gui;
-	private Recorder			recorder;
-	private HistoryManager		manager;
+	/** The engine. */
+	private ImplementedEngine engine;
 
+	/** The gui. */
+	private GUITest gui;
+
+	/** The recorder. */
+	private Recorder recorder;
+
+	/** The manager. */
+	private HistoryManager manager;
+
+	/**
+	 * Sets up.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		engine = new ImplementedEngine();
@@ -32,6 +54,9 @@ public class TestsIntegrationv3 {
 		engine.getBuffer().addObserver(gui);
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		// Add text and undo
