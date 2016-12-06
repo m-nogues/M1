@@ -12,85 +12,88 @@ import org.apache.logging.log4j.Logger;
 import engine.Buffer;
 
 /**
- * Cette classe est chargée de stocker et restituer l'état d'un objet Buffer
- * 
+ * MementoBuffer is to store the state of the buffer at a time.
+ *
  * @see Buffer
  */
 public class MementoBuffer {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(MementoBuffer.class.getName());
 
-	private StringBuffer	contenu;
-	private int				offsetModif;
+	/** The content. */
+	private StringBuffer content;
+
+	/** The new offset. */
+	private int newOffset;
 
 	/**
-	 * Crée le memento
-	 * 
-	 * @param contenu
-	 *            Le contenu du buffer (non-null)
-	 * @param offsetModif
-	 *            L'offset décrivant la position du curseur suit à la dernière
-	 *            modification (positif ou nul)
+	 * Instantiates a new memento buffer.
+	 *
+	 * @param content
+	 *            the content
+	 * @param newOffset
+	 *            the new offset
 	 */
-	public MementoBuffer(StringBuffer contenu, int offsetModif) {
+	public MementoBuffer(StringBuffer content, int newOffset) {
+		/* Precondition */
+		if (content == null)
+			throw new IllegalArgumentException("content is null");
+		if (newOffset < 0)
+			throw new IllegalArgumentException("newOffset < 0");
 
-		if (contenu == null)
-			throw new IllegalArgumentException("contenu est à null");
+		/* Treatment */
+		this.content = content;
+		this.newOffset = newOffset;
 
-		if (offsetModif < 0)
-			throw new IllegalArgumentException("offsetModif est négatif");
-
-		LOGGER.trace("Création d'un MementoBuffer");
-		this.contenu = contenu;
-		this.offsetModif = offsetModif;
+		LOGGER.trace("MementoBuffer created");
 	}
 
 	/**
-	 * Restitue le contenu du memento
-	 * 
-	 * @return Le contenu du buffer qui a été précédemment sauvegardé
+	 * Gets the content.
+	 *
+	 * @return the content
 	 */
-	public StringBuffer getContenu() {
-
-		return new StringBuffer(contenu);
+	public StringBuffer getContent() {
+		return new StringBuffer(content);
 	}
 
 	/**
-	 * Restitue l'attribut offsetModif du memento
-	 * 
-	 * @return La position du curseur après la modification réalisée avant la
-	 *         sauvegarde du Buffer
+	 * Gets the new offset.
+	 *
+	 * @return the new offset
 	 */
-	public int getOffModif() {
-
-		return offsetModif;
+	public int getNewOffset() {
+		return newOffset;
 	}
 
 	/**
-	 * Stocke le contenu d'un buffer
-	 * 
-	 * @param contenu
-	 *            Le contenu d'un buffer (non null)
+	 * Sets the content.
+	 *
+	 * @param content
+	 *            the new content
 	 */
-	public void setContenu(StringBuffer contenu) {
+	public void setContent(StringBuffer content) {
+		/* Precondition */
+		if (content == null)
+			throw new IllegalArgumentException("content is null");
 
-		if (contenu == null)
-			throw new IllegalArgumentException("contenu est à null");
-
-		this.contenu = contenu;
+		/* Treatment */
+		this.content = content;
 	}
 
 	/**
-	 * Stocke l'attribut offsetModif du buffer
-	 * 
-	 * @param offsetModif
-	 *            La position du curseur
+	 * Sets the new offset.
+	 *
+	 * @param newOffset
+	 *            the new offset
 	 */
-	public void setOffModif(int offsetModif) {
+	public void setNewOffset(int newOffset) {
+		/* Precondition */
+		if (newOffset < 0)
+			throw new IllegalArgumentException("newOffset < 0");
 
-		if (offsetModif < 0)
-			throw new IllegalArgumentException("offsetModif est négatif");
-
-		this.offsetModif = offsetModif;
+		/* Treatment */
+		this.newOffset = newOffset;
 	}
 }

@@ -47,9 +47,9 @@ public final class SelectionListener implements CaretListener {
 	public SelectionListener(EditionEngine engine, Recorder recorder) {
 		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("Null engine");
+			throw new IllegalArgumentException("engine is null");
 		if (recorder == null)
-			throw new IllegalArgumentException("Null recorder");
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
 		this.engine = engine;

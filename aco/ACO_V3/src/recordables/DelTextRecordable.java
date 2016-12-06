@@ -45,14 +45,14 @@ public final class DelTextRecordable implements CommandRecordable {
 	 */
 	public DelTextRecordable(EditionEngine engine, Recorder recorder) {
 		/* Preconditions */
-		if (recorder == null)
-			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 	}
 
 	/**
@@ -65,6 +65,9 @@ public final class DelTextRecordable implements CommandRecordable {
 	 */
 	public DelTextRecordable(MementoCommand memento) {
 		restore(memento);
+
+		LOGGER.trace("Executing command delete text");
+
 		new DeleteText(engine).execute();
 	}
 
@@ -75,7 +78,9 @@ public final class DelTextRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing text deletion command");
+
+		LOGGER.trace("Executing command delete text");
+
 		new DeleteText(engine).execute();
 	}
 
@@ -97,9 +102,8 @@ public final class DelTextRecordable implements CommandRecordable {
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
-
 		if (!(memento instanceof MementoDelText))
-			throw new IllegalArgumentException("Not a MementoDelText");
+			throw new IllegalArgumentException("memento not of type MementoDelText");
 
 		LOGGER.trace("DelTextRecordable from memento");
 

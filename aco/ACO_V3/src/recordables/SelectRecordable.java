@@ -74,7 +74,9 @@ public final class SelectRecordable implements CommandRecordable {
 	 */
 	public SelectRecordable(MementoCommand memento) {
 		restore(memento);
-		LOGGER.trace("Executing select command");
+
+		LOGGER.trace("Executing command select");
+
 		new Select(engine, selection).execute();
 	}
 
@@ -85,7 +87,9 @@ public final class SelectRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing select command");
+
+		LOGGER.trace("Executing command select");
+
 		new Select(engine, selection).execute();
 	}
 
@@ -108,7 +112,7 @@ public final class SelectRecordable implements CommandRecordable {
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
 		if (!(memento instanceof MementoSelect))
-			throw new IllegalArgumentException("Not a MementoInsSelectionner");
+			throw new IllegalArgumentException("memento not of type MementoSelect");
 
 		LOGGER.trace("SelectRecordable from memento");
 

@@ -47,9 +47,9 @@ public final class Clipboard {
 	public final void setContent(String s) {
 		/* Preconditions */
 		if (s == null)
-			throw new IllegalArgumentException("String is null");
+			throw new IllegalArgumentException("s is null");
+
 		/* Treatment */
-		// We create a new string to ensure the integrity of our data.
 		content = new String(s);
 	}
 }

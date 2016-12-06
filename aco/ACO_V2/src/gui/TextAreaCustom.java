@@ -37,8 +37,11 @@ public class TextAreaCustom extends JTextArea {
 	 */
 	public TextAreaCustom(int height, int width, EditionEngine engine) {
 		super(height, width);
+		/* Precondition */
 		if (engine == null)
-			throw new IllegalAccessError("engine est à null");
+			throw new IllegalAccessError("engine is null");
+
+		/* Treatment */
 		this.engine = engine;
 	}
 

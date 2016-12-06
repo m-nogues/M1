@@ -45,14 +45,14 @@ public final class PasteRecordable implements CommandRecordable {
 	 */
 	public PasteRecordable(EditionEngine engine, Recorder recorder) {
 		/* Preconditions */
-		if (recorder == null)
-			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 	}
 
 	/**
@@ -65,7 +65,9 @@ public final class PasteRecordable implements CommandRecordable {
 	 */
 	public PasteRecordable(MementoCommand memento) {
 		restore(memento);
+
 		LOGGER.trace("Executing paste command");
+
 		new Paste(engine).execute();
 	}
 
@@ -76,7 +78,9 @@ public final class PasteRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing paste command");
+
+		LOGGER.trace("Executing command paste");
+
 		new Paste(engine).execute();
 	}
 
@@ -98,9 +102,8 @@ public final class PasteRecordable implements CommandRecordable {
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
-
 		if (!(memento instanceof MementoPaste))
-			throw new IllegalArgumentException("Not a MementoPaste");
+			throw new IllegalArgumentException("memento not of type MementoPaste");
 
 		LOGGER.trace("PasteRecordable from memento");
 

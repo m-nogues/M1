@@ -49,18 +49,26 @@ public final class SelectionListener implements CaretListener {
 		active = true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+	 */
+	@Override
 	/**
 	 * Invoked when the selection changes in TextArea.
 	 *
 	 * @param e
 	 *            CaretEvent
 	 */
-	@Override
 	public final void caretUpdate(CaretEvent e) {
 		LOGGER.trace("Detected new selection");
+
 		final int min = Math.min(e.getDot(), e.getMark());
 		final int max = Math.max(e.getDot(), e.getMark());
+
 		LOGGER.debug("New selection is : [" + min + ", " + max + "]");
+
 		if (active)
 			new Select(engine, new Selection(min, max)).execute();
 	}
@@ -69,7 +77,7 @@ public final class SelectionListener implements CaretListener {
 	 * Tells Filter if it needs to ask the engine to execute a command or not.
 	 *
 	 * @param active
-	 *            ask if true
+	 *            ask when true
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

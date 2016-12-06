@@ -67,7 +67,7 @@ public class UnitTestCommandsV2 {
 	}
 
 	/**
-	 * Test del text recordable.
+	 * Test text deletion recordable.
 	 */
 	@Test
 	public void testDelTextRecordable() {
@@ -77,7 +77,7 @@ public class UnitTestCommandsV2 {
 	}
 
 	/**
-	 * Test ins text recordable.
+	 * Test text insertion recordable.
 	 */
 	@Test
 	public void testInsTextRecordable() {

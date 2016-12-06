@@ -31,7 +31,6 @@ public class StartButton extends JButton implements Observer {
 		/* Precondition */
 		if (o == null)
 			throw new IllegalArgumentException("o is null");
-
 		if (!(o instanceof Recorder))
 			throw new IllegalArgumentException("o not of type Recorder");
 

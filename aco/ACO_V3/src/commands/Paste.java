@@ -16,9 +16,10 @@ import engine.EditionEngine;
  */
 public final class Paste implements Command {
 	/** The Constant LOGGER. */
-	private static final Logger	LOGGER	= LogManager.getLogger(Paste.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(Paste.class.getName());
+
 	/** Engine that will execute the command. */
-	private final EditionEngine	engine;
+	private final EditionEngine engine;
 
 	/**
 	 * Instantiate a new Paste that will execute a paste in the given engine.
@@ -29,7 +30,8 @@ public final class Paste implements Command {
 	public Paste(EditionEngine engine) {
 		/* Preconditions */
 		if (engine == null)
-			throw new IllegalArgumentException("Moteur est à null");
+			throw new IllegalArgumentException("Engine is null");
+
 		/* Treatment */
 		this.engine = engine;
 	}
@@ -39,7 +41,7 @@ public final class Paste implements Command {
 	 */
 	@Override
 	public final void execute() {
-		LOGGER.trace("Executing paste command");
+		LOGGER.trace("Executing command paste");
 		engine.paste();
 	}
 }

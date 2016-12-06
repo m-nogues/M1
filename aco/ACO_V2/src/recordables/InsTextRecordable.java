@@ -50,16 +50,16 @@ public final class InsTextRecordable implements CommandRecordable {
 	 */
 	public InsTextRecordable(EditionEngine engine, Recorder recorder, String s) {
 		/* Preconditions */
-		if (recorder == null)
-			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder is null");
 		if (s == null)
 			throw new IllegalArgumentException("string is null");
 
 		/* Treatment */
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 		string = s;
 	}
 
@@ -73,6 +73,9 @@ public final class InsTextRecordable implements CommandRecordable {
 	 */
 	public InsTextRecordable(MementoCommand memento) {
 		restore(memento);
+
+		LOGGER.trace("Executing command insert text");
+
 		new InsertText(engine, string).execute();
 	}
 
@@ -83,7 +86,9 @@ public final class InsTextRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing insert text command");
+
+		LOGGER.trace("Executing command insert text");
+
 		new InsertText(engine, string).execute();
 	}
 
@@ -105,9 +110,8 @@ public final class InsTextRecordable implements CommandRecordable {
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
-
 		if (!(memento instanceof MementoInsText))
-			throw new IllegalArgumentException("Not a MementoInsText");
+			throw new IllegalArgumentException("memento not of type MementoInsText");
 
 		LOGGER.trace("InsTextRecordable from memento");
 

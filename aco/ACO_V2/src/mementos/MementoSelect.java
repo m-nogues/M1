@@ -41,11 +41,13 @@ public final class MementoSelect extends MementoCommand {
 	public MementoSelect(EditionEngine engine, Recorder recorder, Selection selection) {
 
 		super(engine, recorder);
-
+		/* Precondition */
 		if (selection == null)
 			throw new IllegalArgumentException("selection is null");
 
+		/* Treatment */
 		this.selection = selection;
+
 		LOGGER.trace("MementoSelect created");
 	}
 
@@ -65,10 +67,11 @@ public final class MementoSelect extends MementoCommand {
 	 *            the new selection (not null)
 	 */
 	public final void setSelection(Selection selection) {
-
+		/* Precondition */
 		if (selection == null)
 			throw new IllegalArgumentException("selection is null");
 
+		/* Treatment */
 		this.selection = selection;
 	}
 }

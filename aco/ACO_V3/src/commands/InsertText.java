@@ -16,11 +16,13 @@ import engine.EditionEngine;
  */
 public final class InsertText implements Command {
 	/** The Constant LOGGER. */
-	private static final Logger	LOGGER	= LogManager.getLogger(InsertText.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(InsertText.class.getName());
+
 	/** Engine that will execute the command. */
-	private final EditionEngine	engine;
+	private final EditionEngine engine;
+
 	/** String to insert. */
-	private final String		string;
+	private final String string;
 
 	/**
 	 * Instantiate a new InsertText that will execute a text insertion in the
@@ -37,6 +39,7 @@ public final class InsertText implements Command {
 			throw new IllegalArgumentException("Engine is null");
 		if (string == null)
 			throw new IllegalArgumentException("String is null");
+
 		/* Treatment */
 		this.engine = engine;
 		this.string = string;
@@ -47,7 +50,7 @@ public final class InsertText implements Command {
 	 */
 	@Override
 	public final void execute() {
-		LOGGER.trace("Executing insert text command");
+		LOGGER.trace("Executing command insert text");
 		engine.insertText(string);
 	}
 }

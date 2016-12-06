@@ -35,6 +35,6 @@ public class StopButton extends JButton implements Observer {
 			throw new IllegalArgumentException("o not of type Recorder");
 
 		/* Treatment */
-		setEnabled(!((Recorder) o).getRecord());
+		setEnabled(((Recorder) o).getRecord());
 	}
 }

@@ -28,9 +28,10 @@ import engine.Selection;
 @RunWith(PowerMockRunner.class)
 public class TestsIntegrationv1 {
 	/** The engine. */
-	private ImplementedEngine	engine;
+	private ImplementedEngine engine;
+
 	/** The graphical user interface. */
-	private GUITest				gui;
+	private GUITest gui;
 
 	/**
 	 * Copy paste.
@@ -39,14 +40,18 @@ public class TestsIntegrationv1 {
 	public void copyPaste() {
 		// Insert text
 		new InsertText(engine, "Test").execute();
+
 		// Select string
 		new Select(engine, new Selection(0, 4)).execute();
+
 		// Cut selection
 		new Copy(engine).execute();
 		assertEquals("Test", gui.getLastInsert());
+
 		// Paste
 		new Paste(engine).execute();
 		assertEquals("Test", gui.getLastInsert());
+
 		// Paste again
 		new Paste(engine).execute();
 		assertEquals("TestTest", gui.getLastInsert());
@@ -59,11 +64,14 @@ public class TestsIntegrationv1 {
 	public void cutPaste() {
 		// Insert text
 		new InsertText(engine, "Test").execute();
+
 		// Select 2 first char
 		new Select(engine, new Selection(2, 4)).execute();
+
 		// Cut selection
 		new Cut(engine).execute();
 		assertEquals("Te", gui.getLastInsert());
+
 		// Paste
 		new Select(engine, new Selection(0, 0)).execute();
 		new Paste(engine).execute();
@@ -78,19 +86,22 @@ public class TestsIntegrationv1 {
 		// Insert text
 		new InsertText(engine, "Test").execute();
 		assertEquals("Test", gui.getLastInsert());
+
 		// Delete 2 last char
 		new DeleteText(engine).execute();
 		new DeleteText(engine).execute();
 		assertEquals("Te", gui.getLastInsert());
+
 		// Select 2 first char
 		new Select(engine, new Selection(0, 2)).execute();
+
 		// Delete selection
 		new DeleteText(engine).execute();
 		assertEquals("", gui.getLastInsert());
 	}
 
 	/**
-	 * Sets the up.
+	 * Sets up the testing environment.
 	 *
 	 * @throws Exception
 	 *             the exception

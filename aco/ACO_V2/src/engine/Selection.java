@@ -11,9 +11,10 @@ package engine;
  */
 public final class Selection {
 	/** Selection start index. */
-	private int	start;
+	private int start;
+
 	/** Selection end index. */
-	private int	end;
+	private int end;
 
 	/**
 	 * Instantiate a new selection from the start index to the end index.
@@ -26,9 +27,10 @@ public final class Selection {
 	public Selection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
-			throw new IllegalArgumentException("Start < 0");
+			throw new IllegalArgumentException("start < 0");
 		if (end < start)
-			throw new IllegalArgumentException("End < Start");
+			throw new IllegalArgumentException("end < start");
+
 		/* Treatment */
 		this.start = start;
 		this.end = end;
@@ -88,9 +90,10 @@ public final class Selection {
 	public final void setSelection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
-			throw new IllegalArgumentException("Start < 0");
+			throw new IllegalArgumentException("start < 0");
 		if (end < start)
-			throw new IllegalArgumentException("End < Start");
+			throw new IllegalArgumentException("end < start");
+
 		/* Treatment */
 		this.start = start;
 		this.end = end;
@@ -106,6 +109,7 @@ public final class Selection {
 		/* Preconditions */
 		if (selection == null)
 			throw new IllegalArgumentException("Selection is null");
+
 		/* Treatment */
 		start = selection.getStart();
 		end = selection.getEnd();

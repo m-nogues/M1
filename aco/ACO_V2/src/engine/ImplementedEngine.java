@@ -13,11 +13,13 @@ package engine;
  */
 public final class ImplementedEngine implements EditionEngine {
 	/** The selection. */
-	private final Selection	selection;
+	private final Selection selection;
+
 	/** The buffer. */
-	private final Buffer	buffer;
+	private final Buffer buffer;
+
 	/** The clipboard. */
-	private final Clipboard	clipboard;
+	private final Clipboard clipboard;
 
 	/**
 	 * Instantiates a new implemented engine and initialize it.
@@ -74,8 +76,11 @@ public final class ImplementedEngine implements EditionEngine {
 	 */
 	@Override
 	public final void insertText(final String s) {
+		/* Precondition */
 		if (s == null)
-			throw new IllegalArgumentException("String is null");
+			throw new IllegalArgumentException("s is null");
+
+		/* Treatment */
 		buffer.addText(s, selection);
 	}
 
@@ -97,17 +102,18 @@ public final class ImplementedEngine implements EditionEngine {
 	public final void select(final Selection selection) {
 		/* Precondition */
 		if (selection == null)
-			throw new IllegalArgumentException("Selection is null");
+			throw new IllegalArgumentException("selection is null");
 
 		/* Treatment */
 		int start = selection.getStart();
 		int end = selection.getEnd();
 
-		// Added for recordable commands
+		// Verify if the selection is correct and corrects it if it is not
 		if (end > buffer.getMaxSelect())
 			end = buffer.getMaxSelect();
 		if (start > end)
 			start = end;
+
 		this.selection.setSelection(new Selection(start, end));
 	}
 }

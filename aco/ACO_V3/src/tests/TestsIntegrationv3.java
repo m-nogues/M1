@@ -39,7 +39,7 @@ public class TestsIntegrationv3 {
 	private HistoryManager manager;
 
 	/**
-	 * Sets up.
+	 * Sets up the testing environment.
 	 *
 	 * @throws Exception
 	 *             the exception

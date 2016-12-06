@@ -19,31 +19,41 @@ import commands.Undo;
 import engine.EditionEngine;
 import engine.ImplementedEngine;
 
+/**
+ * The Class UnitTestCommandsV3.
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ImplementedEngine.class)
 public class UnitTestCommandsV3 {
 
-	private EditionEngine moteur;
+	/** The engine. */
+	private EditionEngine engine;
 
+	/**
+	 * Sets up the testing environment.
+	 */
 	@Before
 	public void setUp() {
-
-		moteur = PowerMockito.mock(ImplementedEngine.class);
+		engine = PowerMockito.mock(ImplementedEngine.class);
 	}
 
+	/**
+	 * Test redo.
+	 */
 	@Test
-	public void testDefaire() {
-
-		Undo cmd = new Undo(moteur);
+	public void testRedo() {
+		Redo cmd = new Redo(engine);
 		cmd.execute();
-		Mockito.verify(moteur).undo();
+		Mockito.verify(engine).redo();
 	}
 
+	/**
+	 * Test undo.
+	 */
 	@Test
-	public void testRefaire() {
-
-		Redo cmd = new Redo(moteur);
+	public void testUndo() {
+		Undo cmd = new Undo(engine);
 		cmd.execute();
-		Mockito.verify(moteur).redo();
+		Mockito.verify(engine).undo();
 	}
 }

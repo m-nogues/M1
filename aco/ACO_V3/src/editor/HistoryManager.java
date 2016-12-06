@@ -18,7 +18,8 @@ import commands.Undo;
 import mementos.MementoSystem;
 
 /**
- * HistoryManager.
+ * HistoryManager manages the command history by saving in stacks the memento
+ * systems created after each command altering the buffer or the selection.
  *
  * @see Undo
  * @see Redo
@@ -57,8 +58,6 @@ public class HistoryManager implements Observable {
 			redo.clear();
 
 		undo.push(memSystem);
-
-		System.out.println("Taille de undo :" + undo.size());
 		notifyObservers();
 	}
 
@@ -79,7 +78,7 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Can redo.
+	 * Can redo?
 	 *
 	 * @return true, if we can redo
 	 */
@@ -88,7 +87,7 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Can undo.
+	 * Can undo?
 	 *
 	 * @return true, if we can undo
 	 */
@@ -107,8 +106,7 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Redo an action by giving us the last memento system that have been
-	 * undone.
+	 * Redo the last undone command.
 	 *
 	 * @return the memento system
 	 * @see MementoSystem
@@ -118,8 +116,8 @@ public class HistoryManager implements Observable {
 
 		MementoSystem memSysteme = redo.pop();
 		undo.push(memSysteme);
-
 		notifyObservers();
+
 		return memSysteme;
 	}
 
@@ -140,7 +138,7 @@ public class HistoryManager implements Observable {
 	}
 
 	/**
-	 * Undo the last command executed.
+	 * Undo the last executed command.
 	 *
 	 * @return the memento system
 	 * @see MementoSystem

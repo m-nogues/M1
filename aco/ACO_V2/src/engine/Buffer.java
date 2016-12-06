@@ -45,10 +45,13 @@ public final class Buffer implements Observable {
 	 */
 	@Override
 	public final void addObserver(final Observer o) {
+		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Selection is null");
+			throw new IllegalArgumentException("o is null");
 		if (listObservers.contains(o))
-			throw new IllegalArgumentException("Observer already in the list");
+			throw new IllegalArgumentException("o already subscribed");
+
+		/* Treatment */
 		listObservers.add(o);
 	}
 
@@ -62,19 +65,23 @@ public final class Buffer implements Observable {
 	 */
 	public final void addText(final String s, final Selection select) {
 		LOGGER.trace("Method addText");
+
 		/* Preconditions */
 		if (s == null)
 			throw new IllegalArgumentException("String is null");
 		if (select == null)
 			throw new IllegalArgumentException("Selection is null");
+
 		/* Treatment */
 		// If select is not empty, delete select before insertion
 		if (!select.isEmpty())
 			deleteText(select);
+
 		newOffset = select.getStart() + s.length();
 		content.insert(select.getStart(), s);
 		select.setSelection(newOffset, newOffset);
 		notifyObservers();
+
 		LOGGER.trace("End of addText");
 	}
 
@@ -87,17 +94,21 @@ public final class Buffer implements Observable {
 	 */
 	public final void deleteText(final Selection select) {
 		LOGGER.trace("Method deleteText");
+
 		/* Preconditions */
 		if (select == null)
 			throw new IllegalArgumentException("Selection is null");
+
 		/* Treatment */
 		// If select is empty and we can delete the character before
 		if (select.isEmpty() && select.getStart() != 0)
 			select.setSelection(select.getStart() - 1, select.getStart());
+
 		content.delete(select.getStart(), select.getEnd());
 		select.flush();
 		newOffset = select.getStart();
 		notifyObservers();
+
 		LOGGER.trace("End of deleteText");
 	}
 
@@ -118,8 +129,11 @@ public final class Buffer implements Observable {
 	 * @return the substring of the content designated by the selection
 	 */
 	public final String getContent(final Selection select) {
+		/* Precondition */
 		if (select == null)
 			throw new IllegalArgumentException("Selection is null");
+
+		/* Treatment */
 		return content.substring(select.getStart(), select.getEnd());
 	}
 
@@ -157,10 +171,13 @@ public final class Buffer implements Observable {
 	 */
 	@Override
 	public final void removeObserver(final Observer o) {
+		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Selection is null");
+			throw new IllegalArgumentException("o is null");
 		if (!listObservers.contains(o))
-			throw new IllegalArgumentException("o is not in  listObservers");
+			throw new IllegalArgumentException("o is not subscribed");
+
+		/* Treatment */
 		listObservers.remove(o);
 	}
 }

@@ -45,15 +45,14 @@ public final class CopyRecordable implements CommandRecordable {
 	 */
 	public CopyRecordable(EditionEngine engine, Recorder recorder) {
 		/* Preconditions */
-		if (recorder == null)
-			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
-
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 	}
 
 	/**
@@ -66,6 +65,9 @@ public final class CopyRecordable implements CommandRecordable {
 	 */
 	public CopyRecordable(MementoCommand memento) {
 		restore(memento);
+
+		LOGGER.trace("Executing command copy");
+
 		new Copy(engine).execute();
 	}
 
@@ -76,7 +78,9 @@ public final class CopyRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing copy command");
+
+		LOGGER.trace("Executing command copy");
+
 		new Copy(engine).execute();
 	}
 
@@ -98,9 +102,8 @@ public final class CopyRecordable implements CommandRecordable {
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
-
 		if (!(memento instanceof MementoCopy))
-			throw new IllegalArgumentException("Not a MementoCopy");
+			throw new IllegalArgumentException("memento not of type MementoCopy");
 
 		LOGGER.trace("CopyRecordable from memento");
 

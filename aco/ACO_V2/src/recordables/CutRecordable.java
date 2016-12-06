@@ -45,14 +45,14 @@ public final class CutRecordable implements CommandRecordable {
 	 */
 	public CutRecordable(EditionEngine engine, Recorder recorder) {
 		/* Preconditions */
-		if (recorder == null)
-			throw new IllegalArgumentException("recorder is null");
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
+		if (recorder == null)
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 	}
 
 	/**
@@ -65,6 +65,9 @@ public final class CutRecordable implements CommandRecordable {
 	 */
 	public CutRecordable(MementoCommand memento) {
 		restore(memento);
+
+		LOGGER.trace("Executing command cut");
+
 		new Cut(engine).execute();
 	}
 
@@ -75,7 +78,9 @@ public final class CutRecordable implements CommandRecordable {
 	@Override
 	public final void execute() {
 		recorder.record(this);
-		LOGGER.trace("Executing cut command");
+
+		LOGGER.trace("Executing command cut");
+
 		new Cut(engine).execute();
 	}
 
@@ -97,9 +102,8 @@ public final class CutRecordable implements CommandRecordable {
 		/* Preconditions */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
-
 		if (!(memento instanceof MementoCut))
-			throw new IllegalArgumentException("Not a MementoCut");
+			throw new IllegalArgumentException("memento not of type MementoCut");
 
 		LOGGER.trace("CutRecordable from memento");
 

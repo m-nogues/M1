@@ -12,25 +12,28 @@ import org.apache.logging.log4j.Logger;
 import engine.Selection;
 
 /**
- * Ce memento est chargé de sauvegarder/restaurer l'état d'un objet Selection
+ * MementoSelection is to store the state of a selection at a time.
  *
  * @see Selection
  */
 public class MementoSelection {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(MementoSelection.class.getName());
 
-	private int	start;
-	private int	end;
+	/** The start. */
+	private int start;
+
+	/** The end. */
+	private int end;
 
 	/**
-	 * Crée le memento à partir de l'état de la selection
-	 * Le début doit être inférieur ou égal à la end
+	 * Instantiates a new memento selection.
 	 *
 	 * @param start
-	 *            Le début de la sélection (positif)
+	 *            the start of the stored selection
 	 * @param end
-	 *            La end de la sélection (positif)
+	 *            the end of the stored selection
 	 */
 	public MementoSelection(int start, int end) {
 		/* Precondition */
@@ -43,26 +46,32 @@ public class MementoSelection {
 		this.start = start;
 		this.end = end;
 
-		LOGGER.trace("Création d'un MementoSelection");
+		LOGGER.trace("MementoSelection created");
 	}
 
 	/**
-	 * @return La end de la sélection précédemment sauvegardée
+	 * Gets the end of the stored selection.
+	 *
+	 * @return the end
 	 */
 	public int getEnd() {
 		return end;
 	}
 
 	/**
-	 * @return Le début de la sélection précédemment sauvegardé
+	 * Gets the start of the stored selection.
+	 *
+	 * @return the start
 	 */
 	public int getStart() {
 		return start;
 	}
 
 	/**
-	 * Change l'attribut end de l'objet recevant le message.
-	 * La nouvelle end doit être supérieur ou égale à l'attribut début actuel
+	 * Sets the end of the stored selection.
+	 *
+	 * @param end
+	 *            the new end
 	 */
 	public void setEnd(int end) {
 		/* Precondition */
@@ -76,11 +85,10 @@ public class MementoSelection {
 	}
 
 	/**
-	 * Change l'attribut start de l'objet recevant le message.
-	 * Le nouveau start doit être inférieur ou égal à l'attribut end actuel
+	 * Sets the start of the stored selection.
 	 *
 	 * @param start
-	 *            Le start qui sera sauvegardé dans le memento (positif)
+	 *            the new start
 	 */
 	public void setStart(int start) {
 		/* Precondition */

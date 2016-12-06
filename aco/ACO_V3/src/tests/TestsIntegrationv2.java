@@ -42,7 +42,6 @@ public class TestsIntegrationv2 {
 	 */
 	@Test
 	public void insertDeleteReplay() {
-
 		// Insert "Test", select 4 first char, cut, add "new" and paste
 		new InsTextRecordable(engine, recorder, "Test").execute();
 		recorder.activate();
@@ -63,9 +62,9 @@ public class TestsIntegrationv2 {
 
 		// Copy of text and deletion of 2 last char
 		recorder.activate();
-		new SelectRecordable(engine, recorder, new Selection(0, 8)).execute();
+		new SelectRecordable(engine, recorder, new Selection(0, 10)).execute();
 		new CopyRecordable(engine, recorder).execute();
-		new SelectRecordable(engine, recorder, new Selection(8, 8)).execute();
+		new SelectRecordable(engine, recorder, new Selection(10, 10)).execute();
 		new PasteRecordable(engine, recorder).execute();
 		new DelTextRecordable(engine, recorder).execute();
 		new DelTextRecordable(engine, recorder).execute();
@@ -73,7 +72,7 @@ public class TestsIntegrationv2 {
 		assertEquals("new2ndTestnew2ndTe", gui.getLastInsert());
 
 		// Reset and add a new text for replay
-		new SelectRecordable(engine, recorder, new Selection(0, 14)).execute();
+		new SelectRecordable(engine, recorder, new Selection(0, 18)).execute();
 		new DelTextRecordable(engine, recorder).execute();
 		assertEquals("", gui.getLastInsert());
 		new InsTextRecordable(engine, recorder, "Hello").execute();

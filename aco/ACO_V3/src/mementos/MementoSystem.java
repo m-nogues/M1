@@ -10,78 +10,90 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Cette classe stocke toutes les informations nécessaires pour le restaurer par
- * la suite. C'est à dire l'état du Buffer et celui de la Selection.
- * 
+ * MementoSystem is to store the necessary informations to restore the context
+ * after a command when needed. It stores the buffers' state and the selection.
+ *
  * @see MementoBuffer
  * @see MementoSelection
  */
 public class MementoSystem {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(MementoSystem.class.getName());
 
-	private MementoBuffer		memBuffer;
-	private MementoSelection	memSelection;
+	/** The memento buffer. */
+	private MementoBuffer memBuffer;
+
+	/** The memento selection. */
+	private MementoSelection memSelection;
 
 	/**
-	 * Crée le memento à partir des mementos du buffer et de la selection
-	 * 
+	 * Instantiates a new memento system.
+	 *
 	 * @param memBuffer
-	 *            Le memento du buffer (non null)
+	 *            the memento buffer
 	 * @param memSelection
-	 *            Le memento de la selection (non null)
+	 *            the memento selection
 	 */
 	public MementoSystem(MementoBuffer memBuffer, MementoSelection memSelection) {
-
+		/* Precondition */
 		if (memBuffer == null)
-			throw new IllegalArgumentException("memBuffer est à null");
-
+			throw new IllegalArgumentException("memBuffer is null");
 		if (memSelection == null)
-			throw new IllegalArgumentException("memBuffer est à null");
+			throw new IllegalArgumentException("memBuffer is null");
 
+		/* Treatment */
 		this.memBuffer = memBuffer;
 		this.memSelection = memSelection;
 
-		LOGGER.trace("Création d'un MementoSystem");
+		LOGGER.trace("MementoSystem created");
 	}
 
 	/**
-	 * @return Le Memento du buffer précedemment sauvegardé
+	 * Gets the memento buffer.
+	 *
+	 * @return the memento buffer
 	 */
 	public MementoBuffer getMemBuffer() {
-
 		return memBuffer;
 	}
 
 	/**
-	 * @return Le Memento de la selection précedemment sauvegardé
+	 * Gets the memento selection.
+	 *
+	 * @return the memento selection
 	 */
 	public MementoSelection getMemSelection() {
-
 		return memSelection;
 	}
 
 	/**
+	 * Sets the memento buffer.
+	 *
 	 * @param memBuffer
-	 *            Le memento du buffer (non null)
+	 *            the new memento buffer
 	 */
 	public void setMemBuffer(MementoBuffer memBuffer) {
-
+		/* Precondition */
 		if (memBuffer == null)
-			throw new IllegalArgumentException("memBuffer est à null");
+			throw new IllegalArgumentException("memBuffer is null");
 
+		/* Treatment */
 		this.memBuffer = memBuffer;
 	}
 
 	/**
+	 * Sets the memento selection.
+	 *
 	 * @param memSelection
-	 *            Le memento de la selection (non null)
+	 *            the new memento selection
 	 */
 	public void setMemSelection(MementoSelection memSelection) {
-
+		/* Precondition */
 		if (memSelection == null)
-			throw new IllegalArgumentException("memBuffer est à null");
+			throw new IllegalArgumentException("memBuffer is null");
 
+		/* Treatment */
 		this.memSelection = memSelection;
 	}
 }

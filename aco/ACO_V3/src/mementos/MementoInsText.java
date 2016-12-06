@@ -40,12 +40,12 @@ public final class MementoInsText extends MementoCommand {
 	 * @see InsTextRecordable
 	 */
 	public MementoInsText(EditionEngine engine, Recorder recorder, String text) {
-
 		super(engine, recorder);
-
+		/* Precondition */
 		if (text == null)
 			throw new IllegalArgumentException("text is null");
 
+		/* Treatment */
 		this.text = text;
 
 		LOGGER.trace("MementoInsText created");
@@ -67,10 +67,11 @@ public final class MementoInsText extends MementoCommand {
 	 *            the new text
 	 */
 	public final void setText(String text) {
-
+		/* Precondition */
 		if (text == null)
 			throw new IllegalArgumentException("text is null");
 
+		/* Treatment */
 		this.text = text;
 	}
 }

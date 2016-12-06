@@ -31,7 +31,7 @@ public class Undo implements Command {
 	public Undo(EditionEngine engine) {
 		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("engine est à null");
+			throw new IllegalArgumentException("engine is null");
 
 		/* Treatment */
 		this.engine = engine;
@@ -43,7 +43,7 @@ public class Undo implements Command {
 	 */
 	@Override
 	public void execute() {
-		LOGGER.trace("Exécution d'une commande Défaire");
+		LOGGER.trace("Executing command undo");
 		engine.undo();
 	}
 }

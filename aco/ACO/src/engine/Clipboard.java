@@ -10,7 +10,7 @@ package engine;
  * The clipboard saves a string and gives it on demand.
  */
 public final class Clipboard {
-	/** the content. */
+	/** The content. */
 	private String content;
 
 	/**
@@ -48,6 +48,7 @@ public final class Clipboard {
 		/* Preconditions */
 		if (s == null)
 			throw new IllegalArgumentException("String is null");
+
 		/* Treatment */
 		// We create a new string to ensure the integrity of our data.
 		content = new String(s);

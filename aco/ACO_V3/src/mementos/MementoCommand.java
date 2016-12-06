@@ -39,7 +39,6 @@ public abstract class MementoCommand {
 		/* Precondition */
 		if (engine == null)
 			throw new IllegalArgumentException("engine is null");
-
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
 

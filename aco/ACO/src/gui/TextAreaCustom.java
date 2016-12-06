@@ -37,37 +37,52 @@ public class TextAreaCustom extends JTextArea {
 	 */
 	public TextAreaCustom(int height, int width, EditionEngine engine) {
 		super(height, width);
+		/* Precondition */
 		if (engine == null)
-			throw new IllegalAccessError("engine est à null");
+			throw new IllegalAccessError("engine is null");
+
+		/* Treatment */
 		this.engine = engine;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.text.JTextComponent#copy()
+	 */
+	@Override
 	/**
 	 * Executes a command copy.
 	 *
 	 * @see Copy
 	 */
-	@Override
 	public void copy() {
 		new Copy(engine).execute();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.text.JTextComponent#cut()
+	 */
+	@Override
 	/**
 	 * Executes a command cut.
 	 *
 	 * @see Cut
 	 */
-	@Override
 	public void cut() {
 		new Cut(engine).execute();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.text.JTextComponent#paste()
+	 */
+	@Override
 	/**
 	 * Executes a command paste.
 	 *
 	 * @see Paste
 	 */
-	@Override
 	public void paste() {
 		new Paste(engine).execute();
 	}

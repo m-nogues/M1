@@ -38,7 +38,7 @@ public final class Recorder implements Observable {
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LogManager.getLogger(Recorder.class.getName());
 
-	/** The list of mementos. */
+	/** The list mementos. */
 	private List<MementoCommand> listMementos;
 
 	/** The list observers. */
@@ -51,8 +51,8 @@ public final class Recorder implements Observable {
 	 * Instantiates a new recorder.
 	 */
 	public Recorder() {
-		listMementos = new ArrayList<>();
-		listObservers = new ArrayList<>();
+		listMementos = new ArrayList<MementoCommand>();
+		listObservers = new ArrayList<Observer>();
 		record = false;
 	}
 
@@ -132,7 +132,8 @@ public final class Recorder implements Observable {
 
 		/* Treatment */
 		if (record) {
-			LOGGER.trace("Command Record");
+			LOGGER.trace("Executing command record");
+
 			listMementos.add(command.getMemento());
 		}
 	}
@@ -157,7 +158,7 @@ public final class Recorder implements Observable {
 	 * Replay all the recorded commands from the corresponding recorded memento.
 	 */
 	public final void replayCommands() {
-		LOGGER.trace("Replay of recorded commands");
+		LOGGER.trace("Replay all recorded commands");
 
 		for (MementoCommand m : listMementos)
 			if (m instanceof MementoPaste)

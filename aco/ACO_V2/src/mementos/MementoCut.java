@@ -33,8 +33,8 @@ public final class MementoCut extends MementoCommand {
 	 *            the recorder
 	 */
 	public MementoCut(EditionEngine engine, Recorder recorder) {
-
 		super(engine, recorder);
+
 		LOGGER.trace("MementoCut created");
 	}
 }

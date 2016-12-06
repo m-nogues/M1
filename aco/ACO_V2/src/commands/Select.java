@@ -30,7 +30,7 @@ public final class Select implements Command {
 	 * @param engine
 	 *            the engine
 	 * @param sel
-	 *            the new sel (not null)
+	 *            the new selection (not null)
 	 */
 	public Select(EditionEngine engine, Selection sel) {
 		/* Preconditions */
@@ -38,6 +38,7 @@ public final class Select implements Command {
 			throw new IllegalArgumentException("Engine is null");
 		if (sel == null)
 			throw new IllegalArgumentException("Selection is null");
+
 		/* Treatment */
 		this.engine = engine;
 		this.sel = sel;

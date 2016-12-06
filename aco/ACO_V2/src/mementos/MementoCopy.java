@@ -33,8 +33,8 @@ public final class MementoCopy extends MementoCommand {
 	 *            the recorder
 	 */
 	public MementoCopy(EditionEngine engine, Recorder recorder) {
-
 		super(engine, recorder);
+
 		LOGGER.trace("MementoCopy created");
 	}
 }

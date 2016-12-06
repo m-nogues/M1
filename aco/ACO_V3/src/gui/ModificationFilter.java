@@ -49,9 +49,9 @@ public final class ModificationFilter extends DocumentFilter {
 		super();
 		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("Null engine");
+			throw new IllegalArgumentException("engine is null");
 		if (recorder == null)
-			throw new IllegalArgumentException("Null recorder");
+			throw new IllegalArgumentException("recorder is null");
 
 		/* Treatment */
 		this.engine = engine;
@@ -78,10 +78,12 @@ public final class ModificationFilter extends DocumentFilter {
 			throws BadLocationException {
 		LOGGER.trace("Enter in  insertString");
 		LOGGER.debug("Insertion of string : " + string);
+
 		if (active)
 			new InsTextRecordable(engine, recorder, string).execute();
 		else
 			super.insertString(fb, offset, string, attr);
+
 		LOGGER.trace("Exit insertString");
 	}
 
@@ -103,10 +105,12 @@ public final class ModificationFilter extends DocumentFilter {
 	public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
 		LOGGER.trace("Enter remove");
 		LOGGER.debug("Delete string from " + offset + " length " + length);
+
 		if (active)
 			new DelTextRecordable(engine, recorder).execute();
 		else
 			super.remove(fb, offset, length);
+
 		LOGGER.trace("Exit remove");
 	}
 
@@ -130,11 +134,13 @@ public final class ModificationFilter extends DocumentFilter {
 	public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String string, AttributeSet attrs)
 			throws BadLocationException {
 		LOGGER.trace("Enter replace");
-		LOGGER.debug("Replace the string in position : " + offset + "  length " + length + " with " + string);
+		LOGGER.debug("replace the string in position : " + offset + "  length " + length + " with " + string);
+
 		if (active)
 			new InsTextRecordable(engine, recorder, string).execute();
 		else
 			super.replace(fb, offset, length, string, attrs);
+
 		LOGGER.trace("Exit replace");
 	}
 

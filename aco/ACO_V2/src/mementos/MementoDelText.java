@@ -33,8 +33,8 @@ public final class MementoDelText extends MementoCommand {
 	 *            the recorder
 	 */
 	public MementoDelText(EditionEngine engine, Recorder recorder) {
-
 		super(engine, recorder);
+
 		LOGGER.trace("MementoDelText created");
 	}
 }

@@ -37,7 +37,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	// button declarations
 	/** The paste. */
 	private final JButton paste;
 
@@ -54,11 +53,9 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	//
 	private final JTextArea textArea;
 
-	// Edition Engine declaration
 	/** The engine. */
 	private final EditionEngine engine;
 
-	// Listener on textArea
 	/** The modification filter. */
 	private final ModificationFilter modifFilter;
 
@@ -72,10 +69,11 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	 *            the engine
 	 */
 	public GUI(final EditionEngine engine) {
-
+		/* Precondition */
 		if (engine == null)
 			throw new IllegalArgumentException("Null engine");
 
+		/* Treatment */
 		this.engine = engine;
 
 		// sets textArea and listeners on this
@@ -133,7 +131,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		setJMenuBar(menuBar);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Editeur de texte v3 [BERTIER - FOUCAULT]");
 		setLocationRelativeTo(null);
 		setVisible(true);
 		pack();
@@ -162,18 +159,19 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	 */
 	@Override
 	public void update(editor.Observable o) {
-
+		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Null o");
+			throw new IllegalArgumentException("o is null");
+		if (!(o instanceof Buffer))
+			throw new IllegalArgumentException("o not of type Buffer");
 
-		if (o instanceof Buffer) {
-			Buffer buffer = (Buffer) o;
-			modifFilter.setActive(false);
-			selectionListener.setActive(false);
-			textArea.setText(buffer.getContent());
-			textArea.setCaretPosition(buffer.getNewOffset());
-			selectionListener.setActive(true);
-			modifFilter.setActive(true);
-		}
+		/* Treatment */
+		Buffer buffer = (Buffer) o;
+		modifFilter.setActive(false);
+		selectionListener.setActive(false);
+		textArea.setText(buffer.getContent());
+		textArea.setCaretPosition(buffer.getNewOffset());
+		selectionListener.setActive(true);
+		modifFilter.setActive(true);
 	}
 }

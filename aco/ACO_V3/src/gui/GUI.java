@@ -44,7 +44,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	// buttons declaration
 	/** The paste. */
 	private final JButton paste;
 
@@ -98,7 +97,7 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	 *            the history manager
 	 */
 	public GUI(final EditionEngine engine, final Recorder recorder, HistoryManager historyManager) {
-
+		/* Precondition */
 		if (engine == null)
 			throw new IllegalArgumentException("Engine is null");
 		if (recorder == null)
@@ -106,6 +105,7 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		if (historyManager == null)
 			throw new IllegalArgumentException("History manager is null");
 
+		/* Treatment */
 		this.engine = engine;
 		this.recorder = recorder;
 
@@ -211,7 +211,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		setJMenuBar(menuBar);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Text Editor v2");
 		setLocationRelativeTo(null);
 		setVisible(true);
 		pack();
@@ -252,9 +251,9 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	public void update(editor.Observable o) {
 		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("Null o");
+			throw new IllegalArgumentException("o is null");
 		if (!(o instanceof Buffer))
-			throw new IllegalArgumentException("Not a Buffer");
+			throw new IllegalArgumentException("o not of type Buffer");
 
 		/* Treatment */
 		Buffer buffer = (Buffer) o;

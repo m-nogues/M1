@@ -17,8 +17,7 @@ import engine.Selection;
  */
 public final class Select implements Command {
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LogManager.getLogger(Select.class.getName());
-
+	private static final Logger	LOGGER	= LogManager.getLogger(Select.class.getName());
 	/** Engine that will execute the command. */
 	private final EditionEngine	engine;
 	/** New selection. */
@@ -45,9 +44,8 @@ public final class Select implements Command {
 		this.sel = sel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see commands.Command#execute()
+	/**
+	 * Execute the command.
 	 */
 	@Override
 	public final void execute() {

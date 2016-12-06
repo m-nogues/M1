@@ -42,6 +42,7 @@ public final class GUITest implements Observer {
 		/* Preconditions */
 		if (o == null)
 			throw new IllegalArgumentException("o is null");
+
 		/* Treatment */
 		if (o instanceof Buffer) {
 			Buffer buffer = (Buffer) o;

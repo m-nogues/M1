@@ -13,9 +13,10 @@ import mementos.MementoSelection;
  */
 public final class Selection {
 	/** Selection start index. */
-	private int	start;
+	private int start;
+
 	/** Selection end index. */
-	private int	end;
+	private int end;
 
 	/**
 	 * Instantiate a new selection from the start index to the end index.
@@ -28,9 +29,10 @@ public final class Selection {
 	public Selection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
-			throw new IllegalArgumentException("Start < 0");
+			throw new IllegalArgumentException("start < 0");
 		if (end < start)
-			throw new IllegalArgumentException("End < Start");
+			throw new IllegalArgumentException("end < start");
+
 		/* Treatment */
 		this.start = start;
 		this.end = end;
@@ -95,9 +97,11 @@ public final class Selection {
 	 *            the memento
 	 */
 	public final void restore(MementoSelection memento) {
+		/* Precondition */
 		if (memento == null)
 			throw new IllegalArgumentException("memento is null");
 
+		/* Treatment */
 		start = memento.getStart();
 		end = memento.getEnd();
 	}
@@ -113,9 +117,10 @@ public final class Selection {
 	public final void setSelection(int start, int end) {
 		/* Preconditions */
 		if (start < 0)
-			throw new IllegalArgumentException("Start < 0");
+			throw new IllegalArgumentException("start < 0");
 		if (end < start)
-			throw new IllegalArgumentException("End < Start");
+			throw new IllegalArgumentException("end < start");
+
 		/* Treatment */
 		this.start = start;
 		this.end = end;
@@ -130,7 +135,8 @@ public final class Selection {
 	public final void setSelection(Selection selection) {
 		/* Preconditions */
 		if (selection == null)
-			throw new IllegalArgumentException("Selection is null");
+			throw new IllegalArgumentException("selection is null");
+
 		/* Treatment */
 		start = selection.getStart();
 		end = selection.getEnd();

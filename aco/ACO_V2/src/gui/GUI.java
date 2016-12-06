@@ -41,7 +41,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	// buttons declaration
 	/** The paste. */
 	private final JButton paste;
 
@@ -87,12 +86,13 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 	 *            the recorder
 	 */
 	public GUI(final EditionEngine engine, final Recorder recorder) {
-
+		/* Precondition */
 		if (engine == null)
-			throw new IllegalArgumentException("Null engine");
+			throw new IllegalArgumentException("engine is null");
 		if (recorder == null)
-			throw new IllegalArgumentException("Null recorder");
+			throw new IllegalArgumentException("recorder is null");
 
+		/* Treatment */
 		this.engine = engine;
 		this.recorder = recorder;
 
@@ -182,7 +182,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		setJMenuBar(menuBar);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Text Editor v2");
 		setLocationRelativeTo(null);
 		setVisible(true);
 		pack();

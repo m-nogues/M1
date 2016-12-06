@@ -37,7 +37,7 @@ public class ReplayButton extends JButton implements Observer {
 	public void update(Observable o) {
 		/* Precondition */
 		if (o == null)
-			throw new IllegalArgumentException("o is null");
+			throw new IllegalArgumentException("o is null ");
 		if (!(o instanceof Recorder))
 			throw new IllegalArgumentException("o not of type Recorder");
 

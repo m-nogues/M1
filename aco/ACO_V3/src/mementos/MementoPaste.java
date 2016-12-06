@@ -33,8 +33,8 @@ public final class MementoPaste extends MementoCommand {
 	 *            the recorder
 	 */
 	public MementoPaste(EditionEngine engine, Recorder recorder) {
-
 		super(engine, recorder);
+
 		LOGGER.trace("MementoPaste created");
 	}
 }

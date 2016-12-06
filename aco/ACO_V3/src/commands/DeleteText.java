@@ -16,9 +16,10 @@ import engine.EditionEngine;
  */
 public final class DeleteText implements Command {
 	/** The Constant LOGGER. */
-	private static final Logger	LOGGER	= LogManager.getLogger(DeleteText.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(DeleteText.class.getName());
+
 	/** Engine that will execute the command. */
-	private final EditionEngine	engine;
+	private final EditionEngine engine;
 
 	/**
 	 * Instantiate a new DeleteText that will execute a text deletion in the
@@ -31,6 +32,7 @@ public final class DeleteText implements Command {
 		/* Preconditions */
 		if (engine == null)
 			throw new IllegalArgumentException("Engine is null");
+
 		/* Treatment */
 		this.engine = engine;
 	}
@@ -40,7 +42,7 @@ public final class DeleteText implements Command {
 	 */
 	@Override
 	public final void execute() {
-		LOGGER.trace("Executing delete text command");
+		LOGGER.trace("Executing command delete text");
 		engine.deleteText();
 	}
 }
