@@ -51,16 +51,16 @@ public final class SelectRecordable implements CommandRecordable {
 	 */
 	public SelectRecordable(EditionEngine engine, Recorder recorder, Selection selection) {
 		/* Preconditions */
+	if (engine == null)
+		throw new IllegalArgumentException("engine is null");
 		if (recorder == null)
 			throw new IllegalArgumentException("recorder is null");
-		if (engine == null)
-			throw new IllegalArgumentException("engine is null");
 		if (selection == null)
 			throw new IllegalArgumentException("selection is null");
 
 		/* Treatment */
-		this.recorder = recorder;
 		this.engine = engine;
+		this.recorder = recorder;
 		this.selection = selection;
 	}
 
