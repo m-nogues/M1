@@ -99,10 +99,10 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		delete = new JButton();
 
 		// Sets the icons
-		paste.setIcon(new ImageIcon(getClass().getResource("/icones/coller.png")));
-		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copier.png")));
-		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
-		delete.setIcon(new ImageIcon(getClass().getResource("/icones/supprimer.png")));
+		paste.setIcon(new ImageIcon(getClass().getResource("/icons/paste.png")));
+		copy.setIcon(new ImageIcon(getClass().getResource("/icons/copy.png")));
+		cut.setIcon(new ImageIcon(getClass().getResource("/icons/cut.png")));
+		delete.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
 
 		// Sets the tips bubble
 		paste.setToolTipText("Paste");
