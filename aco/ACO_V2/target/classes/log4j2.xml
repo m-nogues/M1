@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <Configuration status="warn">
+	    <Appenders>
+		    <Console name="Console" target="SYSTEM_OUT">
+		    	<PatternLayout>
+		   			<Pattern>%c{1} [%M] %m%n</Pattern>
+		   		</PatternLayout>
+		   		<ThresholdFilter level="DEBUG" onMismatch="ACCEPT" onMatch="DENY"/>
+		    </Console>
+		    <File name="Fichier" fileName="log.log" bufferedIO="true">
+		    	<PatternLayout >
+		    		 <Pattern>%d{HH:mm:ss} %c{1} [%M] %m%n</Pattern>
+		    	</PatternLayout>
+		    </File>
+	    </Appenders>
+	    <Loggers>
+		    <Logger name="fr.istic.foucaultbertier.aco.moteur.Buffer" level="ALL">
+		    	<AppenderRef ref="Fichier"/>
+	    	</Logger>
+	    	<Logger name="fr.istic.foucaultbertier.aco.ihm.FiltreModifications" level="ALL">
+		    	<AppenderRef ref="Fichier"/>
+	    	</Logger>
+	   		<Root level="TRACE">
+	    		<AppenderRef ref="Console"></AppenderRef>
+	   		</Root>
+    	</Loggers>
+    </Configuration>

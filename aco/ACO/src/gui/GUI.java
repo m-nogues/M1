@@ -99,17 +99,10 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 		delete = new JButton();
 
 		// Sets the icons
-<<<<<<< HEAD
 		paste.setIcon(new ImageIcon(getClass().getResource("/icons/paste.png")));
 		copy.setIcon(new ImageIcon(getClass().getResource("/icons/copy.png")));
 		cut.setIcon(new ImageIcon(getClass().getResource("/icons/cut.png")));
 		delete.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
-=======
-		paste.setIcon(new ImageIcon(getClass().getResource("/icones/paste.png")));
-		copy.setIcon(new ImageIcon(getClass().getResource("/icones/copy.png")));
-		cut.setIcon(new ImageIcon(getClass().getResource("/icones/cut.png")));
-		delete.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
->>>>>>> 41f245e1c9b5423a3b52be7eda4f1bc6eceeb23f
 
 		// Sets the tips bubble
 		paste.setToolTipText("Paste");
@@ -145,7 +138,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -163,7 +155,6 @@ public final class GUI extends JFrame implements Observer, ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see editor.Observer#update(editor.Observable)
 	 */
 	@Override
