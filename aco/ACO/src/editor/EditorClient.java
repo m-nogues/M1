@@ -6,6 +6,8 @@
  */
 package editor;
 
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,9 +29,14 @@ public final class EditorClient {
 	 *            the arguments (not used)
 	 */
 	public static void main(String[] args) {
-		final ImplementedEngine engine = new ImplementedEngine();
-		final GUI gui = new GUI(engine);
-		engine.getBuffer().addObserver(gui);
-		LOGGER.trace("Application launched and ready to use");
+		try {
+			final ImplementedEngine engine = new ImplementedEngine();
+			final GUI gui = new GUI(engine);
+			engine.getBuffer().addObserver(gui);
+			LOGGER.trace("Application launched and ready to use");
+		} catch (Throwable t) {
+			JOptionPane.showMessageDialog(null, t.getClass().getSimpleName() + ": " + t.getMessage());
+			throw t; // don't suppress Throwable
+		}
 	}
 }
