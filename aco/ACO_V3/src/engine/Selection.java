@@ -22,9 +22,9 @@ public final class Selection {
 	 * Instantiate a new selection from the start index to the end index.
 	 *
 	 * @param start
-	 *            selection start (> 0)
+	 *            selection start
 	 * @param end
-	 *            selection end (>= start)
+	 *            selection end
 	 */
 	public Selection(int start, int end) {
 		/* Preconditions */
