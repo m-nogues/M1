@@ -35,7 +35,7 @@ public class Code3aGenerator {
 	 *            the index
 	 * @return the code 3 a
 	 */
-	public static Code3a genArrayAssignment(ExpAttribute val, VarSymbol arrayName, ExpAttribute index) {
+	public static Code3a genArrayAssignment(ExpAttribute val, Operand3a arrayName, ExpAttribute index) {
 		Code3a code = index.code;
 		code.append(val.code);
 		code.append(new Inst3a(Inst3a.TAC.VARTAB, arrayName, index.place, val.place));

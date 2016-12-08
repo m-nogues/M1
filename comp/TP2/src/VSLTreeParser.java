@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 ./src/VSLTreeParser.g 2016-12-01 14:22:00
+// $ANTLR 3.5.2 ./src/VSLTreeParser.g 2016-12-08 20:16:55
 
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
@@ -1879,15 +1879,15 @@ public class VSLTreeParser extends TreeParser {
 
 
 						if(exp != null) { // Affectation
-							VarSymbol v = new VarSymbol((IDENT33!=null?IDENT33.getText():null));
-							Code3a c = Code3aGenerator.genArrayAssignment(exp, v, expression34);
-							expAtt = new ExpAttribute(Type.INT, c, v);
+							Operand3a op = ts.lookup((IDENT33!=null?IDENT33.getText():null));
+							Code3a c = Code3aGenerator.genArrayAssignment(exp, op, expression34);
+							expAtt = new ExpAttribute(op.type, c, op);
 						} else {
 							VarSymbol tmp = SymbDistrib.newTemp();
 							Code3a c = Code3aGenerator.genVar(tmp);
 							Operand3a op = ts.lookup((IDENT33!=null?IDENT33.getText():null));
 							c.append(Code3aGenerator.genArrayAccess(tmp, op, expression34));
-							expAtt = new ExpAttribute(Type.INT, c, tmp);
+							expAtt = new ExpAttribute(op.type, c, tmp);
 						}
 					
 			}

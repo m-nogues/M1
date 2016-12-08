@@ -323,15 +323,15 @@ array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 	: ^(ARELEM IDENT expression[ts])
 		{
 			if(exp != null) { // Affectation
-				VarSymbol v = new VarSymbol($IDENT.text);
-				Code3a c = Code3aGenerator.genArrayAssignment(exp, v, $expression.expAtt);
-				$expAtt = new ExpAttribute(Type.INT, c, v);
+				Operand3a op = ts.lookup($IDENT.text);
+				Code3a c = Code3aGenerator.genArrayAssignment(exp, op, $expression.expAtt);
+				$expAtt = new ExpAttribute(op.type, c, op);
 			} else {
 				VarSymbol tmp = SymbDistrib.newTemp();
 				Code3a c = Code3aGenerator.genVar(tmp);
 				Operand3a op = ts.lookup($IDENT.text);
 				c.append(Code3aGenerator.genArrayAccess(tmp, op, $expression.expAtt));
-				$expAtt = new ExpAttribute(Type.INT, c, tmp);
+				$expAtt = new ExpAttribute(op.type, c, tmp);
 			}
 		}
 	;

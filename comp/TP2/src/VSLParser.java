@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 ./src/VSLParser.g 2016-11-29 08:51:11
+// $ANTLR 3.5.2 ./src/VSLParser.g 2016-12-08 20:16:54
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -406,7 +406,7 @@ public class VSLParser extends Parser {
 
 			stream_statement.add(statement11.getTree());
 			// AST REWRITE
-			// elements: IDENT, statement, FUNC_KW, type, param_list
+			// elements: IDENT, statement, type, param_list, FUNC_KW
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -1075,7 +1075,7 @@ public class VSLParser extends Parser {
 
 					stream_expression.add(expression29.getTree());
 					// AST REWRITE
-					// elements: expression, IDENT, ASSIGN_KW
+					// elements: ASSIGN_KW, IDENT, expression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1120,7 +1120,7 @@ public class VSLParser extends Parser {
 
 					stream_expression.add(expression32.getTree());
 					// AST REWRITE
-					// elements: array_elem, expression, ASSIGN_KW
+					// elements: expression, array_elem, ASSIGN_KW
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2191,7 +2191,7 @@ public class VSLParser extends Parser {
 					stream_RP.add(RP82);
 
 					// AST REWRITE
-					// elements: argument_list, IDENT
+					// elements: IDENT, argument_list
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
