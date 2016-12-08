@@ -12,7 +12,7 @@ SRC_DIR=./src
 # Cette partie n'a normalement pas besoin d'être modifiée.
 # -----------------------------------------------------------------------------
 
-CLASSPATH="$(SRC_DIR);$(ANTLR_JAR)"
+CLASSPATH=$(SRC_DIR):$(ANTLR_JAR)
 SRCS=$(wildcard $(SRC_DIR)/*.java)
 OBJS=$(SRCS:.java=.class)
 
