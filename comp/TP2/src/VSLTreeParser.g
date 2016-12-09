@@ -26,9 +26,7 @@ function [SymbolTable ts] returns [Code3a code]
 			LabelSymbol label = new LabelSymbol($IDENT.text);
 
 			if (op == null) { // No declared prototype
-				FunctionSymbol fs = new FunctionSymbol(label, t);
-				ts.insert($IDENT.text, fs);
-				op = fs;
+				ts.insert($IDENT.text, new FunctionSymbol(label, t));
 			} else if (op instanceof FunctionSymbol) {
 				FunctionSymbol fs = (FunctionSymbol) op;
 				if (!((FunctionType)fs.type).prototype) {
@@ -39,7 +37,7 @@ function [SymbolTable ts] returns [Code3a code]
 					System.exit(1);
 				}
 			}
-			$code = Code3aGenerator.genFuncStart(op);
+			$code = Code3aGenerator.genFuncStart(label);
 			$code.append($body.code);
 			$code.append(Code3aGenerator.genFuncEnd());
 		}

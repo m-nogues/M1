@@ -47,7 +47,7 @@ public class VslComp {
 		try {
 			// Util.vslFilename contains the name of the file being compiled, to
 			// emulate gcc's style of error messages.
-			Util.vslFilename = args[0];
+			Util.vslFilename = args[0] + ".vsl";
 			// We give the file as input for ANTLR, which produces a character
 			// stream.
 			ANTLRFileStream input = new ANTLRFileStream(args[0]);

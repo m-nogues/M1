@@ -87,7 +87,7 @@ public class Code3aGenerator {
 	 *            the function name
 	 * @return the code 3 a
 	 */
-	public static Code3a genCall(Code3a code, Operand3a funcName) {
+	public static Code3a genCall(Code3a code, LabelSymbol funcName) {
 		if (code == null)
 			code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.CALL, null, funcName, null));
@@ -105,7 +105,7 @@ public class Code3aGenerator {
 	 *            the return variable
 	 * @return the code 3 a
 	 */
-	public static Code3a genCallReturn(Code3a code, Operand3a funcName, VarSymbol varRet) {
+	public static Code3a genCallReturn(Code3a code, LabelSymbol funcName, VarSymbol varRet) {
 		if (code == null)
 			code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.CALL, varRet, funcName, null));
@@ -141,7 +141,7 @@ public class Code3aGenerator {
 	 *            the variable
 	 * @return the code 3 a
 	 */
-	public static Code3a genFuncStart(Operand3a var) {
+	public static Code3a genFuncStart(LabelSymbol var) {
 		Code3a code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.LABEL, var, null, null));
 		code.append(new Inst3a(Inst3a.TAC.BEGINFUNC, null, null, null));
