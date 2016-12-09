@@ -97,9 +97,9 @@ public class VslComp {
 				// We create a PrintStream for the output file. The name of the output is the name of the source file but with an ".s" extension
 				// To work, the extension of the source MUST BE ".vsl"
 				//PrintStream ps = new PrintStream(args[0].replace(".vsl",".s"));
-				PrintStream ps = new PrintStream(arg[0] + ".s");
-
-				MIPSCodeGenerator cg = new MIPSCodeGenerator(ps); // NOT NEEDED AT THE BEGINNING
+				File output = new File(args[0] + ".s");
+				output.createNewFile();
+				MIPSCodeGenerator cg = new MIPSCodeGenerator(new PrintStream(output));// NOT NEEDED AT THE BEGINNING
 
 				// NOTE: if necessary, uncomment the call to addStubMain
 				// to add the header and footer for the main function.
