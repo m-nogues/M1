@@ -79,7 +79,7 @@ param[SymbolTable ts, FunctionType type]
 	| ^(ARRAY IDENT)
 		{
 			if(ts.lookup($IDENT.text) == null) {
-				ArrayType t = new ArrayType(Type.INT, 0);
+				ArrayType t = new ArrayType(Type.INT, Integer.MAX_VALUE);
 				VarSymbol vs = new VarSymbol(Type.INT, $IDENT.text, ts.getScope());
 				vs.setParam();
 				ts.insert($IDENT.text, vs);
@@ -318,7 +318,7 @@ read_item [SymbolTable ts] returns [Code3a code]
 	| array_elem[ts, null] { }
   ;
 
-array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
+array_elem [SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 	: ^(ARELEM IDENT expression[ts])
 		{
 			if(exp != null) { // Affectation
