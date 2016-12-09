@@ -104,18 +104,15 @@ statement [SymbolTable ts] returns [Code3a code]
 				$code = Code3aGenerator.genIfThen($if_cond.expAtt, $if_st.code);
 		}
 	| ^(WHILE_KW wh_cond=expression[ts] while_st=statement[ts]) {$code = Code3aGenerator.genWhile($wh_cond.expAtt, $while_st.code);}
-	| ^(FCALL_S IDENT {FunctionType t = new FunctionType(Type.VOID, false);} argument_list[ts, t])
+	| ^(FCALL_S IDENT argument_list[ts, null])
 		{
 			Operand3a op = ts.lookup($IDENT.text);
 			if(op != null && op instanceof FunctionSymbol) {
 				FunctionSymbol fs = (FunctionSymbol)op;
 				if (((FunctionType)fs.type).getReturnType() == Type.VOID)
-					$code = Code3aGenerator.genCall($argument_list.code, new VarSymbol($IDENT.text));
+					$code = Code3aGenerator.genCall($argument_list.code, fs);
 				else {
 					Errors.unknownIdentifier($IDENT, $IDENT.text, null);
-					System.exit(1);
-				} if (!fs.type.isCompatible((Type)t)) {
-					Errors.incompatibleTypes($IDENT, fs.type, t, null);
 					System.exit(1);
 				}
 			}
@@ -203,7 +200,7 @@ primary_exp [SymbolTable ts] returns [ExpAttribute expAtt]
 				if (((FunctionType)fs.type).getReturnType() != Type.VOID) {
 					VarSymbol temp = SymbDistrib.newTemp();
 					Code3a code = Code3aGenerator.genVar(temp);
-					code.append(Code3aGenerator.genCallReturn($argument_list.code, new VarSymbol($IDENT.text), temp));
+					code.append(Code3aGenerator.genCallReturn($argument_list.code, fs, temp));
 					expAtt = new ExpAttribute(((FunctionType)fs.type).getReturnType(), code, temp);
 				} else {
 					Errors.incompatibleTypes($IDENT, Type.INT, ((FunctionType)fs.type).getReturnType(), null);
@@ -325,13 +322,13 @@ array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 			if(exp != null) { // Affectation
 				Operand3a op = ts.lookup($IDENT.text);
 				Code3a c = Code3aGenerator.genArrayAssignment(exp, op, $expression.expAtt);
-				$expAtt = new ExpAttribute(op.type, c, op);
+				$expAtt = new ExpAttribute(Type.INT, c, op);
 			} else {
 				VarSymbol tmp = SymbDistrib.newTemp();
 				Code3a c = Code3aGenerator.genVar(tmp);
 				Operand3a op = ts.lookup($IDENT.text);
 				c.append(Code3aGenerator.genArrayAccess(tmp, op, $expression.expAtt));
-				$expAtt = new ExpAttribute(op.type, c, tmp);
+				$expAtt = new ExpAttribute(Type.INT, c, tmp);
 			}
 		}
 	;

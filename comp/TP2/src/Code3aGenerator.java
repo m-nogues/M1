@@ -87,7 +87,7 @@ public class Code3aGenerator {
 	 *            the function name
 	 * @return the code 3 a
 	 */
-	public static Code3a genCall(Code3a code, VarSymbol funcName) {
+	public static Code3a genCall(Code3a code, Operand3a funcName) {
 		if (code == null)
 			code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.CALL, null, funcName, null));
@@ -105,7 +105,7 @@ public class Code3aGenerator {
 	 *            the return variable
 	 * @return the code 3 a
 	 */
-	public static Code3a genCallReturn(Code3a code, VarSymbol funcName, VarSymbol varRet) {
+	public static Code3a genCallReturn(Code3a code, Operand3a funcName, VarSymbol varRet) {
 		if (code == null)
 			code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.CALL, varRet, funcName, null));
