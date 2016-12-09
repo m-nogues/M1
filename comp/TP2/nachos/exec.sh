@@ -1,16 +1,16 @@
-#!/bin/sh                                                   
+#!/bin/sh
 ############################################################
-#                                                           
+#
 #  exec.sh permet de lancer l'exécution d'un fichier binaire
-#  compilé pour Nachos sur le simulateur.                   
-#                                                           
-#  Le fichier binaire doit être dans le sous-répertoire test.                                                                                                                
-#                                                           
-#  Exemple d'utilisation : ./exec.sh fichier                
-#                                                           
-#  Pensez à modifier les droits du scripts :                
-#  chmod +x exec.sh                                        
-#                                                           
+#  compilé pour Nachos sur le simulateur.
+#
+#  Le fichier binaire doit être dans le sous-répertoire test.
+#
+#  Exemple d'utilisation : ./exec.sh fichier
+#
+#  Pensez à modifier les droits du scripts :
+#  chmod +x exec.sh
+#
 ############################################################
 
 if test "$1" = ""
@@ -19,12 +19,12 @@ if test "$1" = ""
     exit 1;
     fi
 
-#génération du fichier de config                            
+#génération du fichier de config
 sed -e "s/X_PROG/$1/g" ./template.cfg > nachos.cfg
 
-#lancement du simulateur                                    
+#lancement du simulateur
 ./nachos
 
-#clean                                                      
+#clean
 rm -f DISK
 rm -f nachos.cfg
