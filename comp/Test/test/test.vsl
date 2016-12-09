@@ -1,0 +1,44 @@
+FUNC INT test(tab[])
+{
+	PRINT tab[0], "\n"
+	RETURN 1
+}
+
+FUNC VOID test2(a)
+{
+	PRINT a, "\n"
+}
+
+FUNC VOID main()
+{
+	// Test de déclaration
+	INT x, y, z, a[2]
+
+	// Test d'assignation
+	y := 0
+
+	// Test d'assignation d'expression avec variable
+	x := 1 + y
+
+	// Test de condition
+	IF x THEN
+		x := 5
+	ELSE
+		x := 6
+	FI
+
+	a[0] := 1
+	PRINT a[0], "\n"
+	a[1] := test(a)
+
+	z := test(a)
+
+	test2(x)
+	test2(1)
+
+	PRINT "Test sample\n", x, "\n", a[1], "\n", z, "\nSecond test sample\n"
+
+	READ z
+
+	PRINT z
+}
