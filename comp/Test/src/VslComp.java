@@ -50,7 +50,7 @@ public class VslComp {
 			Util.vslFilename = args[0] + ".vsl";
 			// We give the file as input for ANTLR, which produces a character
 			// stream.
-			ANTLRFileStream input = new ANTLRFileStream(args[0]);
+			ANTLRFileStream input = new ANTLRFileStream(args[0] + ".vsl");
 			// Then, we run the lexer...
 			VSLLexer lexer = new VSLLexer(input);
 			// To obtain a token stream.
