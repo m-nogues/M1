@@ -316,7 +316,7 @@ read_item [SymbolTable ts] returns [Code3a code]
 			}
 		}
 	| array_elem[ts, null] { }
-    ;
+  ;
 
 array_elem[SymbolTable ts, ExpAttribute exp] returns [ExpAttribute expAtt]
 	: ^(ARELEM IDENT expression[ts])

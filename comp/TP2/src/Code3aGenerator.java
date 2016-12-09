@@ -141,7 +141,7 @@ public class Code3aGenerator {
 	 *            the variable
 	 * @return the code 3 a
 	 */
-	public static Code3a genFuncStart(VarSymbol var) {
+	public static Code3a genFuncStart(Operand3a var) {
 		Code3a code = new Code3a();
 		code.append(new Inst3a(Inst3a.TAC.LABEL, var, null, null));
 		code.append(new Inst3a(Inst3a.TAC.BEGINFUNC, null, null, null));
