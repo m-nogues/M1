@@ -74,7 +74,10 @@ param[SymbolTable ts, FunctionType type]
 				vs.setParam();
 				ts.insert($IDENT.text, vs);
 				type.extend(Type.INT);
-			}
+			} else {
+        Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
+        System.exit(1);
+      }
 		}
 	| ^(ARRAY IDENT)
 		{
@@ -84,7 +87,10 @@ param[SymbolTable ts, FunctionType type]
 				vs.setParam();
 				ts.insert($IDENT.text, vs);
 				type.extend(t);
-			}
+			} else {
+        Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
+        System.exit(1);
+      }
 		}
 	;
 
@@ -112,7 +118,7 @@ statement [SymbolTable ts] returns [Code3a code]
 			if(op != null && op instanceof FunctionSymbol) {
 				FunctionSymbol fs = (FunctionSymbol)op;
 				if (((FunctionType)fs.type).getReturnType() == Type.VOID)
-					$code = Code3aGenerator.genCall($argument_list.code, fs);
+					$code = Code3aGenerator.genCall($argument_list.code, new LabelSymbol($IDENT.text));
 				else {
 					Errors.unknownIdentifier($IDENT, $IDENT.text, null);
 					System.exit(1);
@@ -202,7 +208,7 @@ primary_exp [SymbolTable ts] returns [ExpAttribute expAtt]
 				if (((FunctionType)fs.type).getReturnType() != Type.VOID) {
 					VarSymbol temp = SymbDistrib.newTemp();
 					Code3a code = Code3aGenerator.genVar(temp);
-					code.append(Code3aGenerator.genCallReturn($argument_list.code, fs, temp));
+					code.append(Code3aGenerator.genCallReturn($argument_list.code, new LabelSymbol($IDENT.text), temp));
 					expAtt = new ExpAttribute(((FunctionType)fs.type).getReturnType(), code, temp);
 				} else {
 					Errors.incompatibleTypes($IDENT, Type.INT, ((FunctionType)fs.type).getReturnType(), null);
