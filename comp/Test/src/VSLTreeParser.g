@@ -139,7 +139,7 @@ print_list[SymbolTable symTab] returns [Code3a code]
 ;
 
 print_item[SymbolTable symTab] returns [Code3a code]
-	:	TEXT {$code = Code3aGenerator.genPrintItem(new Data3a($TEXT.text));}
+	:	TEXT {$code = Code3aGenerator.genPrintItem(new Data3a($TEXT.text.substring(1,$TEXT.text.length() - 1)));}
   | e=expression[symTab] {$code = Code3aGenerator.genPrintItem($e.expAtt); }
 ;
 

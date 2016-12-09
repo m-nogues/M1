@@ -159,7 +159,8 @@ public class Code3aGenerator {
 	*
 	**/
 	public static Code3a genPrintItem(ExpAttribute exp) {
-		Code3a code = genArguments(exp);
+		Code3a code = exp.code;
+		code.append(new Inst3a(Inst3a.TAC.ARG, exp.place, null, null));
 		if(exp.type.equals(Type.INT)) {
 			code.append(new Inst3a(Inst3a.TAC.CALL, null, SymbDistrib.builtinPrintN, null));
 		}
