@@ -2,8 +2,9 @@ PROTO INT test(k,l)
 FUNC VOID main()
 {
 	INT a, b
-	a := 0
+	a := 1
 	b := test(a,a)
+	PRINT b
 }
 FUNC INT test(k,l)
 	RETURN k + l
