@@ -97,7 +97,7 @@ public class VslComp {
 				// We create a PrintStream for the output file. The name of the output is the name of the source file but with an ".s" extension
 				// To work, the extension of the source MUST BE ".vsl"
 				//PrintStream ps = new PrintStream(args[0].replace(".vsl",".s"));
-				PrintStream ps = new PrintStream("./nachos/test/test.s");
+				PrintStream ps = new PrintStream(arg[0] + ".s");
 
 				MIPSCodeGenerator cg = new MIPSCodeGenerator(ps); // NOT NEEDED AT THE BEGINNING
 
