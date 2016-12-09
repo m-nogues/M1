@@ -25,9 +25,11 @@ function [SymbolTable ts] returns [Code3a code]
 			Operand3a op = ts.lookup($IDENT.text);
 			LabelSymbol label = new LabelSymbol($IDENT.text);
 
-			if (op == null) // No declared prototype
-				ts.insert($IDENT.text, new FunctionSymbol(label, t));
-			else if (op instanceof FunctionSymbol) {
+			if (op == null) { // No declared prototype
+				FunctionSymbol fs = new FunctionSymbol(label, t);
+				ts.insert($IDENT.text, fs);
+				op = fs;
+			} else if (op instanceof FunctionSymbol) {
 				FunctionSymbol fs = (FunctionSymbol) op;
 				if (!((FunctionType)fs.type).prototype) {
 					Errors.redefinedIdentifier($IDENT, $IDENT.text, null);
@@ -37,7 +39,7 @@ function [SymbolTable ts] returns [Code3a code]
 					System.exit(1);
 				}
 			}
-			$code = Code3aGenerator.genFuncStart(new VarSymbol($IDENT.text));
+			$code = Code3aGenerator.genFuncStart(op);
 			$code.append($body.code);
 			$code.append(Code3aGenerator.genFuncEnd());
 		}
@@ -117,8 +119,8 @@ statement [SymbolTable ts] returns [Code3a code]
 				}
 			}
 		}
-    | ^(PRINT_KW print_list[ts]) {$code = $print_list.code;}
-    | ^(READ_KW read_list[ts]) {$code = $read_list.code;}
+  | ^(PRINT_KW print_list[ts]) {$code = $print_list.code;}
+  | ^(READ_KW read_list[ts]) {$code = $read_list.code;}
 	| code_sequence = block[ts] {$code = $code_sequence.code;}
 	;
 
