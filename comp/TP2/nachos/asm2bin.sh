@@ -23,7 +23,7 @@ if test "$1" = ""
     exit 1;
     fi
 
-DIR=/cross-mips/bin
+DIR=/share/m1info/cross-mips/bin
 
 cd test
 
