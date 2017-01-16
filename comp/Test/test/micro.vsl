@@ -1,6 +1,0 @@
-FUNC VOID main(){
-INT t[2], n
-t[1]:=3
-n:=t[1]
-PRINT t[1], n
-}

@@ -1,8 +1,0 @@
-FUNC VOID main()
-{
-  INT i
-
-  i := 3
-
-  PRINT i, "\nbla"
-}
