@@ -1,6 +1,6 @@
 /*
  * TP 1 - IA Informatique : Sudoku
- * 
+ *
  * @author Tassadit BOUADI.
  */
 import java.util.Stack;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Sudoku {
 	public static int TAILLE = 9;
 
-	
+
 	public static void main(String[] args) {
 		int[][] grille1 = {
 					{0,8,0,4,0,2,0,6,0},
@@ -23,18 +23,18 @@ public class Sudoku {
 					{0,2,6,0,0,0,1,3,0},
 					{0,9,0,7,0,1,0,4,0}
 				};
-		
+
 		//initialisation
 		Grille grilleInit1 = new Grille(TAILLE, grille1);
 		grilleInit1.afficheGrille();
-		
+
 		Stack<Grille> pile = new Stack<Grille>();
 		pile.push(grilleInit1);
-		
-		
+
+
 		boolean resul = resoudreSudoku(pile);
-		
-		
+
+
 		if(resul){
 			System.out.println("La grille a �t� r�solue");
 			Grille grilleResul = pile.peek();
@@ -46,14 +46,26 @@ public class Sudoku {
 			grilleResul.afficheGrille();
 		}
 	}//main
-	
-	
+
+
 	/*
-	 * Fonction r�cursive qui recherche la solution, 
+	 * Fonction r�cursive qui recherche la solution,
 	 * en utilisant �ventuellement des retours-arri�re.
 	 */
 	public static boolean resoudreSudoku(Stack<Grille> pileGrilles){
-		//to do
+		Grille g=pileGrilles.peek();
+		if (g.getNbCasesVides()==0)
+			return true;
+		else
+			for (Case c : g.getCasePossible())
+				for (int i : {0,1,2,3,4,5,6,7,8,9}) {
+					Grille tmp=new Grille(g);
+					if (tmp.casePossible(c, i)) {
+						tmp.setCase(c, i);
+						pileGrilles.push(tmp);
+						return resoudreSudoku(pileGrilles);
+					}
+				};
 		return false;
 	}//resoudreSudoku
 
