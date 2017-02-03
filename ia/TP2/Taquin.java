@@ -91,12 +91,13 @@ public class Taquin {
 		//initialisation des SDD
 		//� compl�ter
 		ouverts.add(etatInit);
-		
+		etat = etatInit;
 		Etat succ_ferme;
 		Etat succ_ouvert;
 		//boucle sur ouverts
 		while((!ouverts.isEmpty()) && (etatFin == null)){
 			etat = ouverts.first();
+			nbNoeuds++;
 			if(etat.estFinal()){
 				etatFin = etat;
 			}else{
@@ -126,7 +127,7 @@ public class Taquin {
 					
 		//affichage du nombre de noeuds cr��s
 		System.out.println("Nombre de noeuds cr��s : " + nbNoeuds);
-		
+		System.out.println(etat.toString());
 		return etatFin;
 	}
 }

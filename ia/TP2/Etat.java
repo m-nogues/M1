@@ -140,7 +140,7 @@ public class Etat implements Comparable<Etat> {
 
 		switch (d) {
 			case haut:
-				if (_yVide == 3)
+				if (_yVide == 2)
 					depl = !depl;
 				break;
 			case bas:
@@ -152,7 +152,7 @@ public class Etat implements Comparable<Etat> {
 					depl = !depl;
 				break;
 			case droite:
-				if (_xVide == 3)
+				if (_xVide == 2)
 					depl = !depl;
 				break;
 		}
