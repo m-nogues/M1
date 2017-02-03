@@ -25,8 +25,8 @@ public class Taquin {
 		FonctionHeuristique1 heurist1 = new FonctionHeuristique1();
 		FonctionHeuristique2 heurist2 = new FonctionHeuristique2();
 		
-		//algo A* avec le 1er état initial
-		System.out.println("Avec la 1ère heuristique");
+		//algo A* avec le 1er ï¿½tat initial
+		System.out.println("Avec la 1ï¿½re heuristique");
 		etatInit1 = new Etat(tabInit1, heurist1);
 		etatFinal1 = algoAEtoile(etatInit1, heurist1);
 		if(etatFinal1 != null){
@@ -37,7 +37,7 @@ public class Taquin {
 		}
 		System.out.println("\n**********\n\n");
 		
-		System.out.println("Avec la 2ème heuristique");
+		System.out.println("Avec la 2ï¿½me heuristique");
 		etatInit2 = new Etat(tabInit1, heurist2);
 		etatFinal2 = algoAEtoile(etatInit1, heurist2);
 		if(etatFinal2 != null){
@@ -49,8 +49,8 @@ public class Taquin {
 		System.out.println("\n\n********************\n\n");
 		
 
-		//algo A* avec le 2ème état initial
-		System.out.println("Avec la 1ère heuristique");
+		//algo A* avec le 2ï¿½me ï¿½tat initial
+		System.out.println("Avec la 1ï¿½re heuristique");
 		etatInit2 = new Etat(tabInit2, heurist1);
 		etatFinal1 = algoAEtoile(etatInit2, heurist1);
 		if(etatFinal1 != null){
@@ -61,7 +61,7 @@ public class Taquin {
 		}
 		System.out.println("\n**********\n\n");
 		
-		System.out.println("Avec la 2ème heuristique");
+		System.out.println("Avec la 2ï¿½me heuristique");
 		etatInit2 = new Etat(tabInit2, heurist2);
 		etatFinal2 = algoAEtoile(etatInit2, heurist2);
 		if(etatFinal2 != null){
@@ -74,30 +74,58 @@ public class Taquin {
 
 	
 	/**
-	 * Méthode qui applique l'algorihtme A*, à partir de l'état intial donné
-	 * et en utilisant l'heuristique donnée.
-	 * @param etatInit : l'état initial.
-	 * @param heurist : l'heuristique utilisée.
-	 * @return l'état final.
+	 * Mï¿½thode qui applique l'algorihtme A*, ï¿½ partir de l'ï¿½tat intial donnï¿½
+	 * et en utilisant l'heuristique donnï¿½e.
+	 * @param etatInit : l'ï¿½tat initial.
+	 * @param heurist : l'heuristique utilisï¿½e.
+	 * @return l'ï¿½tat final.
 	 */
 	public static Etat algoAEtoile(Etat etatInit, FonctionHeuristique heurist){
-		Etat etat, succ;
-		Vector<Etat> succs;
+		Etat etat;
+		Vector<Etat> succs = new Vector<>();
 		SetTaquin fermes = new SetTaquin();
 		FileTaquin ouverts = new FileTaquin();
 		int nbNoeuds = 0;
 		Etat etatFin = null;
 		
 		//initialisation des SDD
-		//à compléter
+		//ï¿½ complï¿½ter
+		ouverts.add(etatInit);
 		
+		Etat succ_ferme;
+		Etat succ_ouvert;
 		//boucle sur ouverts
 		while((!ouverts.isEmpty()) && (etatFin == null)){
-			//à compléter
+			etat = ouverts.first();
+			if(etat.estFinal()){
+				etatFin = etat;
+			}else{
+				fermes.add(etat);
+			}
+			succs=etat.getSuccesseurs(heurist);
+			for(Etat e : succs){
+				if (fermes.contains(e)){
+					succ_ferme = fermes.get(e);
+					if(e.getValF()< succ_ferme.getValF()){
+						fermes.remove(succ_ferme);
+						ouverts.add(e);
+					}else{
+						ouverts.add(e);
+					}
+						succ_ouvert=ouverts.get(e);
+						if(e.getValF()< succ_ouvert.getValF()){
+							ouverts.remove(succ_ouvert);
+							ouverts.add(e);
+						}
+					}else{
+						ouverts.add(e);
+					}
+				}
+			
 		}//while
 					
-		//affichage du nombre de noeuds créés
-		System.out.println("Nombre de noeuds créés : " + nbNoeuds);
+		//affichage du nombre de noeuds crï¿½ï¿½s
+		System.out.println("Nombre de noeuds crï¿½ï¿½s : " + nbNoeuds);
 		
 		return etatFin;
 	}
