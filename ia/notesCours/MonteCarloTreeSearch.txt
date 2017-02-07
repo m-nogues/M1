@@ -1,0 +1,17 @@
+diapo 15 :
+xi + sqrt(2 * ln(n), ri)
+
+xi = estimation au noeud i (# victoires / # parties)
+ln(n) = nb visites noeud parent
+ri = nb visites noeud enfant(i)
+
+diapo 16 :
+xi + 2 * c * sqrt(2 * ln(n), ri)
+
+xi = estimation au noeud i (# victoires / # parties)
+ln(n) = nb visites noeud parent
+ri = nb visites noeud enfant(i)
+c = constante
+
+diapo 17 :
+/!\ le créateur de la figure devait utiliser une constante < 1 / sqrt(2)

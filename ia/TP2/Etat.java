@@ -23,7 +23,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * Constructeur qui recopie l'�tat e dans l'�tat courant.
-	 * 
+	 *
 	 * @param e
 	 *            : l'�tat � cloner.
 	 */
@@ -45,7 +45,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * Constructeur.
-	 * 
+	 *
 	 * @param tab
 	 *            : le tableau d�crivant la configuration de jeu.
 	 */
@@ -68,7 +68,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * Constructeur.
-	 * 
+	 *
 	 * @param tab
 	 *            : le tableau d�crivant la configuration de jeu.
 	 */
@@ -101,7 +101,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode de l'interface Comparable, � impl�menter.
-	 * 
+	 *
 	 * @param e
 	 *            : l'�tat avec lequel comparer l'�tat courant.
 	 * @return -1, 0 ou 1 selon que l'�tat e est inf�rieur, �gal ou sup�rieur �
@@ -130,7 +130,7 @@ public class Etat implements Comparable<Etat> {
 	/**
 	 * M�thode qui dit s'il est possible de d�placer la case vide, dans la
 	 * direction donn�e par d.
-	 * 
+	 *
 	 * @param d
 	 *            : la direction pour d�placer la case vide.
 	 * @return vrai si la case vide peut �tre d�plac�e dans la direction d.
@@ -162,7 +162,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui dit si 2 �tats sont �gaux, au niveau des configurations.
-	 * 
+	 *
 	 * @param e
 	 *            : l'�tat avec lequel comparer l'�tat courant.
 	 * @return vrai si les �tats correspondent � la m�me configuration.
@@ -179,7 +179,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui dit si l'�tat courant est un �tat final.
-	 * 
+	 *
 	 * @return vrai si l'�tat courant correspond � un des 2 �tats finaux.
 	 */
 	public boolean estFinal() {
@@ -192,7 +192,7 @@ public class Etat implements Comparable<Etat> {
 	/**
 	 * M�thode qui �tend l'�tat courant, en d�pla�ant la case vide dans la
 	 * direction donn�e par d.
-	 * 
+	 *
 	 * @param d
 	 *            : la direction pour d�placer la case vide.
 	 * @return l'�tat cr�� � partir de l'�tat courant
@@ -235,8 +235,7 @@ public class Etat implements Comparable<Etat> {
 			etat._nbCoups++;
 			etat._valG++;
 			etat._valF = etat._valG + heurist.heuristique(etat);
-		}
-		else
+		} else
 			return null;
 
 		// mise � jour des fonctions d'�valuation
@@ -247,7 +246,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne le p�re de l'�tat courant.
-	 * 
+	 *
 	 * @return le p�re de l'�tat courant.
 	 */
 	public Etat getPere() {
@@ -258,7 +257,7 @@ public class Etat implements Comparable<Etat> {
 	 * M�thode qui donne les �tats successeurs de l'�tat courant, calcul�s selon
 	 * l'emplacement de la case vide et en utilisant la fonction heuristique
 	 * donn�e.
-	 * 
+	 *
 	 * @return les �tats successeurs.
 	 */
 	public Vector<Etat> getSuccesseurs(FonctionHeuristique heurist) {
@@ -274,7 +273,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne la valeur de la case de coordonn�es donn�es.
-	 * 
+	 *
 	 * @param i
 	 *            : l'abscisse de la case.
 	 * @param j
@@ -292,7 +291,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne la valeur de la fonction d'�valuation f.
-	 * 
+	 *
 	 * @return la valeur de la fonction f.
 	 */
 	public int getValF() {
@@ -301,7 +300,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne la valeur de la fonction d'�valuation g.
-	 * 
+	 *
 	 * @return la valeur de la fonction g.
 	 */
 	public int getValG() {
@@ -310,7 +309,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne l'abscisse du nombre n.
-	 * 
+	 *
 	 * @param n
 	 *            : le nombre consid�r�.
 	 * @return l'abscisse de n.
@@ -328,7 +327,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne ordonn�e du nombre n.
-	 * 
+	 *
 	 * @param n
 	 *            : le nombre consid�r�.
 	 * @return ordonn�e de n.
@@ -346,7 +345,7 @@ public class Etat implements Comparable<Etat> {
 
 	/**
 	 * M�thode qui donne la repr�sentation de l'�tat, sous forme de cha�ne.
-	 * 
+	 *
 	 * @return la cha�ne repr�sentant l'�tat.
 	 */
 	@Override
