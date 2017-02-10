@@ -1,5 +1,5 @@
 /**
- * @file tp1.c
+ * @file tp2.c
  *
  * @section desc File description
  *
@@ -9,10 +9,10 @@
  *
  * @section infos File informations
  *
- * $Date$ mar. janv. 31 17:01:36 CET 2017
+ * $Date$ mar. févr.  7 16:19:17 CET 2017
  * $Rev$
  * $Author$ 14000806
- * $URL$ /private/student/6/06/14000806/M1git/M1/str/tp1
+ * $URL$ /private/student/6/06/14000806/M1git/M1/str/tp2
  */
 
 #include "tpl_os.h"
@@ -22,14 +22,6 @@
 
 int displayY = 0;
 
-update()
-{
-  display_update();
-  displayY = (displayY+1)%7;
-  display_goto_xy(0,displayY);
-
-}
-
 FUNC(int, OS_APPL_CODE) main(void)
 {
     StartOS(OSDEFAULTAPPMODE);
@@ -37,47 +29,38 @@ FUNC(int, OS_APPL_CODE) main(void)
     return 0;
 }
 
+void update()
+{
+  display_update();
+  displayY = (displayY+1)%7;
+  display_goto_xy(0,displayY);
+
+}
+
 DeclareTask(task0);
 DeclareTask(task1);
+DeclareAlarm(a1);
 
-PreTaskHook()
-{
-  TaskType task;
-  GetTaskID(&task);
-  display_int(task,0);
-  update();
-
-
-}
-    
-PostTaskHook()
-{
-  TaskType task;
-  GetTaskID(&task);
-  display_int(task,0);
-  update();
-
-}
-
-TASK(task0)
-{
-  display_string("debut");
-  update();
-  ActivateTask(task1);
-  display_string("fin");
-  update();
+TASK(task0){
+/*q1.1
+  SetAbsAlarm(a1,0,1000);
+  ChainTask(task0);
+  */
   TerminateTask();
 }
 
 TASK(task1)
 {
-    //ecrobot_status_monitor("Bonjour le monde !");
-    display_string("Bonjour le monde !");
+    TaskType task;
+    GetTaskID(&task);
+    display_int(task,0);
+    display_string(" ");
+    display_int(ecrobot_get_systick_ms(),0);
     update();
-    TerminateTask();
-    //while(1){};
 
-    //ChainTask(task1);
+    TerminateTask();
+
+
 }
 
 ISR(isr_button_start)
@@ -103,4 +86,4 @@ ISR(isr_button_right)
 
 }
 
-/* End of file tp1.c */
+/* End of file tp2.c */
