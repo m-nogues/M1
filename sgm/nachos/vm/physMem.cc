@@ -238,9 +238,9 @@ int PhysicalMemManager::EvictPage() {
   		} else {
   			DEBUG('v', (char *)"Page is not in swap\n");
   			sector = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
-  			DEBUG('v', (char *)"Associated swap page : %i\n", numSecteur);
+  			DEBUG('v', (char *)"Associated swap page : %i\n", sector);
 
-  			transTable->setAddrDisk(virtualPage, numSecteur);
+  			transTable->setAddrDisk(virtualPage, sector);
   			transTable->setBitSwap(virtualPage);
   		}
   	}

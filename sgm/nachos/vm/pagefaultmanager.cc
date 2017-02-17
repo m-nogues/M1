@@ -48,19 +48,19 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
   #endif
   #ifdef ETUDIANTS_TP
   Process *processus = g_current_thread->GetProcessOwner();
-  AddrSpace *addrspace = process->addrspace;
+  AddrSpace *addrspace = processus->addrspace;
   TranslationTable *tableTraduction = addrspace->translationTable;
 
   //declaration
+  int taillePages = g_cfg->PageSize;
   char pageTmp[taillePages];
-  taillePages = g_cfg->PageSize;
-  numPages = g_cfg->NumPhysPages;
+  //int numPages = g_cfg->NumPhysPages;
 //
   if(tableTraduction->getBitIo(virtualPage)){
     while ((tableTraduction->getBitIo(virtualPage))) {
       g_current_thread->Yield();
     }
-    //return
+    return NO_EXCEPTION;
   }
   tableTraduction->setBitIo(virtualPage);
   if(!tableTraduction->getBitSwap(virtualPage)){
@@ -69,11 +69,11 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
       DEBUG('m', (char*)"allocation et mise à 0 de %d octet d'une page anonyme\n", taillePages);
       memset(pageTmp, 0x0, taillePages);
     }else{
-      if(process->exec_file->readAt(pageTmp,taillePages, tableTraduction->getAddrDisk(virtualPage))!= taillePages){
+      if(processus->exec_file->ReadAt(pageTmp,taillePages, tableTraduction->getAddrDisk(virtualPage))!= taillePages){
         DEBUG('m', (char*)"Erreur");
-        return(PAGEFAULT_EXCEPTION);
+        return PAGEFAULT_EXCEPTION;
       }else{
-        DEBUG('m', (char*)Lecture d'une page de %d octets depuis l adresse');
+        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse");
       }
     }
   }else{//page dans le swap
@@ -81,13 +81,14 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
     tableTraduction->clearBitSwap(virtualPage);
   }
   //
-  addrPhysique = g_physical_mem_manager->AddPhysicalToVirtualMapping(addrspace, virtualPage);
+  int addrPhysique = g_physical_mem_manager->AddPhysicalToVirtualMapping(addrspace, virtualPage);
   //
-  memcpy(&(g_machine->mainMemory[addrPhysique *taillePages], pageTmp, taillePages));
+  memcpy(&(g_machine->mainMemory[addrPhysique*taillePages]), pageTmp, taillePages);
   //deverouillage de la page physique + page virtuelle valide
-  tableTraduction->setPhysicalPage(virtualPage, addrspace);
+  tableTraduction->setPhysicalPage(virtualPage, addrPhysique);
   tableTraduction->setBitValid(virtualPage);
   g_physical_mem_manager->UnlockPage(addrPhysique);
   tableTraduction->clearBitIo(virtualPage);
-  #ifndef
+  return NO_EXCEPTION;
+  #endif
 }
