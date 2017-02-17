@@ -120,9 +120,25 @@ void PhysicalMemManager::ChangeOwner(long numPage, Thread* owner) {
 //-----------------------------------------------------------------
 int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtualPage)
 {
-  printf("**** Warning: function AddPhysicalToVirtualMapping is not implemented\n");
-  exit(-1);
-  return (0);
+  #ifndef ETUDIANTS_TP
+    printf("**** Warning: function AddPhysicalToVirtualMapping is not implemented\n");
+    exit(-1);
+    return (0);
+  #endif
+  #ifdef ETUDIANTS_TP
+    int page;
+
+    page = FindFreePage();
+
+    if (page == -1)
+      page = EvictPage();
+
+    tpr[page].virtualPage = virtualPage;
+    tpr[page].owner = owner;
+    tpr[page].locked = true;
+
+    DEBUG('v', "AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, realPage);
+    return page;
 }
 
 //-----------------------------------------------------------------
@@ -206,21 +222,21 @@ int PhysicalMemManager::EvictPage() {
   	realPage.locked = true;
   	//transTable->clearBitValid(virtualPage);
 
-  	DEBUG('v', (char*)"Physical page n°%i to be stolen\n", local_i_clock);
+  	DEBUG('v', "Physical page n°%i to be stolen\n", local_i_clock);
 
   	if(transTable->getBitM(virtualPage)){
   		pageAdresse = (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize]));
 
   		if(transTable->getBitSwap(virtualPage)) {
-  			DEBUG('v', (char*)"Page is already in swap (%i)\n", transTable->getAddrDisk(virtualPage));
+  			DEBUG('v', "Page is already in swap (%i)\n", transTable->getAddrDisk(virtualPage));
   			g_swap_manager->PutPageSwap(transTable->getAddrDisk(virtualPage), pageAdresse);
   		} else if( (fileMap = realPage.owner->findMappedFile(virtualPage)) != NULL) {
-  			DEBUG('u', (char*)"Copy mapped page in file %s (offset %d)\n", fileMap->GetName(), transTable->getAddrDisk(virtualPage));
+  			DEBUG('u', "Copy mapped page in file %s (offset %d)\n", fileMap->GetName(), transTable->getAddrDisk(virtualPage));
   			fileMap->WriteAt(pageAdresse, g_cfg->PageSize, transTable->getAddrDisk(virtualPage));
   		} else {
-  			DEBUG('v', (char*)"Page is not in swap\n");
+  			DEBUG('v', "Page is not in swap\n");
   			numSecteur = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
-  			DEBUG('v', (char*)"Associated swap page : %i\n", numSecteur);
+  			DEBUG('v', "Associated swap page : %i\n", numSecteur);
 
   			transTable->setAddrDisk(virtualPage, numSecteur);
   			transTable->setBitSwap(virtualPage);
