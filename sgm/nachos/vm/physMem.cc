@@ -126,19 +126,19 @@ int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtual
     return (0);
   #endif
   #ifdef ETUDIANTS_TP
-    int page;
+    int phys_page;
 
-    page = FindFreePage();
+    phys_page = FindFreePage();
 
-    if (page == -1)
-      page = EvictPage();
+    if (phys_page == -1)
+      phys_page = EvictPage();
 
-    tpr[page].virtualPage = virtualPage;
-    tpr[page].owner = owner;
-    tpr[page].locked = true;
+    tpr[phys_page].virtualPage = virtualPage;
+    tpr[phys_page].owner = owner;
+    tpr[phys_page].locked = true;
 
     DEBUG('v', "AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, realPage);
-    return page;
+    return phys_page;
 }
 
 //-----------------------------------------------------------------
