@@ -19,6 +19,8 @@
 #include "nxt_motors.h"
 #include "ecrobot_interface.h"
 #include "ecrobot_private.h"
+#include <stdlib.h>
+
 
 int displayY = 0;
 
@@ -32,15 +34,11 @@ FUNC(int, OS_APPL_CODE) main(void)
 DeclareTask(task1);
 DeclareTask(task2);
 DeclareTask(task3);
-DeclareTask(task0);
-
-
-TASK(task0)
-{
-  ecrobot_init_sonar_sensor(NXT_PORT_S2);
-  TerminateTask();
-}
-
+DeclareTask(task4);
+DeclareEvent(e1);
+DeclareAlarm(a1);
+DeclareAlarm(a3);
+DeclareAlarm(a2);
 TASK(task1)
 {
     display_goto_xy(0,0);
@@ -67,13 +65,30 @@ TASK(task2)
 
 TASK(task3)
 {
-
     display_goto_xy(0,3);
     display_string("distance : ");
     display_goto_xy(12,3);
-    ecrobot_get_sonar_sensor(NXT_PORT_S2);
+    display_int(ecrobot_get_light_sensor(NXT_PORT_S2),0);
     display_update();
     TerminateTask();
+}
+
+TASK(task4)
+{
+
+    WaitEvent(e1);
+    ClearEvent(e1);
+    display_clear(1);
+    display_goto_xy(0,4);
+    display_string("fermeture");
+    display_update();
+    CancelAlarm(a1);
+    CancelAlarm(a2);
+    CancelAlarm(a3);
+    systick_wait_ms(2000);
+    ShutdownOS(E_OK);
+
+
 }
 
 ISR(isr_button_start)
@@ -95,7 +110,7 @@ ISR(isr_button_left)
 
 ISR(isr_button_right)
 {
-    ecrobot_status_monitor("isr_button_right");
+    SetEvent(task4,e1);
 
 }
 

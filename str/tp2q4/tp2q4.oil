@@ -26,8 +26,8 @@ CPU test {
         STATUS = EXTENDED;
         ERRORHOOK = FALSE;
         PRETASKHOOK = FALSE;
-        APP_SRC = "tp2q3.c";
-        APP_NAME = "tp2q3_exe";
+        APP_SRC = "tp2q4.c";
+        APP_NAME = "tp2q4_exe";
         TRAMPOLINE_BASE_PATH = "/share/l3sea/ITR/osek_env/trampoline/";
         CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99";
         ASFLAGS = "-g -mcpu=arm7tdmi --fatal-warnings ";
@@ -47,6 +47,10 @@ CPU test {
     } ;
 
     APPMODE std {
+    };
+
+    EVENT e1{
+      MASK = 0x01;
     };
 
     ALARM a1{
@@ -76,6 +80,13 @@ CPU test {
       };
     };
 
+    TASK task0 {
+        PRIORITY = 3;
+        AUTOSTART = TRUE{APPMODE = std;};
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
     TASK task1 {
         PRIORITY = 3;
         AUTOSTART = FALSE;
@@ -84,7 +95,7 @@ CPU test {
     };
 
     TASK task2 {
-        PRIORITY = 1;
+        PRIORITY = 4;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -97,12 +108,21 @@ CPU test {
         SCHEDULE = FULL;
     };
 
+    TASK task4 {
+      PRIORITY = 1;
+      AUTOSTART = TRUE{APPMODE = std;};
+      ACTIVATION = 1;
+      SCHEDULE = FULL;
+      EVENT = e1;
+    };
+
     COUNTER SystemCounter {
       SOURCE = it_timer1;
       MAXALLOWEDVALUE = 5000;
       TICKSPERBASE = 1;
       MINCYCLE = 1;
     };
+
 
    ISR isr_button_start {
        CATEGORY = 2;
