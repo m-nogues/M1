@@ -20,7 +20,7 @@
 #include "ecrobot_interface.h"
 #include "ecrobot_private.h"
 
-int displayY = 0;
+int displayY = 0, i = 0;
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
@@ -57,7 +57,7 @@ TASK(task1)
 {
     TaskType task;
 
-    SetAbsAlarm(a1, 100, 1000);
+    SetAbsAlarm(a1, i++ * 1000, 0);
 
     GetTaskID(&task);
     display_int(task,0);

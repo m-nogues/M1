@@ -1,32 +1,31 @@
 
 public class JoueurMinMax implements Joueur {
-	
-	private FonctionEvaluation eval;
-	
+
+	private FonctionEvaluation	eval;
+	private static int			MAX	= 7;
+
 	public JoueurMinMax(FonctionEvaluation f) {
 		eval = f;
 	}
 
 	@Override
 	public Resultat coup(Grille grille, int joueur) {
-		int col = 0, val = 0;
-		double res = 0;
-		
-		int coups[] = grille.generateurCoups();
-		for (int i : coups){
-			if ((res = eval.evaluation(grille, joueur)) == FonctionEvaluation.MAX){
-				col = i;
-				break;
-			} else if (res == 0)
-				val = i;
-		}
-		
-		if (res != FonctionEvaluation.MAX)
-			col = val;
-		
-		
-		return new Resultat(col, joueur);
+		return new Resultat(getCol(grille, joueur, 0), joueur);
 	}
 
-	
+	private int getCol(Grille grille, int joueur, int rec) {
+		int col = -1;
+		Grille test;
+		
+		for (int i : grille.generateurCoups()){
+			test = grille.copie();
+			test.joueEn(joueur, i);
+			if (eval.evaluation(test, joueur) == FonctionEvaluation.MAX)
+				return i;
+			
+		}
+		
+		return col;
+	}
+
 }
