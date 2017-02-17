@@ -394,7 +394,7 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 		if ((pageNum = Alloc(nbAllocatedPage) == -1))
 			return -1;
 
-		DEBUG('u', "First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName(), pageNum, size, nbAllocatedPage);
+		DEBUG('u', (char *)"First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName(), pageNum, size, nbAllocatedPage);
 
 		mapped_files[nb_mapped_files].size = size;
 		mapped_files[nb_mapped_files].file = f;
