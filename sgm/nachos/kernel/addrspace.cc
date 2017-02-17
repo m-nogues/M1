@@ -391,10 +391,10 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 
 		nbAllocatedPage = divRoundUp(size, g_cfg->PageSize);
 
-		if ((pageNum = Alloc(nbAllocatedPage) == -1)
+		if ((pageNum = Alloc(nbAllocatedPage) == -1))
 			return -1;
 
-		DEBUG('u', "First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName, pageNum, size, nbAllocatedPage);
+		DEBUG('u', "First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName(), pageNum, size, nbAllocatedPage);
 
 		mapped_files[nb_mapped_files].size = size;
 		mapped_files[nb_mapped_files].file = f;
@@ -428,7 +428,7 @@ OpenFile *AddrSpace::findMappedFile(int32_t addr) {
 	printf("**** Warning: method AddrSpace::findMappedFile is not implemented yet\n");
 	exit(-1);
 	#endif
-	#ifdef
+	#ifdef ETUDIANTS_TP
 		for (int i = 0; i < nb_mapped_files; i++)
 			if ((addr >= mapped_files[i].first_address) && (addr < mapped_files[i].first_address + mapped_files[i].size))
 				return mapped_files[i].file;
