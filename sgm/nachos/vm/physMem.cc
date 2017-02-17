@@ -172,7 +172,62 @@ int PhysicalMemManager::EvictPage() {
     return (0);
   #endif
   #ifdef ETUDIANTS_TP
-    
+    int local_i_clock = i_clock, nbTraveledPages = 0, virtualPage, sector;
+  	TranslationTable *transTable;
+  	OpenFile *fileMap = NULL;
+  	char *pageAdresse = NULL;
+  	bool found = false;
+  	tpr_c realPage;
+
+  	while(!found){
+  		local_i_clock = (local_i_clock+1)%(g_cfg->NumPhysPages);
+
+  		realPage = tpr[local_i_clock];
+  		virtualPage = realPage.virtualPage;
+  		transTable = realPage.owner->translationTable;
+
+  		if(nbTraveledPages == g_cfg->NumPhysPages){
+  			i_clock = local_i_clock;
+  			g_current_thread->Yield();
+  			local_i_clock = (i_clock+1)%(g_cfg->NumPhysPages);
+  			nbTraveledPages = 0;
+  		}
+
+  		if(!realPage.locked)
+  			if(!transTable->getBitU(virtualPage))
+  				found = true;
+  			else
+  				transTable->clearBitU(virtualPage);
+
+  		nbTraveledPages++;
+  	}
+
+  	i_clock = local_i_clock;
+  	realPage.locked = true;
+  	//transTable->clearBitValid(virtualPage);
+
+  	DEBUG('v', (char*)"Physical page n°%i to be stolen\n", local_i_clock);
+
+  	if(transTable->getBitM(virtualPage)){
+  		pageAdresse = (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize]));
+
+  		if(transTable->getBitSwap(virtualPage)) {
+  			DEBUG('v', (char*)"Page is already in swap (%i)\n", transTable->getAddrDisk(virtualPage));
+  			g_swap_manager->PutPageSwap(transTable->getAddrDisk(virtualPage), pageAdresse);
+  		} else if( (fileMap = realPage.owner->findMappedFile(virtualPage)) != NULL) {
+  			DEBUG('u', (char*)"Copy mapped page in file %s (offset %d)\n", fileMap->GetName(), transTable->getAddrDisk(virtualPage));
+  			fileMap->WriteAt(pageAdresse, g_cfg->PageSize, transTable->getAddrDisk(virtualPage));
+  		} else {
+  			DEBUG('v', (char*)"Page is not in swap\n");
+  			numSecteur = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
+  			DEBUG('v', (char*)"Associated swap page : %i\n", numSecteur);
+
+  			transTable->setAddrDisk(virtualPage, numSecteur);
+  			transTable->setBitSwap(virtualPage);
+  		}
+  	}
+
+  	return local_i_clock;
   #endif
 }
 
