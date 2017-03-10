@@ -383,7 +383,7 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 		printf("**** Warning: method AddrSpace::Mmap is not implemented yet\n");
 		exit(-1);
 	#endif
-	#ifdef ETUDIANTS_TP
+/*	#ifdef ETUDIANTS_TP
 		int pageNum, nbAllocatedPage;
 
 		if (nb_mapped_files == MAX_MAPPED_FILES)
@@ -413,7 +413,7 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 		nb_mapped_files++;
 
 		return pageNum * g_cfg->PageSize;
-	#endif
+	#endif*/
 }
 
 //----------------------------------------------------------------------
@@ -428,13 +428,13 @@ OpenFile *AddrSpace::findMappedFile(int32_t addr) {
 	printf("**** Warning: method AddrSpace::findMappedFile is not implemented yet\n");
 	exit(-1);
 	#endif
-	#ifdef ETUDIANTS_TP
+	/*#ifdef ETUDIANTS_TP
 		for (int i = 0; i < nb_mapped_files; i++)
 			if ((addr >= mapped_files[i].first_address) && (addr < mapped_files[i].first_address + mapped_files[i].size))
 				return mapped_files[i].file;
 
 		return NULL;
-	#endif
+	#endif*/
 }
 
 //----------------------------------------------------------------------

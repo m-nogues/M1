@@ -53,7 +53,7 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
 
   //declaration
   int taillePages = g_cfg->PageSize;
-  char pageTmp[taillePages];
+  char pageTmp[g_cfg->PageSize];
   //int numPages = g_cfg->NumPhysPages;
 //
   if(tableTraduction->getBitIo(virtualPage)){
@@ -69,11 +69,12 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
       DEBUG('m', (char*)"allocation et mise à 0 de %d octet d'une page anonyme\n", taillePages);
       memset(pageTmp, 0x0, taillePages);
     }else{
-      if(processus->exec_file->ReadAt(pageTmp,taillePages, tableTraduction->getAddrDisk(virtualPage))!= taillePages){
+
+      if(processus->exec_file->ReadAt(pageTmp, taillePages, tableTraduction->getAddrDisk(virtualPage))!= taillePages){
         DEBUG('m', (char*)"Erreur");
         return PAGEFAULT_EXCEPTION;
       }else{
-        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse\n");
+        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse\n", taillePages);
       }
     }
   }else{//page dans le swap
