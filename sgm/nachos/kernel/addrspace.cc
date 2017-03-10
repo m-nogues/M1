@@ -166,7 +166,7 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 		{
 
 		/* Without demand paging */
-		#ifndef ETUDIANT_TP
+		#ifndef ETUDIANTS_TP
 			// Set up default values for the page table entry
 			translationTable->clearBitSwap(virt_page);
 			translationTable->setBitReadAllowed(virt_page);

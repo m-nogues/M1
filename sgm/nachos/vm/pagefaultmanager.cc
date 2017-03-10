@@ -73,10 +73,11 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
         DEBUG('m', (char*)"Erreur");
         return PAGEFAULT_EXCEPTION;
       }else{
-        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse");
+        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse\n");
       }
     }
   }else{//page dans le swap
+    DEBUG('m', (char*)"passage dans le swap\n");
     g_swap_manager->GetPageSwap(tableTraduction->getAddrDisk(virtualPage),pageTmp);
     tableTraduction->clearBitSwap(virtualPage);
   }
