@@ -53,44 +53,51 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
 
   //declaration
   int taillePages = g_cfg->PageSize;
-  char pageTmp[g_cfg->PageSize];
+
   //int numPages = g_cfg->NumPhysPages;
 //
-  if(tableTraduction->getBitIo(virtualPage)){
-    while ((tableTraduction->getBitIo(virtualPage))) {
+//  if(tableTraduction->getBitIo(virtualPage)){
+    while (g_machine->mmu->translationTable->getBitIo(virtualPage)) {
       g_current_thread->Yield();
     }
-    return NO_EXCEPTION;
-  }
-  tableTraduction->setBitIo(virtualPage);
-  if(!tableTraduction->getBitSwap(virtualPage)){
+//    return NO_EXCEPTION;
+//  }
+  g_machine->mmu->translationTable->setBitIo(virtualPage);
 
-    if(tableTraduction->getAddrDisk(virtualPage)==-1){
-      DEBUG('m', (char*)"allocation et mise à 0 de %d octet d'une page anonyme\n", taillePages);
-      memset(pageTmp, 0x0, taillePages);
-    }else{
+  char pageTmp[g_cfg->PageSize];
 
-      if(processus->exec_file->ReadAt(pageTmp, taillePages, tableTraduction->getAddrDisk(virtualPage))!= taillePages){
-        DEBUG('m', (char*)"Erreur");
-        return PAGEFAULT_EXCEPTION;
-      }else{
-        DEBUG('m', (char*)"Lecture d'une page de %d octets depuis l adresse\n", taillePages);
-      }
-    }
-  }else{//page dans le swap
-    DEBUG('m', (char*)"passage dans le swap\n");
-    g_swap_manager->GetPageSwap(tableTraduction->getAddrDisk(virtualPage),pageTmp);
-    tableTraduction->clearBitSwap(virtualPage);
-  }
-  //
   int addrPhysique = g_physical_mem_manager->AddPhysicalToVirtualMapping(addrspace, virtualPage);
+
+  if(g_machine->mmu->translationTable->getBitSwap(virtualPage)){
+
+    while ((g_machine->mmu->translationTable->getAddrDisk(virtualPage))==-1) {
+      g_current_thread->Yield();
+    }
+    g_swap_manager->GetPageSwap(tableTraduction->getAddrDisk(virtualPage),pageTmp);
+
+
+    }else{
+        if(g_machine->mmu->translationTable->getAddrDisk(virtualPage)==-1){
+          DEBUG('m', (char*)"allocation et mise à 0 de %d octet d'une page anonyme\n", taillePages);
+          memset(&(g_machine->mainMemory[addrPhysique*g_cfg->PageSize]),0,g_cfg->PageSize);
+        }else{
+          if(processus->exec_file->ReadAt(pageTmp, taillePages, g_machine->mmu->translationTable->getAddrDisk(virtualPage))!= taillePages){
+            DEBUG('m', (char*)"Erreur");
+            return PAGEFAULT_EXCEPTION;
+          }
+        }
+
+    }
+  //
+
   //
   memcpy(&(g_machine->mainMemory[addrPhysique*taillePages]), pageTmp, taillePages);
   //deverouillage de la page physique + page virtuelle valide
-  tableTraduction->setPhysicalPage(virtualPage, addrPhysique);
-  tableTraduction->setBitValid(virtualPage);
+  g_machine->mmu->translationTable->setPhysicalPage(virtualPage, addrPhysique);
+  g_machine->mmu->translationTable->setBitValid(virtualPage);
+  g_machine->mmu->translationTable->clearBitIo(virtualPage);
   g_physical_mem_manager->UnlockPage(addrPhysique);
-  tableTraduction->clearBitIo(virtualPage);
+
   return NO_EXCEPTION;
   #endif
 }

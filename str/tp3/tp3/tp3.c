@@ -15,6 +15,16 @@
  * $URL$ /private/student/6/06/14000806/M1git/M1/str/tp3/tp3
  */
 
+/*
+Que se passe-t-il si les pare-chocs détectent un obstacle à ras de terre mais que
+le capteur ultrason est interrogé avant que la tâche de navigation ne s’exécute ?
+ Proposer une modification du système pour pallier à ce problème
+ Reponse :
+ Si le capteur ultrason et intérogé avant les capteurs le robot va continuer à avancer
+ si la distance le lui permet. Pour résoudre ce problème il faut que les detecteurs de
+ collision soit la tâche la plus prioritaire.
+
+*/
 #include "tpl_os.h"
 #include "nxt_motors.h"
 #include "ecrobot_interface.h"
@@ -39,7 +49,7 @@ DeclareAlarm(a1);
 DeclareAlarm(a3);
 DeclareAlarm(a2);
 
-
+//initialisation sonar
 TASK(task1)
 {
     ecrobot_init_sonar_sensor(NXT_PORT_S2);
@@ -50,7 +60,7 @@ TASK(task2)
 {
     int collisionR  = ecrobot_get_touch_sensor(NXT_PORT_S1);
     int collisionL  = ecrobot_get_touch_sensor(NXT_PORT_S4);
-
+    //teste de collision
     if (collisionL || collisionR) {
       GetResource(distance);
       distanceO = 0;
@@ -69,9 +79,10 @@ TASK(task3)
     TerminateTask();
 }
 
-//engines
+//moteurs
 TASK(task4)
 {
+
   periodeNum = (periodeNum + 1) % 10;
 
   GetResource(distance);

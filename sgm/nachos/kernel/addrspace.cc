@@ -216,9 +216,10 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 		#ifdef ETUDIANTS_TP
 			// Set up default values for the page table entry
 			translationTable->clearBitSwap(virt_page);
+
 			translationTable->setBitReadAllowed(virt_page);
 
-			if (section_table[i].sh_flags & SHF_WRITE)
+			if (section_table[i].sh_flags && SHF_WRITE)
 				translationTable->setBitWriteAllowed(virt_page);
 			else
 				translationTable->clearBitWriteAllowed(virt_page);
@@ -322,6 +323,8 @@ int AddrSpace::StackAllocate(void)
 			translationTable->setAddrDisk(i,-1);
 			translationTable->setBitValid(i);
 			translationTable->clearBitSwap(i);
+
+
 			translationTable->setBitReadAllowed(i);
 			translationTable->setBitWriteAllowed(i);
 			translationTable->clearBitIo(i);
@@ -331,6 +334,7 @@ int AddrSpace::StackAllocate(void)
 			translationTable->clearBitValid(i);
 			translationTable->setAddrDisk(i, -1);
 			translationTable->clearBitSwap(i);
+				DEBUG('v', (char*)"page virtuelle %d\n", virtualPage);
 			translationTable->setBitReadAllowed(i);
 			translationTable->setBitWriteAllowed(i);
 			translationTable->clearBitIo(i);
