@@ -126,16 +126,17 @@ int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtual
     return (0);
   #endif
   #ifdef ETUDIANTS_TP
-    int phys_page;
-
-    phys_page = FindFreePage();
+    ASSERT(g_machine->mmu->translationTable->getBitIo(virtualPage));
+    int phys_page = FindFreePage();
     // not free page call EvictPage
     if (phys_page == -1)
       phys_page = EvictPage();
 
+    tpr[phys_page].locked = true;
+
     tpr[phys_page].virtualPage = virtualPage;
     tpr[phys_page].owner = owner;
-    tpr[phys_page].locked = true;
+
 
     DEBUG('v', (char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
     return phys_page;
@@ -189,66 +190,79 @@ int PhysicalMemManager::EvictPage() {
     return (0);
   #endif
   #ifdef ETUDIANTS_TP
-    int local_i_clock = i_clock, nbTraveledPages = 0, virtualPage, sector,
-      numPhysPages = g_cfg->NumPhysPages, pageSize = g_cfg->PageSize;
-  	TranslationTable *transTable;
-  	OpenFile *fileMap = NULL;
-  	char *pageAdresse = NULL;
-  	bool found = false;
-  	tpr_c realPage;
+  DEBUG('m', (char*)"Entering EvictPage\n");
+  int local_i_clock = i_clock, nbPagesParcourues = 0, pageVirtuelle, numSecteur;
+	bool trouve = false;
+	tpr_c pageReelle;
+	TranslationTable *tableTrans;
 
+	// On parcourt l'ensemble des pages jusqu'à ce qu'on trouve une page libre
+	while(!trouve){
 
+		local_i_clock = (local_i_clock+1)%(g_cfg->NumPhysPages);
 
-  	while(!found){
-  		local_i_clock = (local_i_clock+1)%(numPhysPages);
+		pageReelle = tpr[local_i_clock];
+		pageVirtuelle = pageReelle.virtualPage;
+		tableTrans = pageReelle.owner->translationTable;
 
-  		realPage = tpr[local_i_clock];
-  		virtualPage = realPage.virtualPage;
-  		transTable = realPage.owner->translationTable;
+		// On a parcouru toutes les pages physiques mais on a rien trouvé -> Mise en attente
+		if(nbPagesParcourues == g_cfg->NumPhysPages){
 
-  		if(nbTraveledPages == numPhysPages){
-  			i_clock = local_i_clock;
-  			g_current_thread->Yield();
-  			nbTraveledPages = 0;
-  		}
+			i_clock = local_i_clock;
 
-  		if(!realPage.locked) {
-  			if(!transTable->getBitU(virtualPage))
-  				found = true;
-  			else
-  				transTable->clearBitU(virtualPage);
-      }
+			g_current_thread->Yield();
 
-  		nbTraveledPages++;
-  	}
+			local_i_clock = (i_clock+1)%(g_cfg->NumPhysPages);
+			nbPagesParcourues = 0;
+		}
 
-  	i_clock = local_i_clock;
-  	realPage.locked = true;
-  	//transTable->clearBitValid(virtualPage);
+		if(!pageReelle.locked){
 
-  	DEBUG('v', (char *)"Physical page n°%i to be stolen\n", local_i_clock);
+			// Page disponible
+			if(!tableTrans->getBitU(pageVirtuelle)){
 
-  	if(transTable->getBitM(virtualPage)){
-  		pageAdresse = (char*)(&(g_machine->mainMemory[local_i_clock*pageSize]));
+				trouve = true;
+			}
 
-  		if(transTable->getBitSwap(virtualPage)) {
-  			DEBUG('v', (char *)"Page is already in swap (%i)\n", transTable->getAddrDisk(virtualPage));
-  			g_swap_manager->PutPageSwap(transTable->getAddrDisk(virtualPage), pageAdresse);
-  		} else if( (fileMap = realPage.owner->findMappedFile(virtualPage)) != NULL) {
-  			DEBUG('u', (char *)"Copy mapped page in file %s (offset %d)\n", fileMap->GetName(), transTable->getAddrDisk(virtualPage));
-  			fileMap->WriteAt(pageAdresse, pageSize, transTable->getAddrDisk(virtualPage));
-  		} else {
-  			DEBUG('v', (char *)"Page is not in swap\n");
-  			sector = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*pageSize])));
-  			DEBUG('v', (char *)"Associated swap page : %i\n", sector);
+			// Page référencéee récemment (2ème chance)
+			else{
 
-  			transTable->setAddrDisk(virtualPage, sector);
-  			transTable->setBitSwap(virtualPage);
-  		}
-  	}
+				tableTrans->clearBitU(pageVirtuelle);
+			}
+		}
 
-  	return local_i_clock;
+		nbPagesParcourues++; // Déplacé depuis le début
+	}
+
+	i_clock = local_i_clock;
+	pageReelle.locked = true; // Pour éviter la réquisition de cette page si on perd la main lors du traitement avec le swap
+	//tableTrans->clearBitValid(pageVirtuelle);
+
+	DEBUG('v', (char*)"Page physique n°%i a voler\n", local_i_clock);
+
+	// Traitement sur la page avant de la rendre (recopie dans le swap en cas de modification)
+	if(tableTrans->getBitM(pageVirtuelle)){
+
+		// Cette page a déjà un secteur associé dans le swap
+		if(tableTrans->getBitSwap(pageVirtuelle)){
+
+			DEBUG('v', (char*)"La page a déjà une adresse dans le swap (%i)\n", tableTrans->getAddrDisk(pageVirtuelle));
+			g_swap_manager->PutPageSwap(tableTrans->getAddrDisk(pageVirtuelle), (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
+		}
+		else{
+
+			DEBUG('v', (char*)"La page n'a pas d'adresse dans le swap\n");
+			numSecteur = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
+			DEBUG('v', (char*)"Page swap associée : %i\n", numSecteur);
+
+			tableTrans->setAddrDisk(pageVirtuelle, numSecteur);
+			tableTrans->setBitSwap(pageVirtuelle);
+		}
+	}
+  DEBUG('v', (char*)"nombre page virtuelle : %d sur %d\n", pageVirtuelle, g_cfg->MaxVirtPages);
+	return local_i_clock;
   #endif
+
 }
 
 //-----------------------------------------------------------------

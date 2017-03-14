@@ -78,7 +78,7 @@ CPU test {
         CYCLETIME = 600;
       };
     };
-
+    /**initialisation sensor **/
     TASK task1 {
         PRIORITY = 4;
         AUTOSTART = TRUE { APPMODE = std; };
@@ -86,7 +86,7 @@ CPU test {
         SCHEDULE = FULL;
 
     };
-
+/**collision avec une priorité max**/
     TASK task2 {
       PRIORITY = 4;
       AUTOSTART = FALSE;
@@ -94,7 +94,7 @@ CPU test {
       SCHEDULE = FULL;
       RESOURCE = distance;
     };
-
+/**sonar**/
     TASK task3 {
       PRIORITY = 3;
       AUTOSTART =  FALSE;
@@ -102,7 +102,7 @@ CPU test {
       SCHEDULE = FULL;
       RESOURCE = distance;
     };
-
+/**moteurs avec priorite min**/
     TASK task4 {
       PRIORITY = 1;
       AUTOSTART =  FALSE;
