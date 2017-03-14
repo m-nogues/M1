@@ -118,34 +118,35 @@ void PhysicalMemManager::ChangeOwner(long numPage, Thread* owner) {
 //  \return A new physical page number.
 */
 //-----------------------------------------------------------------
-#ifndef ETUDIANTS_TP
+
 int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtualPage)
 {
+  #ifndef ETUDIANTS_TP
   printf("**** Warning: function AddPhysicalToVirtualMapping is not implemented\n");
   exit(-1);
   return (0);
-}
+
 #endif
-
 #ifdef ETUDIANTS_TP
-int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner, int virtualPage) {
-
 	// Assert that the virtual page is locked for the page fault process
 	ASSERT(g_machine->mmu->translationTable->getBitIo(virtualPage));
 
 	// Get a page in physical memory, evict one if none free
-	int pp = FindFreePage();
-	if (pp == -1) pp = EvictPage();
+	int phys_page = FindFreePage();
+  //no free page
+	if (phys_page == -1)
+    phys_page = EvictPage();
 
 	// Lock the page for us
-	tpr[pp].locked = true;
+	tpr[phys_page].locked = true;
 
 	// Link this page to the given virtual page
-	tpr[pp].virtualPage = virtualPage;
-	tpr[pp].owner = owner;
+  tpr[phys_page].owner = owner;
+	tpr[phys_page].virtualPage = virtualPage;
 
+  DEBUG("m",(char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
 	// Return the index of the physical page
-	return pp;
+	return phys_page;
 }
 #endif
 
@@ -191,18 +192,18 @@ int PhysicalMemManager::FindFreePage() {
 //  \return A new free physical page number.
 */
 //-----------------------------------------------------------------
-#ifndef ETUDIANTS_TP
+
 int PhysicalMemManager::EvictPage() {
+  #ifndef ETUDIANTS_TP
   printf("**** Warning: page replacement algorithm is not implemented yet\n");
     exit(-1);
     return (0);
-}
+
 #endif
-
 #ifdef ETUDIANTS_TP
-int PhysicalMemManager::EvictPage() {
 
-	DEBUG('m', (char *)"Entering EvictPage() with iClock = %d\n", i_clock);
+
+	DEBUG('m', (char *)"entrer EvictPage() avec iClock = %d\n", i_clock);
 
 	// Get the global i_clock and put it into our system
 	int local_i_clock = (i_clock + 1) % g_cfg->NumPhysPages,
@@ -211,11 +212,13 @@ int PhysicalMemManager::EvictPage() {
 	// Search a page that isn't locked or used recently
 	while ((tpr[local_i_clock].owner->translationTable->getBitU(tpr[local_i_clock].virtualPage)) || (tpr[local_i_clock].locked)) {
 
+    // Go to the next physical page in circular way
+		local_i_clock = (local_i_clock + 1) % g_cfg->NumPhysPages;
+
 		// Put the U bit back to 0
 		tpr[local_i_clock].owner->translationTable->clearBitU(tpr[local_i_clock].virtualPage);
 
-		// Go to the next physical page in circular way
-		local_i_clock = (local_i_clock + 1) % g_cfg->NumPhysPages;
+
 
 		// If we got back to the beginning, we didn't found a page
 		if (local_i_clock == beginning) {
@@ -235,29 +238,30 @@ int PhysicalMemManager::EvictPage() {
 	i_clock = local_i_clock;
 
 	// If the physical page was modified
+  DEBUG('v' ,(char *)"physical page %i to be stolen\n", local_i_clock);
 	if (tpr[local_i_clock].owner->translationTable->getBitM(tpr[local_i_clock].virtualPage)) {
-
+    pageAdresse = (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize];
 		// If this page is already in the swap
 		if (tpr[local_i_clock].owner->translationTable->getBitSwap(tpr[local_i_clock].virtualPage)) {
-
+      DEBUG("v", (char *)"page already in the swap\n");
 			// Change the swap page index
-			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage), (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
+			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage),pageAdresse );
 		}
 
 		// If not, put it in then
 		else {
-
+      DEBUG("m", (char *)"page not in the swap\n");
 			// Put this page into the swap
-			int swap_sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
+			int sector = g_swap_manager->PutPageSwap(-1, pageAdresse);
 
 			// If there was an error
-			if (swap_sector == -1) {
-				DEBUG('h', (char *)"Tryed to put a swap page in EvictPage() method but failed, return code is %d\n", swap_sector);
+			if (sector == -1) {
+				DEBUG('h', (char *)"Tryed to put a swap page in EvictPage() method but failed, return code is %d\n", sector);
 				g_machine->interrupt->Halt(-1);
 			}
 
 			// Update virtual page state as stored into swap
-			tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, swap_sector);
+			tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, sector);
 			tpr[local_i_clock].owner->translationTable->setBitSwap(tpr[local_i_clock].virtualPage);
 			tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
 		}
