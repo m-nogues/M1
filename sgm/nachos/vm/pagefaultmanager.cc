@@ -39,65 +39,98 @@ PageFaultManager::~PageFaultManager() {
 //        page mapped to something [code/data/bss/...])
 //	\return the exception (generally the NO_EXCEPTION constant)
 */
+
 ExceptionType PageFaultManager::PageFault(int virtualPage)
 {
   #ifndef ETUDIANTS_TP
   printf("**** Warning: page fault manager is not implemented yet\n");
     exit(-1);
     return ((ExceptionType)0);
-  #endif
-  #ifdef ETUDIANTS_TP
-  Process *processus = g_current_thread->GetProcessOwner();
-  AddrSpace *addrspace = processus->addrspace;
-  TranslationTable *tableTraduction = addrspace->translationTable;
 
-  //declaration
-  int taillePages = g_cfg->PageSize;
+#endif
+#ifdef ETUDIANTS_TP
+//  process *processus = g_current_thread->GetProcessOwner();
+  //AddrSpace *addrspace = processus->addrspace;
+  //translationTable *traductionTable = addrspace->translationTable;
+	// Here, the thread is trying to take care of a page fault
+	// which another thread is already taking care
+	// This thread then should wait till the other one finished
 
-  //int numPages = g_cfg->NumPhysPages;
-//
-//  if(tableTraduction->getBitIo(virtualPage)){
-    while (g_machine->mmu->translationTable->getBitIo(virtualPage)) {
-      g_current_thread->Yield();
-    }
-//    return NO_EXCEPTION;
-//  }
-  g_machine->mmu->translationTable->setBitIo(virtualPage);
+  char tmpPage[g_cfg->PageSize];
 
-  char pageTmp[g_cfg->PageSize];
+	while (g_machine->mmu->translationTable->getBitIo(virtualPage)) {
 
-  int addrPhysique = g_physical_mem_manager->AddPhysicalToVirtualMapping(addrspace, virtualPage);
+		// Put the current thread at the end of the active thread lists
+		// Run all the other active threads until going back to this one
+		g_current_thread->Yield();
 
-  if(g_machine->mmu->translationTable->getBitSwap(virtualPage)){
+	}
 
-    while ((g_machine->mmu->translationTable->getAddrDisk(virtualPage))==-1) {
-      g_current_thread->Yield();
-    }
-    g_swap_manager->GetPageSwap(tableTraduction->getAddrDisk(virtualPage),pageTmp);
+	// Block this virtual page from getting resolved by other processes
+	g_machine->mmu->translationTable->setBitIo(virtualPage);
 
 
-    }else{
-        if(g_machine->mmu->translationTable->getAddrDisk(virtualPage)==-1){
-          DEBUG('m', (char*)"allocation et mise à 0 de %d octet d'une page anonyme\n", taillePages);
-          memset(&(g_machine->mainMemory[addrPhysique*g_cfg->PageSize]),0,g_cfg->PageSize);
+
+
+	// Get a physical page
+	int addrPhys = g_physical_mem_manager->AddPhysicalToVirtualMapping(g_current_thread->GetProcessOwner()->addrspace, virtualPage);
+
+	// If ot in swap bitSwap /= 1
+	if (!g_machine->mmu->translationTable->getBitSwap(virtualPage)) {
+    // If anonymous page
+    if (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1) {
+      DEBUG('m', (char *)"allocation et mise en a 0 de %d octet d'un page anonyme\n", g_cfg->PageSize);
+      // Fill with 0
+      memset(&(g_machine->mainMemory[addrPhys * g_cfg->PageSize]), 0, g_cfg->PageSize);
+
+    } else {
+
+      // Read it from the disk
+      if(g_current_thread->GetProcessOwner()->exec_file->ReadAt(
+        tmpPage,
+        g_cfg->PageSize,
+        g_machine->mmu->translationTable->getAddrDisk(virtualPage))!=  g_cfg->PageSize){
+          DEBUG("m", (char *)"ERREUR");
         }else{
-          if(processus->exec_file->ReadAt(pageTmp, taillePages, g_machine->mmu->translationTable->getAddrDisk(virtualPage))!= taillePages){
-            DEBUG('m', (char*)"Erreur");
-            return PAGEFAULT_EXCEPTION;
-          }
+          DEBUG("m", (char *)"LEcture d'une page de %d octets depuis l'adresse\n", g_cfg->PageSize);
         }
 
+
     }
-  //
 
-  //
-  memcpy(&(g_machine->mainMemory[addrPhysique*taillePages]), pageTmp, taillePages);
-  //deverouillage de la page physique + page virtuelle valide
-  g_machine->mmu->translationTable->setPhysicalPage(virtualPage, addrPhysique);
-  g_machine->mmu->translationTable->setBitValid(virtualPage);
-  g_machine->mmu->translationTable->clearBitIo(virtualPage);
-  g_physical_mem_manager->UnlockPage(addrPhysique);
 
-  return NO_EXCEPTION;
-  #endif
+	} else {
+     // If stored in the swap  swap bit = 1
+     DEBUG("m", (char *)"passage dans le swap");
+     while (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1) {
+
+       // Put the current thread at the end of the active thread lists
+       // Run all the other active threads until going back to this one
+       g_current_thread->Yield();
+
+     }
+
+     // Get the real page from the swap
+     g_swap_manager->GetPageSwap(g_machine->mmu->translationTable->getAddrDisk(virtualPage), tmpPage);
+     g_machine->mmu->translationTable->clearBitSwap(virtualPage);
+
+	}
+
+	// Copy the temporary page into the real page
+	memcpy(&g_machine->mainMemory[addPhys * g_cfg->PageSize], tmpPage, g_cfg->PageSize);
+
+	// Put this physical page as the one for this virtual page
+	g_machine->mmu->translationTable->setPhysicalPage(virtualPage, addrPhys);
+
+	// Put the valid bit to 1 and the io bit to 0 (unlock the page)
+	g_machine->mmu->translationTable->setBitValid(virtualPage);
+	g_machine->mmu->translationTable->clearBitIo(virtualPage);
+
+	// Unlock the physical page
+	g_physical_mem_manager->UnlockPage(addrPhys);
+
+	// If everything's fine
+	return NO_EXCEPTION;
+
 }
+#endif
