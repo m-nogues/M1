@@ -224,33 +224,36 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 	translationTable->clearBitValid(virt_page);
 	translationTable->clearBitSwap(virt_page);
 	translationTable->setBitReadAllowed(virt_page);
-
-	if (section_table[i].sh_flags && SHF_WRITE)
-
-      translationTable->setBitWriteAllowed(virt_page);
-
-  else
-
-      translationTable->clearBitWriteAllowed(virt_page);
+	if (section_table[i].sh_flags && SHF_WRITE) translationTable->setBitWriteAllowed(virt_page);
+	else translationTable->clearBitWriteAllowed(virt_page);
 
 	// The SHT_NOBITS flag indicates if the section has an image
 	// in the executable file (text or data section) or not
 	// (bss section)
-	if (section_table[i].sh_type != SHT_NOBITS)  // The section has an image in the executable file
-		// Initialize the addrDisk to where we have to search with virt_page and position of the diskAddr
-		translationTable->setAddrDisk(virt_page, section_table[i].sh_offset + pgdisk*g_cfg->PageSize);
+	if (section_table[i].sh_type != SHT_NOBITS) {  // The section has an image in the executable file
 
-	else   // The section does not have an image in the executable
+		// Get the position of the diskAddr
+		int position_on_disk = section_table[i].sh_offset + pgdisk*g_cfg->PageSize;
+
+		// Initialize the addrDisk to where we have to search
+		translationTable->setAddrDisk(virt_page, position_on_disk);
+
+	} else {  // The section does not have an image in the executable
+
 		// Initialize the addrDisk to -1
 		translationTable->setAddrDisk(virt_page, -1);
-#endif
+
 	}
 
 	/* End of code WITH demand paging */
+#endif
 
+
+	/* End of code WITH demand paging */
+}
 
 	}
-    }
+
   delete [] shnames;
 
   // Get program start address

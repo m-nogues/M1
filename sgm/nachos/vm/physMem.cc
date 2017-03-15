@@ -144,7 +144,7 @@ int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtual
   tpr[phys_page].owner = owner;
 	tpr[phys_page].virtualPage = virtualPage;
 
-  DEBUG("m",(char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
+  //DEBUG("m",(char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
 	// Return the index of the physical page
 	return phys_page;
 }
@@ -240,19 +240,19 @@ int PhysicalMemManager::EvictPage() {
 	// If the physical page was modified
   DEBUG('v' ,(char *)"physical page %i to be stolen\n", local_i_clock);
 	if (tpr[local_i_clock].owner->translationTable->getBitM(tpr[local_i_clock].virtualPage)) {
-    pageAdresse = (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize];
+		 //pageAdresse = (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize];
 		// If this page is already in the swap
 		if (tpr[local_i_clock].owner->translationTable->getBitSwap(tpr[local_i_clock].virtualPage)) {
-      DEBUG("v", (char *)"page already in the swap\n");
+      DEBUG('v', (char *)"page already in the swap\n");
 			// Change the swap page index
-			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage),pageAdresse );
+			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage),(char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 		}
 
 		// If not, put it in then
 		else {
-      DEBUG("m", (char *)"page not in the swap\n");
+     // DEBUG("m", (char *)"page not in the swap\n");
 			// Put this page into the swap
-			int sector = g_swap_manager->PutPageSwap(-1, pageAdresse);
+			int sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 
 			// If there was an error
 			if (sector == -1) {
