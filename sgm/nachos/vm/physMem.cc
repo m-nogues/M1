@@ -144,7 +144,7 @@ int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtual
   tpr[phys_page].owner = owner;
 	tpr[phys_page].virtualPage = virtualPage;
 
-  //DEBUG("m",(char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
+  DEBUG('m',(char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
 	// Return the index of the physical page
 	return phys_page;
 }
@@ -250,7 +250,7 @@ int PhysicalMemManager::EvictPage() {
 
 		// If not, put it in then
 		else {
-     // DEBUG("m", (char *)"page not in the swap\n");
+        DEBUG('m', (char *)"page not in the swap\n");
 			// Put this page into the swap
 			int sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 

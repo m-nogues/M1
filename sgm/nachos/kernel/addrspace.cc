@@ -247,9 +247,6 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 
 	/* End of code WITH demand paging */
 #endif
-
-
-	/* End of code WITH demand paging */
 }
 
 	}
