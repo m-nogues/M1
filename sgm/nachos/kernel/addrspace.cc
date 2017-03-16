@@ -224,10 +224,9 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 	translationTable->clearBitValid(virt_page);
 	translationTable->clearBitSwap(virt_page);
 	translationTable->setBitReadAllowed(virt_page);
-	if (section_table[i].sh_flags && SHF_WRITE) translationTable->setBitWriteAllowed(virt_page);
-	else translationTable->clearBitWriteAllowed(virt_page);
 
-	// The SHT_NOBITS flag indicates if the section has an image
+
+  // The SHT_NOBITS flag indicates if the section has an image
 	// in the executable file (text or data section) or not
 	// (bss section)
 	if (section_table[i].sh_type != SHT_NOBITS) {  // The section has an image in the executable file
@@ -244,6 +243,11 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 		translationTable->setAddrDisk(virt_page, -1);
 
 	}
+
+	if (section_table[i].sh_flags && SHF_WRITE)
+    translationTable->setBitWriteAllowed(virt_page);
+	else
+    translationTable->clearBitWriteAllowed(virt_page);
 
 	/* End of code WITH demand paging */
 #endif

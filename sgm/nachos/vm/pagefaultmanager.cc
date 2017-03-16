@@ -52,9 +52,8 @@ ExceptionType PageFaultManager::PageFault(int virtualPage)
 #ifdef ETUDIANTS_TP
 ExceptionType PageFaultManager::PageFault(int virtualPage) {
 
-	// Here, the thread is trying to take care of a page fault
-	// which another thread is already taking care
-	// This thread then should wait till the other one finished
+
+	// wait other thread finished
 	while (g_machine->mmu->translationTable->getBitIo(virtualPage)) {
 
 		// Put the current thread at the end of the active thread lists
@@ -63,65 +62,69 @@ ExceptionType PageFaultManager::PageFault(int virtualPage) {
 
 	}
 
-	// Block this virtual page from getting resolved by other processes
+
 	g_machine->mmu->translationTable->setBitIo(virtualPage);
 
-	// Create a temporary page here
-	char temporary_page[g_cfg->PageSize];
+	// temporary page
+	char tmpPage[g_cfg->PageSize];
 
 	// Get a physical page
 	int phys_page_id = g_physical_mem_manager->AddPhysicalToVirtualMapping(g_current_thread->GetProcessOwner()->addrspace, virtualPage);
 
-	// If it's stored in the swap (swap bit = 1)
-	if (g_machine->mmu->translationTable->getBitSwap(virtualPage)) {
+	// If not in swap (swap bit != 1)
+	if (!g_machine->mmu->translationTable->getBitSwap(virtualPage)) {
 
-		// A page stealer is dealing with the current page
-		while (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1) {
+    if (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1){
+        DEBUG('m', (char *)"allocation et mise en a 0 de %d octet d'un page anonyme\n", g_cfg->PageSize);
+        //fill with 0
+        memset(&(g_machine->mainMemory[phys_page_id * g_cfg->PageSize]), 0, g_cfg->PageSize);
 
-			// Put the current thread at the end of the active thread lists
-			// Run all the other active threads until going back to this one
-			g_current_thread->Yield();
+    } else {
 
-		}
+      // read from the disk
+      if(g_current_thread->GetProcessOwner()->exec_file->ReadAt(
+        tmpPage,
+        g_cfg->PageSize,
+        g_machine->mmu->translationTable->getAddrDisk(virtualPage))!=  g_cfg->PageSize){
+          //for mapped file not implement yet
+          DEBUG('m', (char *)"ERREUR");
+        }else{
+          DEBUG('m', (char *)"Lecture d'une page de %d octets depuis l'adresse\n", g_cfg->PageSize);
+      }
 
-		// Get the real page from the swap
-		g_swap_manager->GetPageSwap(g_machine->mmu->translationTable->getAddrDisk(virtualPage), temporary_page);
+    }
 
-	} else {  // If stored in the disk (swap bit = 0)
 
-		// If anonymous page
-		if (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1) {
 
-			// Fill with 0
-			memset(&(g_machine->mainMemory[phys_page_id * g_cfg->PageSize]), 0, g_cfg->PageSize);
 
-		} else {
+	} else {  // if in swap (swap bit = 1)
 
-			// Read it from the disk
-			g_current_thread->GetProcessOwner()->exec_file->ReadAt(
-				temporary_page,
-				g_cfg->PageSize,
-				g_machine->mmu->translationTable->getAddrDisk(virtualPage)
-			);
+    // A page stealer is dealing with the current page
+    while (g_machine->mmu->translationTable->getAddrDisk(virtualPage) == -1) {
 
-		}
+      // Put the current thread at the end of the active thread lists
+      // Run all the other active threads until going back to this one
+      g_current_thread->Yield();
+    }
+    	// Get the real page from the swap
+    g_swap_manager->GetPageSwap(g_machine->mmu->translationTable->getAddrDisk(virtualPage), tmpPage);
 
 	}
 
 	// Copy the temporary page into the real page
-	memcpy(&g_machine->mainMemory[phys_page_id * g_cfg->PageSize], temporary_page, g_cfg->PageSize);
+	memcpy(&g_machine->mainMemory[phys_page_id * g_cfg->PageSize], tmpPage, g_cfg->PageSize);
 
 	// Put this physical page as the one for this virtual page
 	g_machine->mmu->translationTable->setPhysicalPage(virtualPage, phys_page_id);
 
-	// Put the valid bit to 1 and the io bit to 0 (unlock the page)
+	//unlock the page
 	g_machine->mmu->translationTable->setBitValid(virtualPage);
 	g_machine->mmu->translationTable->clearBitIo(virtualPage);
 
-	// Unlock the physical page
+	// Unlock physical page
 	g_physical_mem_manager->UnlockPage(phys_page_id);
 
-	// If everything's fine
+
 	return NO_EXCEPTION;
 
 }

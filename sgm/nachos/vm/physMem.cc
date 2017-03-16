@@ -245,7 +245,8 @@ int PhysicalMemManager::EvictPage() {
 		if (tpr[local_i_clock].owner->translationTable->getBitSwap(tpr[local_i_clock].virtualPage)) {
       DEBUG('v', (char *)"page already in the swap\n");
 			// Change the swap page index
-			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage),(char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
+			g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage),
+                                (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 		}
 
 		// If not, put it in then
