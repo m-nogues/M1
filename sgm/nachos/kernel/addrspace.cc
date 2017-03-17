@@ -412,8 +412,34 @@ int AddrSpace::Alloc(int numPages)
 // ----------------------------------------------------------------------
 int AddrSpace::Mmap(OpenFile *f, int size)
 {
-  printf("**** Warning: method AddrSpace::Mmap is not implemented yet\n");
-  exit(-1);
+  #ifndef ETUDIANTS_TP
+		printf("**** Warning: method AddrSpace::Mmap is not implemented yet\n");
+		exit(-1);
+	#endif
+	#ifdef ETUDIANTS_TP
+		int pageNum, nbAllocatedPage;
+		if (nb_mapped_files == MAX_MAPPED_FILES)
+		 	return -2;
+		nbAllocatedPage = divRoundUp(size, g_cfg->PageSize);
+		if ((pageNum = Alloc(nbAllocatedPage)) == -1)
+			return -1;
+		DEBUG('u', (char *)"First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName(), pageNum, size, nbAllocatedPage);
+		mapped_files[nb_mapped_files].size = size;
+		mapped_files[nb_mapped_files].file = f;
+		mapped_files[nb_mapped_files].first_address = pageNum*g_cfg->PageSize;
+    // init pages
+		for(int i = pageNum; i < pageNum + nbAllocatedPage; i++){
+			DEBUG('u', "Page %x\n", i);
+			translationTable->clearBitValid(i);
+			translationTable->clearBitSwap(i);
+			translationTable->clearBitIo(i);
+			translationTable->setBitReadAllowed(i);
+			translationTable->setBitWriteAllowed(i);
+			translationTable->setAddrDisk(i, (i - pageNum) * g_cfg->PageSize);
+		}
+		nb_mapped_files++;
+		return pageNum * g_cfg->PageSize;
+	#endif
 }
 
 //----------------------------------------------------------------------
@@ -424,8 +450,16 @@ int AddrSpace::Mmap(OpenFile *f, int size)
  */
 //----------------------------------------------------------------------
 OpenFile *AddrSpace::findMappedFile(int32_t addr) {
-  printf("**** Warning: method AddrSpace::findMappedFile is not implemented yet\n");
-  exit(-1);
+  #ifndef ETUDIANTS_TP
+  	printf("**** Warning: method AddrSpace::findMappedFile is not implemented yet\n");
+  	exit(-1);
+  	#endif
+  	#ifdef ETUDIANTS_TP
+  		for (int i = 0; i < nb_mapped_files; i++)
+  			if ((addr >= mapped_files[i].first_address) && (addr < mapped_files[i].first_address + mapped_files[i].size))
+  				return mapped_files[i].file;
+  		return NULL;
+  	#endif
 
 }
 

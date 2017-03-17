@@ -80,15 +80,16 @@ ExceptionType PageFaultManager::PageFault(int virtualPage) {
         memset(&(g_machine->mainMemory[phys_page_id * g_cfg->PageSize]), 0, g_cfg->PageSize);
 
     } else {
+      OpenFile *mappedFile = g_current_thread->GetProcessOwner()->addrspace->findMappedFile(virtualPage);
 
-      // read from the disk
-      if(g_current_thread->GetProcessOwner()->exec_file->ReadAt(
+      if(mappedFile != NULL){
+        mappedFile->ReadAt(tmpPage,g_cfg->PageSize, g_machine->mmu->translationTable->getAddrDisk(virtualPage));
+
+      }else{
+        g_current_thread->GetProcessOwner()->exec_file->ReadAt(
         tmpPage,
         g_cfg->PageSize,
-        g_machine->mmu->translationTable->getAddrDisk(virtualPage))!=  g_cfg->PageSize){
-          //for mapped file not implement yet
-          DEBUG('m', (char *)"ERREUR");
-        }else{
+        g_machine->mmu->translationTable->getAddrDisk(virtualPage));
           DEBUG('m', (char *)"Lecture d'une page de %d octets depuis l'adresse\n", g_cfg->PageSize);
       }
 
