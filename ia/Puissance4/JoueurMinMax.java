@@ -1,60 +1,128 @@
-
+/**
+ * The Class JoueurMinMax.
+ */
 public class JoueurMinMax implements Joueur {
 
-	private FonctionEvaluation eval;
+	/** The eval. */
+	protected FonctionEvaluation eval;
 
-	private static int PROFONDEUR = 5;
+	/** The nb branches. */
+	private int nbBranches = 0, joueurBase;
 
+	/**
+	 * Instantiates a new joueur min max.
+	 *
+	 * @param f
+	 *          the f
+	 */
 	public JoueurMinMax(FonctionEvaluation f) {
 		eval = f;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see Joueur#coup(Grille, int)
+	 */
 	@Override
 	public Resultat coup(Grille grille, int joueur) {
-		return minmax(grille, joueur, PROFONDEUR);
+		joueurBase = joueur;
+		return minmax(grille, joueur, Puissance4.PROFONDEUR);
 	}
 
+	/**
+	 * Gets the nb branches.
+	 *
+	 * @return the nb branches
+	 */
+	@Override
+	public int getNbBranches() {
+		return nbBranches;
+	}
+
+	/**
+	 * Minmax.
+	 *
+	 * @param test
+	 *          the test
+	 * @param joueur
+	 *          the joueur
+	 * @param profondeur
+	 *          the profondeur
+	 * @return the resultat
+	 */
 	private Resultat minmax(Grille test, int joueur, int profondeur) {
-		return min(test, joueur, profondeur);
-	}
-
-	private Resultat min(Grille test, int joueur, int profondeur) {
-		int col = -1;
-		double val = FonctionEvaluation.MAX, tmp;
+		double[] values = new double[Grille.NB_COLONNES];
+		Grille grille;
 		for (int i : test.generateurCoups()) {
-			Grille grille = test.copie();
-			if (test.coupGagnant(joueur, i))
-				return new Resultat(i, eval.evaluation(grille, joueur));
+			grille = test.copie();
 			grille.joueEn(joueur, i);
-			tmp = val;
-			if (profondeur > 0)
-				val = Math.min(val, max(grille, joueur, profondeur - 1).getValeur());
-			else
-				val = Math.min(val, eval.evaluation(grille, joueur));
-			if (tmp > val)
-				col = i;
+			nbBranches++;
+			if (test.coupGagnant(joueur, i))
+				return new Resultat(i, FonctionEvaluation.MAX);
+			else if (test.coupGagnant(Grille.joueurSuivant(joueur), i))
+				return new Resultat(i, FonctionEvaluation.MIN);
+
+			values[i] = value(grille, Grille.joueurSuivant(joueur), profondeur, false);
 		}
-		return new Resultat(col, val);
+
+		double max = FonctionEvaluation.MIN, equals = 0;
+		int col = 0;
+		for (int i = 0; i < values.length; i++) {
+			if (values[i] > max) {
+				max = values[i];
+				col = i;
+			}
+			equals += values[i];
+		}
+
+		if (equals / values.length == max)
+			col = Grille.NB_COLONNES / 2;
+		if (test.peutJouerEn(col))
+			return new Resultat(col, max);
+		return new Resultat(test.getCoupAleatoire(), 0);
 	}
 
-	private Resultat max(Grille test, int joueur, int profondeur) {
-		int col = -1;
-		double val = FonctionEvaluation.MIN, tmp;
-
-		for (int i : test.generateurCoups()) {
-			Grille grille = test.copie();
-			if (grille.coupGagnant(Grille.joueurSuivant(joueur), i))
-				return new Resultat(i, eval.evaluation(grille, Grille.joueurSuivant(joueur)));
-			grille.joueEn(Grille.joueurSuivant(joueur), i);
-			tmp = val;
-			if (profondeur > 0)
-				val = Math.max(val, min(grille, joueur, profondeur - 1).getValeur());
-			else
-				val = Math.max(val, eval.evaluation(grille, Grille.joueurSuivant(joueur)));
-			if (tmp < val)
-				col = i;
+	/**
+	 * Value.
+	 *
+	 * @param grille
+	 *          the grille
+	 * @param joueur
+	 *          the joueur
+	 * @param profondeur
+	 *          the profondeur
+	 * @param isMaxNode
+	 *          the is max node
+	 * @return the double
+	 */
+	private double value(Grille grille, int joueur, int profondeur, boolean isMaxNode) {
+		nbBranches++;
+		if (grille.estPleine())
+			return 0;
+		if (profondeur <= 0)
+			return eval.evaluation(grille, joueurBase);
+		double[] values = new double[Grille.NB_COLONNES];
+		Grille test;
+		for (int i : grille.generateurCoups()) {
+			test = grille.copie();
+			test.joueEn(joueur, i);
+			if (grille.coupGagnant(joueur, i))
+				if (!isMaxNode)
+					return FonctionEvaluation.MAX;
+				else
+					return FonctionEvaluation.MIN;
+			values[i] = value(grille, Grille.joueurSuivant(joueur), profondeur - 1, !isMaxNode);
 		}
-		return new Resultat(col, val);
+		double max = FonctionEvaluation.MIN, min = FonctionEvaluation.MAX;
+		for (double d : values) {
+			if (d > max)
+				max = d;
+			if (d < min)
+				min = d;
+		}
+		if (isMaxNode)
+			return max;
+		return min;
 	}
 
 }

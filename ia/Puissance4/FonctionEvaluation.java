@@ -9,7 +9,11 @@
  * 
  */
 public interface FonctionEvaluation{
+	
+	/** The Constant MIN. */
 	public static final double MIN = Double.NEGATIVE_INFINITY;
+	
+	/** The Constant MAX. */
 	public static final double MAX = Double.POSITIVE_INFINITY;
 	
 

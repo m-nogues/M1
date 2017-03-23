@@ -8,17 +8,12 @@
  */
 public class Puissance4 {
 
-	public static void main(String[] args) {
-		// crï¿½ation des joueurs et appel de la fonction jouer
-		JoueurMinMax joueur1 = new JoueurMinMax(new FonctionEvaluationProf());
-		JoueurMinMax joueur2 = new JoueurMinMax(new FonctionEvaluationProf());
-
-		jouer(joueur1, joueur2);
-	}
+	/** The Constant PROFONDEUR. */
+	protected static final int PROFONDEUR = 5;
 
 	/**
 	 * Fonction qui effectue la boucle de jeu.
-	 * 
+	 *
 	 * @param joueur1
 	 *          : le premier joueur.
 	 * @param joueur2
@@ -30,7 +25,7 @@ public class Puissance4 {
 		Grille grille = new Grille();
 
 		Joueur joueurCour = joueur1;
-		int numJoueur = Grille.JOUEUR1; // le joueur 1 commence ï¿½ jouer
+		int numJoueur = Grille.JOUEUR1; // le joueur 1 commence
 
 		int vainqueur = 0;// match nul
 		boolean jeuFini = false;
@@ -60,10 +55,14 @@ public class Puissance4 {
 
 			// changement de joueur
 			numJoueur = Grille.joueurSuivant(numJoueur);
-			if (joueurCour == joueur1)
-				joueurCour = joueur2;
-			else
-				joueurCour = joueur1;
+			switch (numJoueur) {
+				case Grille.JOUEUR1:
+					joueurCour = joueur1;
+					break;
+				case Grille.JOUEUR2:
+					joueurCour = joueur2;
+					break;
+			}
 		} // while - boucle de jeu
 
 		// affichage de la grille
@@ -80,6 +79,22 @@ public class Puissance4 {
 			default:
 				System.out.println("Match nul");
 		}
+		System.out.println("Nombre de branches explorées par le joueur 1 : " + joueur1.getNbBranches() + "\n");
+		System.out.println("Nombre de branches explorées par le joueur 2 : " + joueur2.getNbBranches() + "\n");
+	}
+
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *          the arguments
+	 */
+	public static void main(String[] args) {
+		// creation des joueurs et appel de la fonction jouer
+		JoueurHumain joueur1 = new JoueurHumain();
+		JoueurMinMax joueur2 = new JoueurAlphaBeta(new Heuristique());
+
+		jouer(joueur1, joueur2);
 	}
 
 }
