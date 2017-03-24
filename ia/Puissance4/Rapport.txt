@@ -2,7 +2,7 @@ L'algorithme de Min / Max explore en moyenne 100 fois plus de branches que l'alg
 Alpha / Beta avec une profondeur de 5. L'algorithme Alpha / Beta est donc bien plus
 rapide et efficace pour ce problème que l'algorithme Min / Max.
 
-Ma fonction d'évaluation évalue le nombres de cases à suivre de chaques couleurs,
+Notre fonction d'évaluation évalue le nombres de cases à suivre de chaques couleurs,
 elle permet de donner une valeur plus grande aux cases intéressante à jouer pour
 notre joueur, mais aussi aux cases dangereuses (cases qui pourrait amener à
 notre perte). Cela nous permet de jouer de manière à nous avancer au mieux tout
