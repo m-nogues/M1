@@ -438,6 +438,7 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 			translationTable->setAddrDisk(i, (i - pageNum) * g_cfg->PageSize);
 		}
 		nb_mapped_files++;
+    DEBUG('u', (char *)" pages %d \n", pageNum * g_cfg->PageSize);
 		return pageNum * g_cfg->PageSize;
 	#endif
 }

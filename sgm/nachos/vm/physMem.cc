@@ -251,8 +251,21 @@ int PhysicalMemManager::EvictPage() {
 
 		// If not, put it in then
 		else {
-        DEBUG('m', (char *)"page not in the swap\n");
+
+      DEBUG('m', (char *)"page not in the swap\n");
 			// Put this page into the swap
+      OpenFile *mappedFile = tpr[local_i_clock].owner->findMappedFile(tpr[local_i_clock].virtualPage * g_cfg->PageSize);
+
+      if(mappedFile != NULL){
+        g_current_thread->GetProcessOwner()->exec_file->ReadAt(
+        (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize],
+        g_cfg->PageSize,
+        g_machine->mmu->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage));
+        tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
+          DEBUG('m', (char *)"ReadAt EvictPage\n", g_cfg->PageSize);
+      }else{
+
+
 			int sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 
 			// If there was an error
@@ -265,6 +278,7 @@ int PhysicalMemManager::EvictPage() {
 			tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, sector);
 			tpr[local_i_clock].owner->translationTable->setBitSwap(tpr[local_i_clock].virtualPage);
 			tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
+    }
 		}
 
 	}

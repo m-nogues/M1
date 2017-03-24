@@ -339,7 +339,7 @@ void ExceptionHandler(ExceptionType exceptiontype, int vaddr)
         g_syscall_error->SetMsg((char*)"", InvalidFileId);
       }else{
         int virtual_file_addr = g_current_thread->GetProcessOwner()->addrspace->Mmap(mappedFile, size);
-        g_machine->WriteIntRegister(2, 0);
+        g_machine->WriteIntRegister(2, virtual_file_addr);
         g_syscall_error->SetMsg((char*)"", NoError);
       }
 
