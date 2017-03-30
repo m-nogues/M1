@@ -9,21 +9,20 @@ turnCards = []
 player = ""
 inputfile = open('data/all_absolute+.txt')
 tempLCM =  open('tempLCM', 'w')
-tempCloSpan = open('tempCloSpan', 'w')
+tempSeq = open('tempSeq', 'w')
 for line in inputfile:
     find = False
     line = line.split(" ")
     if line[1] == "Begin":
-        game = line[0]
         if len(listCardM) > 0:
             print (*sorted(listCardM), file = tempLCM)
         if len(listCardO) > 0:
             print (*sorted(listCardO), file = tempLCM)
         if len(sequence) > 0:
-            print('(', *sorted(sequence[0]), ')', file = tempCloSpan, end = '')
+            print('(', *sorted(sequence[0]), ')', file = tempSeq, end = '')
             for i in sequence[1:]:
-                print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
-            print(file = tempCloSpan)
+                print(', (', *sorted(i), ')', file = tempSeq, end = '')
+            print(file = tempSeq)
         listCardM = []
         listCardO = []
         sequence = []
@@ -54,10 +53,10 @@ print (*sorted(listCardM), file = tempLCM)
 print (*sorted(listCardO), file = tempLCM, end = '')
 tempLCM.close()
 
-print('(', *sorted(sequence[0]), ')', file = tempCloSpan, end = '')
+print('(', *sorted(sequence[0]), ')', file = tempSeq, end = '')
 for i in sequence[1:]:
-    print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
-tempCloSpan.close()
+    print(', (', *sorted(i), ')', file = tempSeq, end = '')
+tempSeq.close()
 
 dico = open('dictionary', 'w')
 for id, v in enumerate(list):
@@ -87,4 +86,8 @@ for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 10%")
+os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 10%")
+
+os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+
+os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
