@@ -1,12 +1,7 @@
 import os
 
-#dataset
-# M {card,card...}
-# O {card, card,...}
-
 list = []
 
-# listDico =[]
 listCardM = []
 listCardO = []
 sequence = []
@@ -29,8 +24,6 @@ for line in inputfile:
             for i in sequence[1:]:
                 print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
             print(file = tempCloSpan)
-        # listDico.append(sorted(listCardM))
-        # listDico.append(sorted(listCardO))
         listCardM = []
         listCardO = []
         sequence = []
@@ -41,11 +34,9 @@ for line in inputfile:
             turnCards = []
 
         player = card[:1]
-        for id, v in enumerate(list):
-            if v == card[1:]:
-                find = True
-                index = id + 1
-        if find == False:
+        if card[1:] in list:
+            index = list.index(card[1:]) + 1
+        else:
             list.append(card[1:])
             index = len(list)
 
@@ -57,25 +48,17 @@ for line in inputfile:
         else:
             if index not in listCardO:
                 listCardO.append(index)
+inputfile.close()
 
 print (*sorted(listCardM), file = tempLCM)
-
-print (*sorted(listCardO), file = tempLCM)
+print (*sorted(listCardO), file = tempLCM, end = '')
+tempLCM.close()
 
 print('(', *sorted(sequence[0]), ')', file = tempCloSpan, end = '')
 for i in sequence[1:]:
     print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
-
-inputfile.close()
-tempLCM.close()
 tempCloSpan.close()
-# listDico.append(listCardM)
-# listDico.append(listCardO)
 
-# print(listDico)
-# print(i)
-# print(list[1])
-# print(len(list))
 dico = open('dictionary', 'w')
 for id, v in enumerate(list):
     print(id, '=', v, file = dico)
@@ -95,7 +78,7 @@ for line in LCMfile:
             break
         else:
             cardsOfSet.append(list[int(i) - 1])
-    listOfSets.append((cardsOfSet, itemset[len(itemset) - 1]))
+    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
     cardsOfSet = []
 LCMfile.close()
 
