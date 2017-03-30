@@ -257,28 +257,29 @@ int PhysicalMemManager::EvictPage() {
       OpenFile *mappedFile = tpr[local_i_clock].owner->findMappedFile(tpr[local_i_clock].virtualPage * g_cfg->PageSize);
 
       if(mappedFile != NULL){
-        g_current_thread->GetProcessOwner()->exec_file->ReadAt(
+        mappedFile->WriteAt(
         (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize],
         g_cfg->PageSize,
         g_machine->mmu->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage));
+
         tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
-          DEBUG('m', (char *)"ReadAt EvictPage\n", g_cfg->PageSize);
+          DEBUG('m', (char *)"WriteAt EvictPage\n", g_cfg->PageSize);
       }else{
 
 
-			int sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
+			     int sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 
-			// If there was an error
-			if (sector == -1) {
-				DEBUG('h', (char *)"Tryed to put a swap page in EvictPage() method but failed, return code is %d\n", sector);
-				g_machine->interrupt->Halt(-1);
-			}
+  			// If there was an error
+  			if (sector == -1) {
+  				DEBUG('h', (char *)"Tryed to put a swap page in EvictPage() method but failed, return code is %d\n", sector);
+  				g_machine->interrupt->Halt(-1);
+  			}
 
-			// Update virtual page state as stored into swap
-			tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, sector);
-			tpr[local_i_clock].owner->translationTable->setBitSwap(tpr[local_i_clock].virtualPage);
-			tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
-    }
+  			// Update virtual page state as stored into swap
+  			tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, sector);
+  			tpr[local_i_clock].owner->translationTable->setBitSwap(tpr[local_i_clock].virtualPage);
+  			tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
+      }
 		}
 
 	}

@@ -82,10 +82,13 @@ ExceptionType PageFaultManager::PageFault(int virtualPage) {
     } else {
       OpenFile *mappedFile = g_current_thread->GetProcessOwner()->addrspace->findMappedFile(virtualPage);
 
-      if(mappedFile != NULL){
-        mappedFile->ReadAt(tmpPage,g_cfg->PageSize, g_machine->mmu->translationTable->getAddrDisk(virtualPage));
+      if(mappedFile != NULL){// if a mapped file
+        //read from the mapped file
+        mappedFile->ReadAt(tmpPage,
+          g_cfg->PageSize,
+          g_machine->mmu->translationTable->getAddrDisk(virtualPage));
 
-      }else{
+      }else{//if an exe_file read from the disk
         g_current_thread->GetProcessOwner()->exec_file->ReadAt(
         tmpPage,
         g_cfg->PageSize,
