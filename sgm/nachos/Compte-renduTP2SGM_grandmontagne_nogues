@@ -1,0 +1,4 @@
+Nous avons réalisé la gestion des fichier mappé pour un nombre de page physique
+égale a 1000. Cepandant lorsqu'un programme nessécite plus de page physique que
+le nombre existant , le fichier de test ne passe plus. Nous n'avons pas réusis à
+résoudre le problème pour que le test passe pour un nombre de page entre 1 et 1000
