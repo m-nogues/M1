@@ -25,9 +25,9 @@ for line in inputfile:
         if len(listCardO) > 0:
             print (*sorted(listCardO), file = tempLCM)
         if len(sequence) > 0:
-            print('(', *sequence[0], ')', file = tempCloSpan, end = '')
+            print('(', *sorted(sequence[0]), ')', file = tempCloSpan, end = '')
             for i in sequence[1:]:
-                print(', (', *i, ')', file = tempCloSpan, end = '')
+                print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
             print(file = tempCloSpan)
         # listDico.append(sorted(listCardM))
         # listDico.append(sorted(listCardO))
@@ -49,7 +49,8 @@ for line in inputfile:
             list.append(card[1:])
             index = len(list)
 
-        turnCards.append(index)
+        if index not in turnCards:
+            turnCards.append(index)
         if player == "M":
             if index not in listCardM:
                 listCardM.append(index)
@@ -57,16 +58,17 @@ for line in inputfile:
             if index not in listCardO:
                 listCardO.append(index)
 
-for i in sorted(listCardM):
-    print(i, file = tempLCM, end=' ')
-print (file = tempLCM)
+print (*sorted(listCardM), file = tempLCM)
 
-for i in sorted(listCardO):
-    print(i, file = tempLCM, end=' ')
-print (file = tempLCM)
+print (*sorted(listCardO), file = tempLCM)
+
+print('(', *sorted(sequence[0]), ')', file = tempCloSpan, end = '')
+for i in sequence[1:]:
+    print(', (', *sorted(i), ')', file = tempCloSpan, end = '')
 
 inputfile.close()
 tempLCM.close()
+tempCloSpan.close()
 # listDico.append(listCardM)
 # listDico.append(listCardO)
 
@@ -74,7 +76,10 @@ tempLCM.close()
 # print(i)
 # print(list[1])
 # print(len(list))
-
+dico = open('dictionary', 'w')
+for id, v in enumerate(list):
+    print(id, '=', v, file = dico)
+dico.close()
 
 os.system("java -jar spmf.jar run LCM tempLCM LCM 10%")
 
@@ -82,7 +87,6 @@ listOfSets = []
 cardsOfSet = []
 itemset = []
 LCMfile =  open('LCM')
-LCMoutput = open('LCMoutput.txt', 'w')
 for line in LCMfile:
     itemset = line.split(" ")
     itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
@@ -93,8 +97,11 @@ for line in LCMfile:
             cardsOfSet.append(list[int(i) - 1])
     listOfSets.append((cardsOfSet, itemset[len(itemset) - 1]))
     cardsOfSet = []
+LCMfile.close()
 
+LCMoutput = open('LCMoutput.txt', 'w')
 for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
+LCMoutput.close()
 
-# os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 10%")
+os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 0%")
