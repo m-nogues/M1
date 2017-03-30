@@ -1,7 +1,5 @@
 
 #include "userlib/syscall.h"
-
-
 #include "userlib/libnachos.h"
 
 int main() {
@@ -40,11 +38,13 @@ int main() {
   }
   n_printf("Writing into mapped file:\n");
   for (i=0;i<20;i++) {
-    addr[i] = -1*i;
+    addr[i] = i;
+    n_printf("%d ",addr[i]);
   }
   n_printf("   Checking contents\n");
   for (i=0;i<20;i++) {
-    if (addr[i] != -1*i) {
+    if (addr[i] != i) {
+      n_printf("%d \n",addr[i]);
       n_printf(" Not OK\n");
       return -1;
     }

@@ -240,7 +240,7 @@ int PhysicalMemManager::EvictPage() {
 	// If the physical page was modified
   DEBUG('v' ,(char *)"physical page %i to be stolen\n", local_i_clock);
 	if (tpr[local_i_clock].owner->translationTable->getBitM(tpr[local_i_clock].virtualPage)) {
-		 //pageAdresse = (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize];
+	
 		// If this page is already in the swap
 		if (tpr[local_i_clock].owner->translationTable->getBitSwap(tpr[local_i_clock].virtualPage)) {
       DEBUG('v', (char *)"page already in the swap\n");
@@ -252,7 +252,7 @@ int PhysicalMemManager::EvictPage() {
 		// If not, put it in then
 		else {
 
-      DEBUG('m', (char *)"page not in the swap\n");
+      DEBUG('v', (char *)"page not in the swap\n");
 			// Put this page into the swap
       OpenFile *mappedFile = tpr[local_i_clock].owner->findMappedFile(tpr[local_i_clock].virtualPage * g_cfg->PageSize);
 
@@ -263,7 +263,7 @@ int PhysicalMemManager::EvictPage() {
         g_machine->mmu->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage));
 
         tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
-          DEBUG('m', (char *)"WriteAt EvictPage\n", g_cfg->PageSize);
+          DEBUG('v', (char *)"WriteAt EvictPage\n", g_cfg->PageSize);
       }else{
 
 

@@ -217,39 +217,32 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 #endif
 
 #ifdef ETUDIANTS_TP
-	/* WITH demand paging */
+/* WITH demand paging */
 
-	// Set up default values for the page table entry
-	translationTable->clearBitIo(virt_page);
-	translationTable->clearBitValid(virt_page);
-	translationTable->clearBitSwap(virt_page);
-	translationTable->setBitReadAllowed(virt_page);
+// Set up default values for the page table entry
+translationTable->clearBitIo(virt_page);
+translationTable->clearBitValid(virt_page);
+translationTable->clearBitSwap(virt_page);
+translationTable->setBitReadAllowed(virt_page);
 
+if (section_table[i].sh_flags && SHF_WRITE)
 
-  // The SHT_NOBITS flag indicates if the section has an image
-	// in the executable file (text or data section) or not
-	// (bss section)
-	if (section_table[i].sh_type != SHT_NOBITS) {  // The section has an image in the executable file
-
-		// Get the position of the diskAddr
-		int position_on_disk = section_table[i].sh_offset + pgdisk*g_cfg->PageSize;
-
-		// Initialize the addrDisk to where we have to search
-		translationTable->setAddrDisk(virt_page, position_on_disk);
-
-	} else {  // The section does not have an image in the executable
-
-		// Initialize the addrDisk to -1
-		translationTable->setAddrDisk(virt_page, -1);
-
-	}
-
-	if (section_table[i].sh_flags && SHF_WRITE)
     translationTable->setBitWriteAllowed(virt_page);
-	else
+
+else
+
     translationTable->clearBitWriteAllowed(virt_page);
 
-	/* End of code WITH demand paging */
+// The SHT_NOBITS flag indicates if the section has an image
+// in the executable file (text or data section) or not
+// (bss section)
+if (section_table[i].sh_type != SHT_NOBITS)  // The section has an image in the executable file
+  // Initialize the addrDisk to where we have to search with virt_page and position of the diskAddr
+  translationTable->setAddrDisk(virt_page, section_table[i].sh_offset + pgdisk*g_cfg->PageSize);
+
+else   // The section does not have an image in the executable
+  // Initialize the addrDisk to -1
+  translationTable->setAddrDisk(virt_page, -1);
 #endif
 }
 
@@ -274,6 +267,7 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 //----------------------------------------------------------------------
 AddrSpace::~AddrSpace()
 {
+  #ifndef ETUDIANTS_TP
   int i;
 
   if (translationTable != NULL) {
@@ -294,6 +288,42 @@ AddrSpace::~AddrSpace()
     }
     delete translationTable;
   }
+  #endif
+  #ifdef ETUDIANTS_TP
+
+	if (translationTable != NULL) {
+		int i;
+		for (i = 0; i < freePageId; ++i) {
+			OpenFile *mapped_file = findMappedFile(i * g_cfg->PageSize);
+
+			// If in a modified mapped file
+			if (mapped_file != NULL) {
+
+				mapped_file->WriteAt(
+					(char *)&g_machine->mainMemory[translationTable->getPhysicalPage(i) * g_cfg->PageSize],
+					g_cfg->PageSize,
+					translationTable->getAddrDisk(i)
+				);
+
+			}
+
+			// If not in a mapped file
+			else {
+
+				// If it is in physical memory, free the physical page
+				if (translationTable->getBitValid(i))
+					g_physical_mem_manager->RemovePhysicalToVirtualMapping(translationTable->getPhysicalPage(i));
+
+				// If it is in the swap disk, free the corresponding disk sector
+				if ((translationTable->getBitSwap(i)) && (translationTable->getAddrDisk(i) >= 0))
+					g_swap_manager->ReleasePageSwap(translationTable->getAddrDisk(i));
+			}
+
+		}
+
+		delete translationTable;
+}
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -429,16 +459,19 @@ int AddrSpace::Mmap(OpenFile *f, int size)
 		mapped_files[nb_mapped_files].first_address = pageNum*g_cfg->PageSize;
     // init pages
 		for(int i = pageNum; i < pageNum + nbAllocatedPage; i++){
+
 			DEBUG('u', "Page %x\n", i);
+      translationTable->setAddrDisk(i, (i - pageNum) * g_cfg->PageSize);
 			translationTable->clearBitValid(i);
 			translationTable->clearBitSwap(i);
 			translationTable->clearBitIo(i);
 			translationTable->setBitReadAllowed(i);
 			translationTable->setBitWriteAllowed(i);
-			translationTable->setAddrDisk(i, (i - pageNum) * g_cfg->PageSize);
+      translationTable->clearBitU(i);
+      translationTable->clearBitM(i);
 		}
 		nb_mapped_files++;
-    DEBUG('u', (char *)" pages %d \n", pageNum * g_cfg->PageSize);
+    DEBUG('u', (char *)"%d \n", pageNum * g_cfg->PageSize);
 		return pageNum * g_cfg->PageSize;
 	#endif
 }
