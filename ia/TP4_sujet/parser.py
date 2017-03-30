@@ -9,40 +9,48 @@ list = []
 # listDico =[]
 listCardM = []
 listCardO = []
-i = 0
+sequence = []
+turnCards = []
+player = ""
 inputfile = open('data/all_absolute+.txt')
-tempfile =  open('temp', 'w')
+tempLCM =  open('tempLCM', 'w')
+tempCloSpan = open('tempCloSpan', 'w')
 for line in inputfile:
     find = False
-    mylist = line.split(" ")
-    if mylist[1] == "Begin":
-        game = mylist[0]
+    line = line.split(" ")
+    if line[1] == "Begin":
+        game = line[0]
         if len(listCardM) > 0:
-            for i in sorted(listCardM):
-                print(i, file = tempfile, end=' ')
-            print (file = tempfile)
+            print (*sorted(listCardM), file = tempLCM)
         if len(listCardO) > 0:
-            for i in sorted(listCardO):
-                print(i, file = tempfile, end=' ')
-            print (file = tempfile)
-
+            print (*sorted(listCardO), file = tempLCM)
+        if len(sequence) > 0:
+            print('(', *sequence[0], ')', file = tempCloSpan, end = '')
+            for i in sequence[1:]:
+                print(', (', *i, ')', file = tempCloSpan, end = '')
+            print(file = tempCloSpan)
         # listDico.append(sorted(listCardM))
         # listDico.append(sorted(listCardO))
         listCardM = []
         listCardO = []
+        sequence = []
     else:
-        player = mylist[1]
-        i += 1
-        card = mylist[1]
+        card = line[1]
+        if player != card[:1] and len(turnCards) > 0:
+            sequence.append(turnCards)
+            turnCards = []
+
+        player = card[:1]
         for id, v in enumerate(list):
             if v == card[1:]:
                 find = True
-                index = id+1
+                index = id + 1
         if find == False:
             list.append(card[1:])
             index = len(list)
 
-        if player[:1]=="M":
+        turnCards.append(index)
+        if player == "M":
             if index not in listCardM:
                 listCardM.append(index)
         else:
@@ -50,15 +58,15 @@ for line in inputfile:
                 listCardO.append(index)
 
 for i in sorted(listCardM):
-    print(i, file = tempfile, end=' ')
-print (file = tempfile)
+    print(i, file = tempLCM, end=' ')
+print (file = tempLCM)
 
 for i in sorted(listCardO):
-    print(i, file = tempfile, end=' ')
-print (file = tempfile)
+    print(i, file = tempLCM, end=' ')
+print (file = tempLCM)
 
 inputfile.close()
-tempfile.close()
+tempLCM.close()
 # listDico.append(listCardM)
 # listDico.append(listCardO)
 
@@ -67,13 +75,15 @@ tempfile.close()
 # print(list[1])
 # print(len(list))
 
-os.system("java -jar spmf.jar run LCM temp output.txt 10%")
+
+os.system("java -jar spmf.jar run LCM tempLCM LCM 10%")
 
 listOfSets = []
 cardsOfSet = []
 itemset = []
-outputfile =  open('output.txt')
-for line in outputfile:
+LCMfile =  open('LCM')
+LCMoutput = open('LCMoutput.txt', 'w')
+for line in LCMfile:
     itemset = line.split(" ")
     itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
     for i in itemset:
@@ -85,4 +95,6 @@ for line in outputfile:
     cardsOfSet = []
 
 for itemsets in listOfSets:
-    print(itemsets, "\n")
+    print(itemsets, file = LCMoutput)
+
+# os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 10%")
