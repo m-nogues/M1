@@ -61,7 +61,7 @@ tempCloSpan.close()
 
 dico = open('dictionary', 'w')
 for id, v in enumerate(list):
-    print(id, '=', v, file = dico)
+    print(id + 1, '=', v, file = dico)
 dico.close()
 
 os.system("java -jar spmf.jar run LCM tempLCM LCM 10%")
@@ -87,4 +87,4 @@ for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 0%")
+os.system("java -jar spmf.jar run CloSpan tempCloSpan CloSpan 10%")
