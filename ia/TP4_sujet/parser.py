@@ -85,7 +85,7 @@ for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 10%")
+os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 11%")
 
 listOfSets = []
 itemsOfSet = []
