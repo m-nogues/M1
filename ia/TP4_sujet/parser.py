@@ -75,8 +75,7 @@ for line in LCMfile:
     for i in itemset:
         if i == "#SUP:":
             break
-        else:
-            cardsOfSet.append(list[int(i) - 1])
+        cardsOfSet.append(list[int(i) - 1])
     listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
     cardsOfSet = []
 LCMfile.close()
@@ -86,7 +85,32 @@ for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 25%")
+os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 10%")
+
+listOfSets = []
+itemsOfSet = []
+cardsOfSet = []
+itemset = []
+CloSpanFile =  open('CloSpan')
+for line in CloSpanFile:
+    itemset = line.split(" ")
+    itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
+    for i in itemset:
+        if i == "#SUP:":
+            break
+        if i != "-1":
+            itemsOfSet.append(list[int(i) - 1])
+        else:
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
+    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
+    cardsOfSet = []
+CloSpanFile.close()
+
+CloSpanOutput = open('CloSpanOutput.txt', 'w')
+for itemsets in listOfSets:
+    print(itemsets, file = CloSpanOutput)
+CloSpanOutput.close()
 
 # os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
 
