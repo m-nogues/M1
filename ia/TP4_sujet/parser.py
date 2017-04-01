@@ -63,7 +63,7 @@ for id, v in enumerate(list):
     print(id + 1, '=', v, file = dico)
 dico.close()
 
-os.system("java -jar spmf.jar run LCM tempLCM LCM 10%")
+os.system("java -jar spmf.jar run LCM tempLCM LCM 8%")
 
 listOfSets = []
 cardsOfSet = []
