@@ -19,10 +19,10 @@ for line in inputfile:
         if len(listCardO) > 0:
             print (*sorted(listCardO), file = tempLCM)
         if len(sequence) > 0:
-            print('(', *sorted(sequence[0]), ')', file = tempSeq, end = '')
+            print(*sorted(sequence[0]), '-1 ', file = tempSeq, end = '')
             for i in sequence[1:]:
-                print(', (', *sorted(i), ')', file = tempSeq, end = '')
-            print(file = tempSeq)
+                print(*sorted(i), '-1 ', file = tempSeq, end = '')
+            print('-2', file = tempSeq)
         listCardM = []
         listCardO = []
         sequence = []
@@ -53,17 +53,17 @@ print (*sorted(listCardM), file = tempLCM)
 print (*sorted(listCardO), file = tempLCM, end = '')
 tempLCM.close()
 
-print('(', *sorted(sequence[0]), ')', file = tempSeq, end = '')
+print(*sorted(sequence[0]), '-1 ', file = tempSeq, end = '')
 for i in sequence[1:]:
-    print(', (', *sorted(i), ')', file = tempSeq, end = '')
-tempSeq.close()
+    print(*sorted(i), '-1 ', file = tempSeq, end = '')
+print('-2', file = tempSeq, end = '')
 
 dico = open('dictionary', 'w')
 for id, v in enumerate(list):
     print(id + 1, '=', v, file = dico)
 dico.close()
 
-os.system("java -jar spmf.jar run LCM tempLCM LCM 10%")
+os.system("java -jar spmf.jar run LCM tempLCM LCM 8%")
 
 listOfSets = []
 cardsOfSet = []
@@ -75,8 +75,7 @@ for line in LCMfile:
     for i in itemset:
         if i == "#SUP:":
             break
-        else:
-            cardsOfSet.append(list[int(i) - 1])
+        cardsOfSet.append(list[int(i) - 1])
     listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
     cardsOfSet = []
 LCMfile.close()
@@ -86,8 +85,33 @@ for itemsets in listOfSets:
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 10%")
+os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 11%")
 
-os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+listOfSets = []
+itemsOfSet = []
+cardsOfSet = []
+itemset = []
+CloSpanFile =  open('CloSpan')
+for line in CloSpanFile:
+    itemset = line.split(" ")
+    itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
+    for i in itemset:
+        if i == "#SUP:":
+            break
+        if i != "-1":
+            itemsOfSet.append(list[int(i) - 1])
+        else:
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
+    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
+    cardsOfSet = []
+CloSpanFile.close()
 
-os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
+CloSpanOutput = open('CloSpanOutput.txt', 'w')
+for itemsets in listOfSets:
+    print(itemsets, file = CloSpanOutput)
+CloSpanOutput.close()
+
+# os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+
+# os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
