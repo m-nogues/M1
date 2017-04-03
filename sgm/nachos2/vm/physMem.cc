@@ -126,20 +126,21 @@ int PhysicalMemManager::AddPhysicalToVirtualMapping(AddrSpace* owner,int virtual
     return (0);
   #endif
   #ifdef ETUDIANTS_TP
-    ASSERT(g_machine->mmu->translationTable->getBitIo(virtualPage));
-    int phys_page = FindFreePage();
-    // not free page call EvictPage
-    if (phys_page == -1)
-      phys_page = EvictPage();
+  ASSERT(g_machine->mmu->translationTable->getBitIo(virtualPage));
 
-    tpr[phys_page].locked = true;
+// Get a page in physical memory, evict one if none free
+int pp = FindFreePage();
+if (pp == -1) pp = EvictPage();
 
-    tpr[phys_page].virtualPage = virtualPage;
-    tpr[phys_page].owner = owner;
+// Lock the page for us
+tpr[pp].locked = true;
 
+// Link this page to the given virtual page
+tpr[pp].virtualPage = virtualPage;
+tpr[pp].owner = owner;
 
-    DEBUG('v', (char *)"AddPhysicalToVirtualMapping, virtualPage : %i, realPage : %i\n", virtualPage, phys_page);
-    return phys_page;
+// Return the index of the physical page
+return pp;
   #endif
 }
 
@@ -185,81 +186,70 @@ int PhysicalMemManager::FindFreePage() {
 //-----------------------------------------------------------------
 int PhysicalMemManager::EvictPage() {
   #ifndef ETUDIANTS_TP
-    printf("**** Warning: page replacement algorithm is not implemented yet\n");
-    exit(-1);
-    return (0);
-  #endif
-  #ifdef ETUDIANTS_TP
-  DEBUG('m', (char*)"Entering EvictPage\n");
-  int local_i_clock = i_clock, nbPagesParcourues = 0, pageVirtuelle, numSecteur;
-	bool trouve = false;
-	tpr_c pageReelle;
-	TranslationTable *tableTrans;
+  DEBUG('m', (char *)"Entering EvictPage() with iClock = %d\n", i_clock);
 
-	// On parcourt l'ensemble des pages jusqu'à ce qu'on trouve une page libre
-	while(!trouve){
+// Get the global i_clock and put it into our system
+int local_i_clock = (i_clock + 1) % g_cfg->NumPhysPages,
+beginning = (local_i_clock - 1) % g_cfg->NumPhysPages;
 
-		local_i_clock = (local_i_clock+1)%(g_cfg->NumPhysPages);
+// Search a page that isn't locked or used recently
+while ((tpr[local_i_clock].owner->translationTable->getBitU(tpr[local_i_clock].virtualPage)) || (tpr[local_i_clock].locked)) {
 
-		pageReelle = tpr[local_i_clock];
-		pageVirtuelle = pageReelle.virtualPage;
-		tableTrans = pageReelle.owner->translationTable;
+  // Put the U bit back to 0
+  tpr[local_i_clock].owner->translationTable->clearBitU(tpr[local_i_clock].virtualPage);
 
-		// On a parcouru toutes les pages physiques mais on a rien trouvé -> Mise en attente
-		if(nbPagesParcourues == g_cfg->NumPhysPages){
+  // Go to the next physical page in circular way
+  local_i_clock = (local_i_clock + 1) % g_cfg->NumPhysPages;
 
-			i_clock = local_i_clock;
+  // If we got back to the beginning, we didn't found a page
+  if (local_i_clock == beginning) {
 
-			g_current_thread->Yield();
+    // Put the current thread at the end of the active thread lists
+    // Run all the other active threads until going back to this one
+    g_current_thread->Yield();
 
-			local_i_clock = (i_clock+1)%(g_cfg->NumPhysPages);
-			nbPagesParcourues = 0;
-		}
+  }
+}
 
-		if(!pageReelle.locked){
+// Invalid the virtual page associated to it and lock the page for us
+tpr[local_i_clock].owner->translationTable->clearBitValid(tpr[local_i_clock].virtualPage);
+tpr[local_i_clock].locked = true;
 
-			// Page disponible
-			if(!tableTrans->getBitU(pageVirtuelle)){
+// Update the global clock
+i_clock = local_i_clock;
 
-				trouve = true;
-			}
+// If the physical page was modified
+if (tpr[local_i_clock].owner->translationTable->getBitM(tpr[local_i_clock].virtualPage)) {
 
-			// Page référencéee récemment (2ème chance)
-			else{
+  // If this page is already in the swap
+  if (tpr[local_i_clock].owner->translationTable->getBitSwap(tpr[local_i_clock].virtualPage)) {
 
-				tableTrans->clearBitU(pageVirtuelle);
-			}
-		}
+    // Change the swap page index
+    g_swap_manager->PutPageSwap(tpr[local_i_clock].owner->translationTable->getAddrDisk(tpr[local_i_clock].virtualPage), (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
+  }
 
-		nbPagesParcourues++; // Déplacé depuis le début
-	}
+  // If not, put it in then
+  else {
 
-	i_clock = local_i_clock;
-	pageReelle.locked = true; // Pour éviter la réquisition de cette page si on perd la main lors du traitement avec le swap
-	//tableTrans->clearBitValid(pageVirtuelle);
+    // Put this page into the swap
+    int swap_sector = g_swap_manager->PutPageSwap(-1, (char *)&g_machine->mainMemory[local_i_clock * g_cfg->PageSize]);
 
-	DEBUG('v', (char*)"Page physique n°%i a voler\n", local_i_clock);
+    // If there was an error
+    if (swap_sector == -1) {
+      DEBUG('h', (char *)"Tryed to put a swap page in EvictPage() method but failed, return code is %d\n", swap_sector);
+      g_machine->interrupt->Halt(-1);
+    }
 
-	// Traitement sur la page avant de la rendre (recopie dans le swap en cas de modification)
-	if(tableTrans->getBitM(pageVirtuelle)){
+    // Update virtual page state as stored into swap
+    tpr[local_i_clock].owner->translationTable->setAddrDisk(tpr[local_i_clock].virtualPage, swap_sector);
+    tpr[local_i_clock].owner->translationTable->setBitSwap(tpr[local_i_clock].virtualPage);
+    tpr[local_i_clock].owner->translationTable->clearBitM(tpr[local_i_clock].virtualPage);
+  }
 
-		// Cette page a déjà un secteur associé dans le swap
-		if(tableTrans->getBitSwap(pageVirtuelle)){
+}
 
-			DEBUG('v', (char*)"La page a déjà une adresse dans le swap (%i)\n", tableTrans->getAddrDisk(pageVirtuelle));
-			g_swap_manager->PutPageSwap(tableTrans->getAddrDisk(pageVirtuelle), (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
-		}
-		else{
-
-			DEBUG('v', (char*)"La page n'a pas d'adresse dans le swap\n");
-			numSecteur = g_swap_manager->PutPageSwap(-1, (char*)(&(g_machine->mainMemory[local_i_clock*g_cfg->PageSize])));
-			DEBUG('v', (char*)"Page swap associée : %i\n", numSecteur);
-
-			tableTrans->setAddrDisk(pageVirtuelle, numSecteur);
-			tableTrans->setBitSwap(pageVirtuelle);
-		}
-	}
-	return local_i_clock;
+// Return the free physical page
+return local_i_clock;
   #endif
 
 }

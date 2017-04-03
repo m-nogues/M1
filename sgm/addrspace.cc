@@ -214,34 +214,23 @@ AddrSpace::AddrSpace(OpenFile * exec_file, Process *p, int *err)
 		#endif
 		/* End of code without demand paging */
 		#ifdef ETUDIANTS_TP
-		/* WITH demand paging */
+			// Set up default values for the page table entry
+			translationTable->clearBitSwap(virt_page);
 
-// Set up default values for the page table entry
-translationTable->clearBitIo(virt_page);
-translationTable->clearBitValid(virt_page);
-translationTable->clearBitSwap(virt_page);
-translationTable->setBitReadAllowed(virt_page);
-if (section_table[i].sh_flags && SHF_WRITE) translationTable->setBitWriteAllowed(virt_page);
-else translationTable->clearBitWriteAllowed(virt_page);
+			translationTable->setBitReadAllowed(virt_page);
 
-// The SHT_NOBITS flag indicates if the section has an image
-// in the executable file (text or data section) or not
-// (bss section)
-if (section_table[i].sh_type != SHT_NOBITS) {  // The section has an image in the executable file
+			if (section_table[i].sh_flags && SHF_WRITE)
+				translationTable->setBitWriteAllowed(virt_page);
+			else
+				translationTable->clearBitWriteAllowed(virt_page);
 
-	// Get the position of the diskAddr
-	int position_on_disk = section_table[i].sh_offset + pgdisk*g_cfg->PageSize;
+			if (section_table[i].sh_type != SHT_NOBITS)
+				translationTable->setAddrDisk(virt_page, section_table[i].sh_offset + pgdisk * g_cfg->PageSize);
+			else
+				translationTable->setAddrDisk(virt_page, -1);
 
-	// Initialize the addrDisk to where we have to search
-	translationTable->setAddrDisk(virt_page, position_on_disk);
-
-} else {  // The section does not have an image in the executable
-
-	// Initialize the addrDisk to -1
-	translationTable->setAddrDisk(virt_page, -1);
-
-}
-
+			translationTable->clearBitIo(virt_page);
+			translationTable->clearBitValid(virt_page);
 		#endif
 		}
 	}
@@ -334,6 +323,8 @@ int AddrSpace::StackAllocate(void)
 			translationTable->setAddrDisk(i,-1);
 			translationTable->setBitValid(i);
 			translationTable->clearBitSwap(i);
+
+
 			translationTable->setBitReadAllowed(i);
 			translationTable->setBitWriteAllowed(i);
 			translationTable->clearBitIo(i);
@@ -343,6 +334,7 @@ int AddrSpace::StackAllocate(void)
 			translationTable->clearBitValid(i);
 			translationTable->setAddrDisk(i, -1);
 			translationTable->clearBitSwap(i);
+				DEBUG('v', (char*)"page virtuelle %d\n", virtualPage);
 			translationTable->setBitReadAllowed(i);
 			translationTable->setBitWriteAllowed(i);
 			translationTable->clearBitIo(i);
@@ -391,10 +383,41 @@ int AddrSpace::Alloc(int numPages)
 // ----------------------------------------------------------------------
 int AddrSpace::Mmap(OpenFile *f, int size)
 {
-
+	#ifndef ETUDIANTS_TP
 		printf("**** Warning: method AddrSpace::Mmap is not implemented yet\n");
 		exit(-1);
+	#endif
+/*	#ifdef ETUDIANTS_TP
+		int pageNum, nbAllocatedPage;
 
+		if (nb_mapped_files == MAX_MAPPED_FILES)
+		 	return -2;
+
+		nbAllocatedPage = divRoundUp(size, g_cfg->PageSize);
+
+		if ((pageNum = Alloc(nbAllocatedPage) == -1))
+			return -1;
+
+		DEBUG('u', (char *)"First allocated page for file %s : %d (allocated size = %d, %d pages)\n", f->GetName(), pageNum, size, nbAllocatedPage);
+
+		mapped_files[nb_mapped_files].size = size;
+		mapped_files[nb_mapped_files].file = f;
+		mapped_files[nb_mapped_files].first_address = pageNum*g_cfg->PageSize;
+
+		for(int i = pageNum; i < pageNum + nbAllocatedPage; i++){
+			DEBUG('u', "Page %x\n", i);
+			translationTable->clearBitValid(i);
+			translationTable->clearBitSwap(i);
+			translationTable->clearBitIo(i);
+			translationTable->setBitReadAllowed(i);
+			translationTable->setBitWriteAllowed(i);
+			translationTable->setAddrDisk(i, (i - pageNum) * g_cfg->PageSize);
+		}
+
+		nb_mapped_files++;
+
+		return pageNum * g_cfg->PageSize;
+	#endif*/
 }
 
 //----------------------------------------------------------------------
@@ -405,10 +428,17 @@ int AddrSpace::Mmap(OpenFile *f, int size)
  */
 //----------------------------------------------------------------------
 OpenFile *AddrSpace::findMappedFile(int32_t addr) {
-
+	#ifndef ETUDIANTS_TP
 	printf("**** Warning: method AddrSpace::findMappedFile is not implemented yet\n");
 	exit(-1);
+	#endif
+	/*#ifdef ETUDIANTS_TP
+		for (int i = 0; i < nb_mapped_files; i++)
+			if ((addr >= mapped_files[i].first_address) && (addr < mapped_files[i].first_address + mapped_files[i].size))
+				return mapped_files[i].file;
 
+		return NULL;
+	#endif*/
 }
 
 //----------------------------------------------------------------------

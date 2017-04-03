@@ -22,6 +22,7 @@ void handler(int signum, siginfo_t *sip, void *ptr){
 	if(mprotect(sip->si_addr - ((int)sip->si_addr%getpagesize()), getpagesize(), PROT_READ) == -1){
 
 		perror("call mprotect failled");
+		sleep(1);
 		exit(1);
 	}
 }

@@ -7,32 +7,20 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+
+
 #define ID 42
 #define SIZE 1024
 
-union semun {
-    int              val;    /* Value for SETVAL */
-    struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
-    unsigned short  *array;  /* Array for GETALL, SETALL */
-    struct seminfo  *__buf;  /* Buffer for IPC_INFO
-                                (Linux-specific) */
-};
+struct sembuf v ={0,1,0};
 
-struct sembuf v ={1, 1, 0};
-
-struct sembuf p = {0,-1,0};
+struct sembuf p = {1,-1,0};
 
 
 int main(){
   char *shared_memory;
   int shmem_id, sem_id, readC = SIZE;
   struct shmid_ds shmbuffer;
-  int file;
-
-  if((file=open("memorySeg", O_RDONLY)) == -1){
-		perror("openFile memorySeg failled");
-		exit(1);
-  }
 
   if ((sem_id = semget(ID, 2, 0660 | IPC_CREAT)) == -1){
     perror("semget");
@@ -50,14 +38,6 @@ int main(){
     perror("shmctl IPC_STAT");
     return -1;
   }
-  if (semctl(sem_id, 0, SETVAL, 1) == -1){
-    perror("semctl SETVAL");
-    return -1;
-  }
-  if (semctl(sem_id, 1, SETVAL, 1) == -1){
-    perror("semctl SETVAL");
-    return -1;
-  }
 
   while (readC == SIZE) {
     if (semop(sem_id, &p, 1) == -1){
@@ -65,12 +45,8 @@ int main(){
       return -1;
     }
 
-    if ((readC = read(file, shared_memory, SIZE)) == -1){
-      perror("read");
-      return -1;
-    }
-    if (readC < SIZE)
-      shared_memory[readC] = '\0';
+    readC = strlen(shared_memory);
+    printf("%s", shared_memory);
 
     if (semop(sem_id, &v, 1) == -1){
       perror("semop v");
@@ -78,6 +54,12 @@ int main(){
     }
   }
 
-  close(file);
-  return 0;
+  if (semctl(sem_id, 0, IPC_RMID, 0) == -1){
+    perror("semctl destroy");
+    return -1;
+  }
+  if (shmdt(shared_memory) == -1){
+    perror("shmdt");
+    return -1;
+  }
 }
