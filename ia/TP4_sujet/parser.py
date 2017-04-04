@@ -100,9 +100,9 @@ for line in CloSpanFile:
     for i in itemset:
         if i == "#SUP:":
             break
-        if int(i) - 1 == list.index("TheCoin"):
-            useful = False
-            break
+        # if int(i) - 1 == list.index("TheCoin"):
+        #     useful = False
+        #     break
         if i != "-1":
             itemsOfSet.append(list[int(i) - 1])
         else:
@@ -118,6 +118,6 @@ for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
     print(itemsets, file = CloSpanOutput)
 CloSpanOutput.close()
 
-# os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
 
-# os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
+os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
