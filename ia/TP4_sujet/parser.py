@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 
 list = []
@@ -81,7 +82,7 @@ for line in LCMfile:
 LCMfile.close()
 
 LCMoutput = open('LCMoutput.txt', 'w')
-for itemsets in listOfSets:
+for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
@@ -95,20 +96,25 @@ CloSpanFile =  open('CloSpan')
 for line in CloSpanFile:
     itemset = line.split(" ")
     itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
+    useful = True
     for i in itemset:
         if i == "#SUP:":
+            break
+        if int(i) - 1 == list.index("TheCoin"):
+            useful = False
             break
         if i != "-1":
             itemsOfSet.append(list[int(i) - 1])
         else:
             cardsOfSet.append(itemsOfSet)
             itemsOfSet = []
-    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
+    if useful:
+        listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
     cardsOfSet = []
 CloSpanFile.close()
 
 CloSpanOutput = open('CloSpanOutput.txt', 'w')
-for itemsets in listOfSets:
+for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
     print(itemsets, file = CloSpanOutput)
 CloSpanOutput.close()
 
