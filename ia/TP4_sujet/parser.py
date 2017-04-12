@@ -61,7 +61,7 @@ print('-2', file = tempSeq, end = '')
 
 dico = open('dictionary', 'w')
 for id, v in enumerate(list):
-    print(id + 1, '=', v, file = dico)
+    print(id + 1, '\t=\t', v, file = dico)
 dico.close()
 
 os.system("java -jar spmf.jar run LCM tempLCM LCM 8%")
@@ -86,7 +86,7 @@ for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
     print(itemsets, file = LCMoutput)
 LCMoutput.close()
 
-os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 11%")
+os.system("java -jar spmf.jar run CloSpan tempSeq CloSpan 5%")
 
 listOfSets = []
 itemsOfSet = []
@@ -100,15 +100,15 @@ for line in CloSpanFile:
     for i in itemset:
         if i == "#SUP:":
             break
-        # if int(i) - 1 == list.index("TheCoin"):
-        #     useful = False
-        #     break
+        if int(i) - 1 == list.index("TheCoin") and itemsOfSet == []:
+             useful = False
+             break
         if i != "-1":
             itemsOfSet.append(list[int(i) - 1])
         else:
             cardsOfSet.append(itemsOfSet)
             itemsOfSet = []
-    if useful:
+    if useful and len(cardsOfSet) > 1:
         listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
     cardsOfSet = []
 CloSpanFile.close()
@@ -119,5 +119,40 @@ for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
 CloSpanOutput.close()
 
 os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+
+listOfSets = []
+itemsOfSet = []
+cardsOfSet = []
+itemset = []
+RuleGrowthFile =  open('RuleGrowth')
+for line in RuleGrowthFile:
+    itemset = line.split(" ")
+    itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
+    useful = True
+    for i in itemset:
+        if i == "#SUP:":
+            break
+        if int(i) - 1 == list.index("TheCoin") and itemsOfSet == []:
+             useful = False
+             break
+        if i != "==>":
+            if "," in i:
+                i = i.split(",")
+                for card in i:
+                    itemsOfSet.append(list[int(card) - 1])
+            else:
+                itemsOfSet.append(list[int(i) - 1])
+        else:
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
+    if useful and len(cardsOfSet) > 1:
+        listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
+    cardsOfSet = []
+RuleGrowthFile.close()
+
+RuleGrowthOutput = open('RuleGrowthOutput.txt', 'w')
+for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
+    print(itemsets, file = RuleGrowthOutput)
+RuleGrowthOutput.close()
 
 os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
