@@ -118,7 +118,7 @@ for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
     print(itemsets, file = CloSpanOutput)
 CloSpanOutput.close()
 
-os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 10% 20%")
+os.system("java -jar spmf.jar run RuleGrowth tempSeq RuleGrowth 5% 50%")
 
 listOfSets = []
 itemsOfSet = []
@@ -128,13 +128,11 @@ RuleGrowthFile =  open('RuleGrowth')
 for line in RuleGrowthFile:
     itemset = line.split(" ")
     itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
-    useful = True
     for i in itemset:
         if i == "#SUP:":
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
             break
-        if int(i) - 1 == list.index("TheCoin") and itemsOfSet == []:
-             useful = False
-             break
         if i != "==>":
             if "," in i:
                 i = i.split(",")
@@ -145,14 +143,45 @@ for line in RuleGrowthFile:
         else:
             cardsOfSet.append(itemsOfSet)
             itemsOfSet = []
-    if useful and len(cardsOfSet) > 1:
-        listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 1])))
+    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 3]), float(itemset[len(itemset) - 1])))
     cardsOfSet = []
 RuleGrowthFile.close()
 
 RuleGrowthOutput = open('RuleGrowthOutput.txt', 'w')
-for itemsets in sorted(listOfSets, key = itemgetter(1), reverse = True):
+for itemsets in sorted(listOfSets, key = itemgetter(2), reverse = True):
     print(itemsets, file = RuleGrowthOutput)
 RuleGrowthOutput.close()
 
-os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 10% 20%")
+os.system("java -jar spmf.jar run ERMiner tempSeq ERMiner 5% 50%")
+
+listOfSets = []
+itemsOfSet = []
+cardsOfSet = []
+itemset = []
+ERMinerFile =  open('ERMiner')
+for line in ERMinerFile:
+    itemset = line.split(" ")
+    itemset[len(itemset) - 1] = itemset[len(itemset) - 1].replace('\n', '').replace('\r', '')
+    for i in itemset:
+        if i == "#SUP:":
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
+            break
+        if i != "==>":
+            if "," in i:
+                i = i.split(",")
+                for card in i:
+                    itemsOfSet.append(list[int(card) - 1])
+            else:
+                itemsOfSet.append(list[int(i) - 1])
+        else:
+            cardsOfSet.append(itemsOfSet)
+            itemsOfSet = []
+    listOfSets.append((cardsOfSet, int(itemset[len(itemset) - 3]), float(itemset[len(itemset) - 1])))
+    cardsOfSet = []
+ERMinerFile.close()
+
+ERMinerOutput = open('ERMinerOutput.txt', 'w')
+for itemsets in sorted(listOfSets, key = itemgetter(2), reverse = True):
+    print(itemsets, file = ERMinerOutput)
+ERMinerOutput.close()
